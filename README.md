@@ -1,7 +1,9 @@
 <p align="center"><img src="https://capsule-render.vercel.app/api?type=soft&height=100&text=CatchMe-If-You-Server&fontAlign=50&fontAlignY=50&color=gradient&fontSize=40" style="width:100%" /></p>
 
 <p align="center">나의 매일을 다채롭게, <b>캐치미 서버팀</b></p>
-<br></br>
+
+    
+
 <p align="center">
 <img alt="NodeJS" src="https://img.shields.io/badge/node.js-%2343853D.svg?style=for-the-badge&logo=node-dot-js&logoColor=white"/>
 <img alt="JavaScript" src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E"/>
@@ -40,7 +42,10 @@
 
 ![09commitConvention](https://user-images.githubusercontent.com/49263163/124017856-2afe8a80-da22-11eb-9dad-eb99dbcb48c6.jpeg)
 
+---
+
 ### 🛠️ API Doc
+
 - [캐치미 API 명세서]()
 
 <br></br>
