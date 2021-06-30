@@ -1,7 +1,7 @@
 ---
 name: Daily issue template
 about: daily issue 를 등록합니다.
-title: ''
+title: "[0/0] -"
 labels: ''
 assignees: ''
 

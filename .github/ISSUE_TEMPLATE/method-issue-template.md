@@ -1,7 +1,7 @@
 ---
 name: Method issue template
 about: method issue를 등록합니다.
-title: ''
+title: "[methodname] -"
 labels: ''
 assignees: ''
 
