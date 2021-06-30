@@ -22,6 +22,8 @@
 
 ![01strategy_img](https://user-images.githubusercontent.com/49263163/124017817-220db900-da22-11eb-8492-f1dc198a20d9.jpeg)
 
+---
+
 ## Daily Flow
 
 ![02dailyflow_img](https://user-images.githubusercontent.com/49263163/124017827-2508a980-da22-11eb-941c-8da4c3084336.jpeg)
@@ -31,6 +33,8 @@
 ![06PR](https://user-images.githubusercontent.com/49263163/124017851-29cd5d80-da22-11eb-89b6-9f777cdb8c2e.jpeg)
 ![07PR2](https://user-images.githubusercontent.com/49263163/124017853-29cd5d80-da22-11eb-8033-280546d15727.jpeg)
 ![08CodeReview](https://user-images.githubusercontent.com/49263163/124017854-2a65f400-da22-11eb-9c7b-0aaac90962cf.jpeg)    
+
+---
 
  ## Commit Convention
 
