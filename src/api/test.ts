@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express";
-import request from "request";
-import config from "../config";
+
 
 import Test from "../models/test";
 
