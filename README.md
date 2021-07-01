@@ -2,7 +2,7 @@
 
 <p align="center">나의 매일을 다채롭게, <b>캐치미 서버팀</b></p>
 
-    
+​    
 
 <p align="center">
 <img alt="NodeJS" src="https://img.shields.io/badge/node.js-%2343853D.svg?style=for-the-badge&logo=node-dot-js&logoColor=white"/>
@@ -14,9 +14,7 @@
 <img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white"/>
 <img alt="Postman" src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=red" />
 </p>
-<!-- 해당 이미지 차후 로고 디벨롭되면 수정<br>
 
-> `캐치미`, `SOPT 28th APPJAM` -->
 
 
 ---
