@@ -12,9 +12,9 @@
 <img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white"/>
 <img alt="Postman" src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=red" />
 </p>
-
 <!-- 해당 이미지 차후 로고 디벨롭되면 수정<br>
-> `캐치미`, `SOPT 28th APPJAM` -->
+
+> `캐치미`, `SOPT 28th APPJAM` dd-->
 <br></br>
 ---
 <br></br>
@@ -27,9 +27,9 @@
 <br></br>
 
 ### 💻 Server Team
-| 담당자 | 기능 | 비고 |  
-|:--- | ---: | :---: |  
-| 최영재 |  |  |  
+| 담당자 | 기능 | 비고 |
+|:--- | ---: | :---: |
+| 최영재 |  |  |
 | 권세훈 |  |  |
 
 <br></br>
