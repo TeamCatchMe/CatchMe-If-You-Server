@@ -36,11 +36,20 @@
 
 ---
 
- ## Commit Convention
+## Commit Convention
 
 ![09commitConvention](https://user-images.githubusercontent.com/49263163/124017856-2afe8a80-da22-11eb-9dad-eb99dbcb48c6.jpeg)
 
 ---
+
+## Code Convention 
+![10CodeConvention](https://user-images.githubusercontent.com/49263163/124303249-2f02e780-db9d-11eb-9d20-8eb1221a45f9.jpeg)
+![11CodeConvention](https://user-images.githubusercontent.com/49263163/124303259-32966e80-db9d-11eb-8420-59b5e1621ee8.jpeg)
+![12CodeConvention](https://user-images.githubusercontent.com/49263163/124303263-33c79b80-db9d-11eb-8282-4dfeceb9112c.jpeg)
+![13CodeConvention](https://user-images.githubusercontent.com/49263163/124303268-34603200-db9d-11eb-9baa-c0c4ece765ab.jpeg)
+
+---
+
 
 ### 🛠️ API Doc
 
