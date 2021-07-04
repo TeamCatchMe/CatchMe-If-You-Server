@@ -36,17 +36,32 @@
 
 ---
 
-## Commit Convention
+## Convention
+<details>
+  <summary><b>Commit Convention</b></summary>
+<!-- ![09commitConvention](https://user-images.githubusercontent.com/49263163/124017856-2afe8a80-da22-11eb-9dad-eb99dbcb48c6.jpeg)   -->
+  <img alt="commitConvention" src="https://user-images.githubusercontent.com/49263163/124017856-2afe8a80-da22-11eb-9dad-eb99dbcb48c6.jpeg"/>
+</details>
 
-![09commitConvention](https://user-images.githubusercontent.com/49263163/124017856-2afe8a80-da22-11eb-9dad-eb99dbcb48c6.jpeg)
+<details>
+  <summary><b>Code Convention</b></summary>
+<!-- ![09commitConvention](https://user-images.githubusercontent.com/49263163/124017856-2afe8a80-da22-11eb-9dad-eb99dbcb48c6.jpeg)   -->
+  <img alt="codeConvention1" src="https://user-images.githubusercontent.com/49263163/124303249-2f02e780-db9d-11eb-9d20-8eb1221a45f9.jpeg"/>
+  <img alt="codeConvention1" src="https://user-images.githubusercontent.com/49263163/124303259-32966e80-db9d-11eb-8420-59b5e1621ee8.jpeg"/>
+  <img alt="codeConvention1" src="https://user-images.githubusercontent.com/49263163/124303263-33c79b80-db9d-11eb-8282-4dfeceb9112c.jpeg"/>
+  <img alt="codeConvention1" src="https://user-images.githubusercontent.com/49263163/124303268-34603200-db9d-11eb-9baa-c0c4ece765ab.jpeg"/>
+</details>
+
+<!-- ![10CodeConvention](https://user-images.githubusercontent.com/49263163/124303249-2f02e780-db9d-11eb-9d20-8eb1221a45f9.jpeg)
+![11CodeConvention](https://user-images.githubusercontent.com/49263163/124303259-32966e80-db9d-11eb-8420-59b5e1621ee8.jpeg)
+![12CodeConvention](https://user-images.githubusercontent.com/49263163/124303263-33c79b80-db9d-11eb-8282-4dfeceb9112c.jpeg)
+![13CodeConvention](https://user-images.githubusercontent.com/49263163/124303268-34603200-db9d-11eb-9baa-c0c4ece765ab.jpeg) -->
 
 ---
 
-## Code Convention 
-![10CodeConvention](https://user-images.githubusercontent.com/49263163/124303249-2f02e780-db9d-11eb-9d20-8eb1221a45f9.jpeg)
-![11CodeConvention](https://user-images.githubusercontent.com/49263163/124303259-32966e80-db9d-11eb-8420-59b5e1621ee8.jpeg)
-![12CodeConvention](https://user-images.githubusercontent.com/49263163/124303263-33c79b80-db9d-11eb-8282-4dfeceb9112c.jpeg)
-![13CodeConvention](https://user-images.githubusercontent.com/49263163/124303268-34603200-db9d-11eb-9baa-c0c4ece765ab.jpeg)
+### ⛓️ Server Architecture
+![Server Architecture](https://user-images.githubusercontent.com/54793607/124374246-b43ce800-dcd4-11eb-8ea5-672b1587f6ce.png)
+
 
 ---
 
@@ -55,9 +70,9 @@
 
 - [캐치미 API 명세서]()
 
-<br></br>
+
 ---
-<br></br>
+
 
 ### 💻 Server Team
 | 담당자 | 기능 | 비고 |
