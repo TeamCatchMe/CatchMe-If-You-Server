@@ -1,6 +1,4 @@
 import { Router, Request, Response } from "express";
-
-
 import Test from "../models/test";
 
 const router = Router();
@@ -8,7 +6,7 @@ const router = Router();
 /**
  *  @route GET api/profile
  *  @desc Get all profiles
- *  @access Public
+ *  @access Pßublic
  */
 router.get("/", async (req: Request, res: Response) => {
     try {
