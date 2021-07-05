@@ -13,7 +13,12 @@ const TestSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true,
+    },
+    message: {
+        type: String,
     }
+}, {
+    versionKey: false 
 });
 
 export default mongoose.model<ITest & mongoose.Document>(
