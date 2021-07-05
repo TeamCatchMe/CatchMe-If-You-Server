@@ -7,7 +7,7 @@ const router = Router();
 /**
  *  @route GET api/profile
  *  @desc Get all profiles
- *  @access Public
+ *  @access Pßublic
  */
 router.get("/", async (req: Request, res: Response) => {
   try {
