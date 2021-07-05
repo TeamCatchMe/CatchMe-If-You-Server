@@ -11,6 +11,7 @@ db_1.default();
 app.use(express.json());
 // Define Routes
 app.use("/test", require("./api/test"));
+app.use("/post", require("./api/post"));
 // error handler
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
