@@ -1,4 +1,4 @@
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=soft&height=100&text=CatchMe-If-You-Server&fontAlign=50&fontAlignY=50&color=gradient&fontSize=40" style="width:100%" /></p>
+![00 banner](https://user-images.githubusercontent.com/49263163/124420354-4e1a9880-dd9a-11eb-823f-d9a89b4a979b.png)
 
 <p align="center">나의 매일을 다채롭게, <b>캐치미 서버팀</b></p>
 
@@ -31,7 +31,7 @@
 ![04issue_img2](https://user-images.githubusercontent.com/49263163/124017845-289c3080-da22-11eb-9bdf-580a0d6f1467.jpeg)
 ![05projectCoding](https://user-images.githubusercontent.com/49263163/124017850-2934c700-da22-11eb-83a1-9cb138e54268.jpeg)
 ![06PR](https://user-images.githubusercontent.com/49263163/124017851-29cd5d80-da22-11eb-89b6-9f777cdb8c2e.jpeg)
-![07PR2](https://user-images.githubusercontent.com/49263163/124017853-29cd5d80-da22-11eb-8033-280546d15727.jpeg)
+![07PR2](https://user-images.githubusercontent.com/49263163/124420368-54107980-dd9a-11eb-86d5-5ca0bf186361.jpeg)
 ![08CodeReview](https://user-images.githubusercontent.com/49263163/124017854-2a65f400-da22-11eb-9c7b-0aaac90962cf.jpeg)    
 
 ---
