@@ -31,6 +31,7 @@ const connectDB = async () => {
         //     {
         //         "hello": "들654865ㅕㅇ??333",
         //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
+        //         "message": null
         //     }
 
         // ]).then(function (collection) {
