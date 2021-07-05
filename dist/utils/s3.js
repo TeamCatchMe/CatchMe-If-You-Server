@@ -4,7 +4,8 @@ const express = require('express');
 const router = express.Router();
 const path = require("path");
 let AWS = require("aws-sdk");
-AWS.config.loadFromPath(__dirname + "/../config/awsconfig.json"); // 인증
+
+AWS.config.loadFromPath(__dirname + "/../../awsconfig.json"); // 인증
 let s3 = new AWS.S3();
 let multer = require("multer");
 let multerS3 = require('multer-s3');
