@@ -27,13 +27,20 @@ const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
         // });
         // Test.insertMany([
         //     {
-        //         "hello": "야 들어가냐?",
-        //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png"
+        //         "hello": "야 들어가냐?33",
+        //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
+        //         "message" : "끼얏호"
         //     },
         //     {
-        //         "hello": "들어간거 맞지??",
-        //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png"
+        //         "hello": "들어간거 맞지??333",
+        //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
+        //         "message" : "바보"
         //     },
+        //     {
+        //         "hello": "들654865ㅕㅇ??333",
+        //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
+        //         "message": null
+        //     }
         // ]).then(function (collection) {
         //     console.log("Data Insert Success.");
         // });
