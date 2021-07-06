@@ -88,17 +88,30 @@
 ## Dependencies
 
 ```tsx
+"dependencies": {
+    "aws-sdk": "^2.911.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-validator": "^6.10.0",
+    "gravatar": "^1.8.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "request": "^2.88.2"
+  }
 ```
 
 ---
 
 ### 🛠️ API Doc
 
-- [캐치미 API 명세서]()
+- [캐치미 API 명세서](https://github.com/TeamCatchMe/CatchMe-If-You-Server/wiki)
 
 
 ---
-
 
 <br></br>
 
