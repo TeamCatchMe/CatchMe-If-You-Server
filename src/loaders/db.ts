@@ -1,47 +1,70 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 import Test from "../models/test";
+import UserData from "../models/Userdata";
 
 import config from "../config";
 
 const connectDB = async () => {
-    try {
-        await mongoose.connect(config.mongoURI, {
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-        });
+  try {
+    await mongoose.connect(config.mongoURI, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+    });
 
-        console.log("Mongoose Connected ...");
+    console.log("Mongoose Connected ...");
 
-        // Test.createCollection().then(function (collection) {
-        //     console.log('Banner Collection is created!');
-        // });
-        // Test.insertMany([
-        //     {
-        //         "hello": "야 들어가냐?33",
-        //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
-        //         "message" : "끼얏호"
-        //     },
-        //     {
-        //         "hello": "들어간거 맞지??333",
-        //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
-        //         "message" : "바보"
+    // Test.createCollection().then(function (collection) {
+    //     console.log('Banner Collection is created!');
+    // });
+    // Test.insertMany([
+    //     {
+    //         "hello": "야 들어가냐?33",
+    //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
+    //         "message" : "끼얏호"
+    //     },
+    //     {
+    //         "hello": "들어간거 맞지??333",
+    //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
+    //         "message" : "바보"
 
-        //     },
-        //     {
-        //         "hello": "들654865ㅕㅇ??333",
-        //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
-        //         "message": null
-        //     }
+    //     },
+    //     {
+    //         "hello": "들654865ㅕㅇ??333",
+    //         "image": "https://catchmeserver.s3.us-east-2.amazonaws.com/image.png",
+    //         "message": null
+    //     }
 
-        // ]).then(function (collection) {
-        //     console.log("Data Insert Success.");
-        // });
+    // ]).then(function (collection) {
+    //     console.log("Data Insert Success.");
+    // });
 
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
+    // UserData.createCollection().then(function (collection) {
+    //   console.log("Banner Collection is created!");
+    // });
+    // UserData.insertMany([
+    //   {
+    //     email: "test@test.com",
+    //     password: "test111",
+    //     nickname: "최영재",
+    //   },
+    //   {
+    //     email: "test2@test.com",
+    //     password: "test222",
+    //     nickname: "권세훈",
+    //   },
+    //   {
+    //     email: "test3@test.com",
+    //     password: "test333",
+    //     nickname: "백진희",
+    //   },
+    // ]).then(function (collection) {
+    //   console.log("Data Insert Success.");
+    // });
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 };
 
 export default connectDB;
