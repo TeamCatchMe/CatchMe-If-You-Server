@@ -33,13 +33,9 @@ router.post(
       // 없는 유저
       if (!user) {
         res.status(400).json({
-          errors: [
-            {
-              status: 400,
-              success: false,
-              message: "존재하지 않는 이메일 입니다.",
-            },
-          ],
+          status: 400,
+          success: false,
+          message: "존재하지 않는 이메일 입니다.",
         });
       }
       // Encrpyt password
@@ -48,13 +44,9 @@ router.post(
       // 비밀번호 일치하지 않음
       if (!isMatch) {
         res.status(400).json({
-          errors: [
-            {
-              status: 400,
-              success: false,
-              message: "비밀번호가 일치하지 않습니다.",
-            },
-          ],
+          status: 400,
+          success: false,
+          message: "비밀번호가 일치하지 않습니다.",
         });
       }
 
@@ -126,11 +118,17 @@ router.post(
       await user.save();
 
       return res.status(200).json({
+        status: 200,
+        success: true,
         message: "회원가입 성공",
       });
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      res.status(500).json({
+        status: 500,
+        success: false,
+        message: "서버 내부 오류",
+      });
     }
   }
 );
