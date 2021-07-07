@@ -12,6 +12,7 @@ app.use(express.json());
 // Define Routes
 app.use("/test", require("./api/test"));
 app.use("/post", require("./api/post"));
+app.use("/maincard", require("./api/main-card"));
 // error handler
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development

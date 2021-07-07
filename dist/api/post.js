@@ -8,6 +8,7 @@ const express = require('express');
 const router = express.Router();
 router.post('/', s3_1.default.single("image"), function (req, res, next) {
     try {
+        console.log(req.file);
         res.json({
             "status": 200,
             "success": true,
@@ -16,7 +17,6 @@ router.post('/', s3_1.default.single("image"), function (req, res, next) {
                 "text": req.body.text,
                 "image": req.file.location,
                 "contentType": req.file.contentType,
-                "mimeType": req.file.mimeType
             }
         });
     }
