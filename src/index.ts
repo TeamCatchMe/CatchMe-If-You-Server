@@ -2,6 +2,7 @@ import express = require("express");
 const app = express();
 import connectDB from "./loaders/db";
 
+
 // Connect Database
 connectDB();
 
@@ -10,7 +11,10 @@ app.use(express.json());
 // Define Routes
 app.use("/test", require("./api/test"));
 app.use("/post", require("./api/post"));
+
 app.use("/user", require("./api/user"));
+app.use("/maincard", require("./api/main-card"));
+
 
 // error handler
 app.use(function (err, req, res, next) {
