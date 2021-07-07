@@ -18,7 +18,7 @@ const connectDB = async () => {
         // });
         // CharacterTest.insertMany([
         //     {
-        //         "user_id": 1,
+        //         "user_id": 100,
         //         "characterName": "제로콜라 먹는 흑마술사",
         //         "characterIndex" : 1,
         //         "characterImageIndex" : 1,
@@ -33,7 +33,7 @@ const connectDB = async () => {
         //         ]
         //     },
         //     {
-        //         "user_id": 1,
+        //         "user_id": 100,
         //         "characterName": "커피 먹는 기능명세린",
         //         "characterIndex" : 2,
         //         "characterImageIndex" : 2,
@@ -48,7 +48,7 @@ const connectDB = async () => {
         //         ]
         //     },
         //     {
-        //         "user_id": 1,
+        //         "user_id": 100,
         //         "characterName": "압도적 강의력 파워토익",
         //         "characterIndex" : 3,
         //         "characterImageIndex" : 3,
@@ -63,7 +63,7 @@ const connectDB = async () => {
         //         ]
         //     },
         //     {
-        //         "user_id": 1,
+        //         "user_id": 100,
         //         "characterName": "다이어트하며 치킨 먹는 누누",
         //         "characterIndex" : 1,
         //         "characterImageIndex" : 5,
@@ -108,7 +108,7 @@ const connectDB = async () => {
         //         ]
         //     },
         //     {
-        //         "user_id": 1,
+        //         "user_id": 100,
         //         "characterName": "아 지금 더미 쌓고 있는 띵",
         //         "characterIndex" : 4,
         //         "characterImageIndex" : 1,
@@ -123,7 +123,7 @@ const connectDB = async () => {
         //         ]
         //     },
         //     {
-        //         "user_id": 1,
+        //         "user_id": 100,
         //         "characterName": "끊임없이 코인 태우는 코인마스터 후릐",
         //         "characterIndex" : 1,
         //         "characterImageIndex" : 1,
@@ -138,7 +138,7 @@ const connectDB = async () => {
         //         ]
         //     },
         //     {
-        //         "user_id": 1,
+        //         "user_id": 100,
         //         "characterName": "키드오를 와악 먹는 띵린",
         //         "characterIndex" : 2,
         //         "characterImageIndex" : 4,

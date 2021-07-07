@@ -15,9 +15,8 @@ router.get("/", async (req: Request, res: Response) => {
     const characters = await CharactersTest
       .find({ user_id : req.body.user_id })
       .sort({"activityDate" : -1})
-      .limit(3);
+      .limit(10);
 
-    
     if (!characters) {
       return res.status(400).json(null);
     }
