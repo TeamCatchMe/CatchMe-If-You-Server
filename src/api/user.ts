@@ -29,7 +29,7 @@ router.post(
 
     try {
       let user = await UserData.findOne({ email });
-
+      console.log();
       // 없는 유저
       if (!user) {
         res.status(400).json({
@@ -55,9 +55,10 @@ router.post(
       // Return jsonwebtoken
       const payload = {
         user: {
-          email: user.email,
+          id: user.id,
         },
       };
+      console.log(user.id, payload);
       jwt.sign(
         payload,
         config.jwtSecret,
@@ -110,6 +111,13 @@ router.post(
         nickname,
       });
 
+      // password 암호화
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+
+      // db에 데이터 저장
+      await user.save();
+
       return res.status(200).json({
         status: 200,
         success: true,
@@ -140,12 +148,9 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const email = req.body.email;
-    console.log("헤이헤이", req.body, email);
-
     try {
       const userdata = await UserData.find({ email: req.body.email }).count();
-      console.log(userdata, "이거 뭐야 나오는거야?");
+
       if (userdata == 0) {
         return res.json({
           status: 200,
@@ -156,17 +161,6 @@ router.post(
           },
         });
       }
-
-      // if (!userdata) {
-      //   return res.json({
-      //     status: 200,
-      //     success: true,
-      //     message: "사용 가능한 이메일 입니다.",
-      //     data: {
-      //       duplicate: "available",
-      //     },
-      //   });
-      // }
 
       return res.status(400).json({
         status: 200,
