@@ -88,7 +88,6 @@ router.post(
  *  @desc sign up new user
  *  @access Public
  */
-
 router.post(
   "/signup",
   [
@@ -111,16 +110,71 @@ router.post(
         nickname,
       });
 
-      // password 암호화
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-
-      await user.save();
-
       return res.status(200).json({
         status: 200,
         success: true,
         message: "회원가입 성공",
+      });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({
+        status: 500,
+        success: false,
+        message: "서버 내부 오류",
+      });
+    }
+  }
+);
+
+/**
+ *  @route Post user/emailcheck
+ *  @desc email duplicate check
+ *  @access Public
+ */
+router.post(
+  "/emailcheck",
+  [check("email", "Please include a valid email").isEmail()],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const email = req.body.email;
+    console.log("헤이헤이", req.body, email);
+
+    try {
+      const userdata = await UserData.find({ email: req.body.email }).count();
+      console.log(userdata, "이거 뭐야 나오는거야?");
+      if (userdata == 0) {
+        return res.json({
+          status: 200,
+          success: true,
+          message: "사용 가능한 이메일 입니다.",
+          data: {
+            duplicate: "available",
+          },
+        });
+      }
+
+      // if (!userdata) {
+      //   return res.json({
+      //     status: 200,
+      //     success: true,
+      //     message: "사용 가능한 이메일 입니다.",
+      //     data: {
+      //       duplicate: "available",
+      //     },
+      //   });
+      // }
+
+      return res.status(400).json({
+        status: 200,
+        success: true,
+        message: "이미 사용중인 이메일입니다.",
+        data: {
+          duplicate: "unavailable",
+        },
       });
     } catch (err) {
       console.error(err.message);
