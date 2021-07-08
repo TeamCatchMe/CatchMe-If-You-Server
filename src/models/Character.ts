@@ -7,7 +7,7 @@ const CharacterSchema = new mongoose.Schema({
         ref: "User",
     },
     user_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     characterName: {
@@ -21,7 +21,11 @@ const CharacterSchema = new mongoose.Schema({
       type: Number,
     },
     characterLevel: {
-    type: Number,
+      type: Number,
+    },
+    characterPrivacy: {
+      type: Boolean,
+      required: true,
     },
     activity: [
       {

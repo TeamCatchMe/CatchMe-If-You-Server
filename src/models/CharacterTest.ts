@@ -7,7 +7,7 @@ const CharacterTestSchema = new mongoose.Schema({
         // ref: "User",
     },
     user_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     characterName: {
@@ -21,7 +21,13 @@ const CharacterTestSchema = new mongoose.Schema({
       type: Number,
     },
     characterLevel: {
-    type: Number,
+      type: Number,
+    },
+    characterPrivacy: {
+      type: Boolean,
+    },
+    characterBirth: {
+      type: String,
     },
     activity: [
         {
