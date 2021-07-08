@@ -29,7 +29,6 @@ router.post(
 
     try {
       let user = await UserData.findOne({ email });
-      console.log();
       // 없는 유저
       if (!user) {
         res.status(400).json({
