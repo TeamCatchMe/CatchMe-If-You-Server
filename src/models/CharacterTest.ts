@@ -21,7 +21,10 @@ const CharacterTestSchema = new mongoose.Schema({
       type: Number,
     },
     characterLevel: {
-    type: Number,
+      type: Number,
+    },
+    characterBirth: {
+      type: String,
     },
     activity: [
         {
