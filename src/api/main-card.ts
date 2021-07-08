@@ -1,8 +1,10 @@
 import { Router, Request, Response } from "express";
 import { check, validationResult } from "express-validator";
 import auth from "../middleware/auth"
-import CharacterTest from "../models/CharacterTest";
 const getDateString = require("../modules/getDate");
+
+import CharacterTest from "../models/CharacterTest";
+import Userdata from "../models/Userdata";
 
 const router = Router();
 
@@ -50,6 +52,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  *  @access Public
  */
 
+// 유저 캐릭터 별 activity count 해서 sorting 
  router.get("/most", auth ,async (req: Request, res: Response) => {
   try {
 
@@ -89,12 +92,13 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  *  @access Public
  */
 
+// characterBirth(yyyymmdd)로 sorting
  router.get("/recent", auth ,async (req: Request, res: Response) => {
   try {
 
     const characters = await CharacterTest
       .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
-      .sort({"activityDate" : -1})
+      .sort({"characterBirth" : -1})
       .limit(10);
 
     if (!characters) {
@@ -140,14 +144,25 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { characterName, characterIndex, characterImageIndex, characterPrivacy } = req.body;
+    // 마지막 캐릭터 where 선언
+    // 첫 생성시에는 예외처리 
+
+    const { 
+      characterName,
+      // characterIndex,
+      characterImageIndex,
+      characterPrivacy
+    } = req.body;
+
     const characterBirth = getDateString.nowDate;
 
     try {
+      // const user = await Userdata.findById(req.body.user.id).select("-password");
+
       const newCharacter = new CharacterTest({
-        user_id : req.body.user_id,
+        user_id : req.body.email,
         characterName : characterName,
-        characterIndex : characterIndex,
+        characterIndex : 1,
         characterImageIndex : characterImageIndex,
         characterPrivacy : characterPrivacy,
         characterLevel : 1,
@@ -175,6 +190,6 @@ router.get("/", auth ,async (req: Request, res: Response) => {
   }
 );
 
-console.log("[GET] maincard API 불러오기 성공");
+console.log("maincard API 불러오기 성공");
 
 module.exports = router;
