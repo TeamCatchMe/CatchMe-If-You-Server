@@ -10,29 +10,27 @@ const CharacterSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    character : [
-      {
-        characterName: {
-          type: String,
-          required: true,
-        },
-        characterIndex: {
-            type: Number,
-        },
-        characterImageIndex: {
-          type: Number,
-        },
-        characterLevel: {
-          type: Number,
-        },
-        characterPrivacy: {
-          type: Boolean,
-          required: true,
-        },
-        characterBirth: {
-          type: String,
-        },
-        activity: [
+    characterName: {
+        type: String,
+        required: true,
+    },
+    characterIndex: {
+        type: Number,
+    },
+    characterImageIndex: {
+        type: Number,
+    },
+    characterLevel: {
+        type: Number,
+    },
+    characterPrivacy: {
+        type: Boolean,
+        required: true,
+    },
+    characterBirth: {
+        type: String,
+    },
+    activity: [
           {
             activityIndex: {
               type: Number,
@@ -51,12 +49,9 @@ const CharacterSchema = new mongoose.Schema({
               required: true,
             },
           }
-        ]
-      }
-    ],
-    
-
-}, {
+    ]
+}
+  , {
     versionKey: false 
 });
 

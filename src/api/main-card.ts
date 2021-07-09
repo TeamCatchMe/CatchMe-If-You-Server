@@ -18,7 +18,10 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     const user = await Userdata.findById(req.body.user.id).select("-password");
     const characters = await Character
       .find({ user_id : user.id })
-      .sort({"activity.activityDate" : -1});
+      .sort({"activity.activityDate" : -1})
+      .select({ user_id: 0, _id: 0 })
+
+      ;
 
     if (!characters) {
       return res.status(400).json({
@@ -107,7 +110,8 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
     const user = await Userdata.findById(req.body.user.id).select("-password");
     const characters = await Character
       .find({ user_id : user.id })
-      .sort({"character.characterBirth" : -1});
+      .sort({"character.characterBirth" : -1})
+      .select({ user_id: 0, _id: 0 });
 
     if (!characters) {
       return res.status(400).json({
@@ -147,10 +151,11 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
 
  router.post("/create", auth, async (req, res) => {
     const user = await Userdata.findById(req.body.user.id).select("-password");
-    const lastCharacter = await Character.find({user_id : user.id}).sort({_id : -1});
+    const lastCharacter = await Character.find({user_id : user.id}).sort({_id : -1}).select({ user_id: 0, _id: 0 });
+  
     const time = moment();
 
-    var characterIndex = lastCharacter[0]['character'][0].characterIndex + 1;
+    var characterIndex = lastCharacter[0]['characterIndex'] + 1;
     var characterBirth = time.format('YYYYMMDDHHmmss')
 
     const { 
@@ -162,16 +167,12 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
     try {
       const newCharacter = new Character({
         user_id : user.id,
-        character : [
-          {
-            characterName : characterName,
-            characterIndex : characterIndex,
-            characterImageIndex : characterImageIndex,
-            characterPrivacy : characterPrivacy,
-            characterLevel : 1,
-            characterBirth : characterBirth
-          }
-        ]
+        characterName : characterName,
+        characterIndex : characterIndex,
+        characterImageIndex : characterImageIndex,
+        characterPrivacy : characterPrivacy,
+        characterLevel : 1,
+        characterBirth : characterBirth
       });
 
       await newCharacter.save();
@@ -179,10 +180,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
       return res.status(200).json({
         status: 200,
         success: true,
-        message: "캐릭터 생성 성공",
-        data : {
-          "createdCharacter" : newCharacter
-        }
+        message: "캐릭터 생성 성공"
       });
     } catch (err) {
       console.error(err.message);
