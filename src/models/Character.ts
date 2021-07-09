@@ -34,12 +34,10 @@ const CharacterSchema = new mongoose.Schema(
     ResentActivityTime: {
       type: String,
     },
-    activity: [
-      {
-        type: Activity,
-        required: true,
-      },
-    ],
+    activity: {
+      type: Array,
+      required: true,
+    },
   },
   {
     versionKey: false,

@@ -16,7 +16,7 @@ const router = express.Router();
 
 //updateOne, image 업로드
 
-router.post("/add", auth, upload.single("activityImage"), async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   const lastActivity = await Activity.find({ user_id: req.body.user.id })
     .sort({ _id: -1 })
     .select({ user_id: 0, _id: 0 });
@@ -33,7 +33,6 @@ router.post("/add", auth, upload.single("activityImage"), async (req, res) => {
       user_id: req.body.user.id,
       activityIndex: activityIndex,
       activityContent: activityContent,
-      activityImage: req.file.location,
       activityDate: activityDate,
       characterIndex: characterIndex,
     });
