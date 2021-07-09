@@ -1,11 +1,8 @@
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth"
+import Character from "../models/Character";
 
 const moment = require('moment');
-
-import Character from "../models/Character";
-import Userdata from "../models/Userdata";
-
 const router = Router();
 
 /**
@@ -15,9 +12,8 @@ const router = Router();
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {
-    const user = await Userdata.findById(req.body.user.id).select("-password");
     const characters = await Character
-      .find({ user_id : user.id })
+      .find({ user_id : req.body.user.id })
       .sort({"activity.activityDate" : -1})
       .select({ user_id: 0, _id: 0 })
 
@@ -62,10 +58,9 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 // 작업중) 게시글 작성시 index 추가하는 기능 완성되면 sorting 가능
 // router.get("/most", auth ,async (req: Request, res: Response) => {
 //   try {
-//     const user = await Userdata.findById(req.body.user.id).select("-password");
 
 //     const characters = await Character
-//       .find({ user_id : user.id })
+//       .find({ user_id : req.body.user.id })
 //       .sort({"activity.activityIndex" : -1});
 
 //     if (!characters) {
@@ -107,9 +102,8 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 // characterBirth(yyyymmdd)로 sorting
 router.get("/recent", auth, async (req: Request, res: Response) => {
   try {
-    const user = await Userdata.findById(req.body.user.id).select("-password");
     const characters = await Character
-      .find({ user_id : user.id })
+      .find({ user_id : req.body.user.id })
       .sort({"character.characterBirth" : -1})
       .select({ user_id: 0, _id: 0 });
 
@@ -150,8 +144,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
  */
 
  router.post("/create", auth, async (req, res) => {
-    const user = await Userdata.findById(req.body.user.id).select("-password");
-    const lastCharacter = await Character.find({user_id : user.id}).sort({_id : -1}).select({ user_id: 0, _id: 0 });
+    const lastCharacter = await Character.find({ user_id : req.body.user.id }).sort({_id : -1}).select({ user_id: 0, _id: 0 });
   
     const time = moment();
 
@@ -166,7 +159,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
 
     try {
       const newCharacter = new Character({
-        user_id : user.id,
+        user_id : req.body.user.id,
         characterName : characterName,
         characterIndex : characterIndex,
         characterImageIndex : characterImageIndex,
