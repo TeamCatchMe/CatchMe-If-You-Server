@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-export interface IActivityTest {
+export interface IActivity {
     activityIndex : number;
     activityContent : string;
     activityImage : string;

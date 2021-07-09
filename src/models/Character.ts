@@ -32,28 +32,29 @@ const CharacterSchema = new mongoose.Schema({
         characterBirth: {
           type: String,
         },
+        activity: [
+          {
+            activityIndex: {
+              type: Number,
+              required: true,
+            },
+            activityContent: {
+              type: String,
+              required: true,
+            },
+            activityImage: {
+              type: String,
+              required: true,
+            },
+            activityDate: {
+              type: String,
+              required: true,
+            },
+          }
+        ]
       }
     ],
-    activity: [
-      {
-        activityIndex: {
-          type: Number,
-          required: true,
-        },
-        activityContent: {
-          type: String,
-          required: true,
-        },
-        activityImage: {
-          type: String,
-          required: true,
-        },
-        activityDate: {
-          type: String,
-          required: true,
-        },
-      }
-    ]
+    
 
 }, {
     versionKey: false 

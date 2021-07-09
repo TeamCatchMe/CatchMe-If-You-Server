@@ -1,12 +1,13 @@
 import { Router, Request, Response } from "express";
 import { check, validationResult } from "express-validator";
 import auth from "../middleware/auth"
-const getDateString = require("../modules/getDate");
+const moment = require('moment');
 
 import Character from "../models/Character";
 import Userdata from "../models/Userdata";
 
 const router = Router();
+const time = moment();
 
 /**
  *  @route GET maincard/
@@ -148,20 +149,13 @@ router.get("/recent", auth ,async (req: Request, res: Response) => {
  router.post(
   "/create",
   auth,
-  [
-    check("characterName", "characterName is required").exists(),
-    check("characterPrivacy", "characterPrivacy is required").exists(),
-  ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
     const user = await Userdata.findById(req.body.user.id).select("-password");
+    const lastCharacter = await Character.find({user_id : user.id}).sort({_id : -1});
 
-    const characterCount = await Character.find({user_id : user.id}).countDocuments();
-    const characterBirth = getDateString.nowDateFull;
-
+    var characterIndex = lastCharacter[0]['character'][0].characterIndex + 1;
+    var characterBirth = time.format('YYYYMMDDHHmmss')
+    
     const { 
       characterName,
       characterImageIndex,
@@ -174,7 +168,7 @@ router.get("/recent", auth ,async (req: Request, res: Response) => {
         character : [
           {
             characterName : characterName,
-            characterIndex : characterCount,
+            characterIndex : characterIndex,
             characterImageIndex : characterImageIndex,
             characterPrivacy : characterPrivacy,
             characterLevel : 1,
