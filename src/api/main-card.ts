@@ -123,7 +123,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
       "success" : true,
       "message" : "최근생성순 캐릭터 목록 가져오기 성공",
       "data": {
-        "characters" : characters
+        "recent_character" : characters
       }
     })
     
