@@ -5,7 +5,7 @@ const ActivitySchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: "Activity",
+      ref: "User",
     },
     activityIndex: {
       type: Number,

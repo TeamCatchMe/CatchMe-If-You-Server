@@ -5,10 +5,10 @@ import bcrypt from "bcryptjs";
 import config from "../config";
 import { check, validationResult } from "express-validator";
 
+const router = express.Router();
+
 import UserData from "../models/Userdata";
 import Character from "../models/Character";
-
-const router = express.Router();
 
 /*
  *  @route GET /main
