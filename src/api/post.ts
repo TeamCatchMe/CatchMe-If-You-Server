@@ -1,8 +1,9 @@
+import auth from '../middleware/auth';
 import upload from '../utils/s3'
 const express = require('express');
 const router = express.Router();
 
-router.post('/', upload.single("image"), function(req, res, next){
+router.post('/', auth, upload.single("image"), function(req, res, next){
   try {
     console.log(req.file)
     res.json({
@@ -24,5 +25,3 @@ router.post('/', upload.single("image"), function(req, res, next){
   }
 
 });
-
-module.exports = router
