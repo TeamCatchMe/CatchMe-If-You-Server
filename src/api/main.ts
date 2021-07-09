@@ -29,5 +29,4 @@ router.get("/", auth, async function (req, res) {
   }
 });
 
-
 module.exports = router;

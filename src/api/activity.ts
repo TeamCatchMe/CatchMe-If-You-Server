@@ -19,12 +19,12 @@ const moment = require("moment");
  */
 
 //updateOne, image 업로드
-
 router.post("/add", auth, upload.single("activityImage"), async (req, res) => {
   const lastActivity = await Activity
   .find({ user_id: req.body.user.id })
   .sort({ _id: -1 })
   .select({ user_id: 0, _id: 0 });
+
 
   const time = moment();
 
