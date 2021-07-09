@@ -8,7 +8,7 @@ import { check, validationResult } from "express-validator";
 const router = express.Router();
 
 import UserData from "../models/Userdata";
-import CharactersTest from "../models/CharacterTest";
+import Character from "../models/Character";
 
 /*
  *  @route GET /main
@@ -17,7 +17,7 @@ import CharactersTest from "../models/CharacterTest";
  */
 router.get("/", auth, async function (req, res) {
   try {
-    const user = await CharactersTest.find({
+    const user = await Character.find({
       user_id: req.body.user.id,
     })
       .select({ user_id: 0, _id: 0 })

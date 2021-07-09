@@ -1,61 +1,52 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 import { ICharacter } from "../interfaces/ICharacter";
-
-const CharacterSchema = new mongoose.Schema({
+import Activity from "../models/Activity";
+const CharacterSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "User",
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "User",
     },
     user_id: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     characterName: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     characterIndex: {
-        type: Number,
+      type: Number,
     },
     characterImageIndex: {
-        type: Number,
+      type: Number,
     },
     characterLevel: {
-        type: Number,
+      type: Number,
     },
     characterPrivacy: {
-        type: Boolean,
-        required: true,
+      type: Boolean,
+      required: true,
     },
     characterBirth: {
-        type: String,
+      type: String,
+    },
+    ResentActivityTime: {
+      type: String,
     },
     activity: [
-          {
-            activityIndex: {
-              type: Number,
-              required: true,
-            },
-            activityContent: {
-              type: String,
-              required: true,
-            },
-            activityImage: {
-              type: String,
-              required: true,
-            },
-            activityDate: {
-              type: String,
-              required: true,
-            },
-          }
-    ]
-}
-  , {
-    versionKey: false 
-});
+      {
+        type: Activity,
+        required: true,
+      },
+    ],
+  },
+  {
+    versionKey: false,
+  }
+);
 
 export default mongoose.model<ICharacter & mongoose.Document>(
-    "Character",
-    CharacterSchema
+  "Character",
+  CharacterSchema
 );
