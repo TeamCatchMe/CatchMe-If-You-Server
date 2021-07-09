@@ -17,8 +17,11 @@ import CharactersTest from "../models/CharacterTest";
  */
 router.get("/", auth, async function (req, res) {
   try {
-    console.log(req.body.user.id);
-    const user = await UserData.findById(req.body.user.id).select("-password");
+    const user = await CharactersTest.find({
+      user_id: req.body.user.id,
+    })
+      .select({ user_id: 0, _id: 0 })
+      .limit(5);
     return res.json(user);
   } catch (err) {
     console.error(err.message);
