@@ -15,11 +15,10 @@ const router = Router();
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {
-
+    const user = await Userdata.findById(req.body.user.id).select("-password");
     const characters = await Character
-      .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
-      .sort({"activityDate" : -1})
-      .limit(10);
+      .find({ user_id : user.id })
+      .sort({"activityDate" : -1});
 
     if (!characters) {
       return res.status(400).json({
@@ -57,44 +56,44 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  *  @access Public
  */
 
-// 유저 캐릭터 별 activity count 해서 sorting 
-router.get("/most", auth ,async (req: Request, res: Response) => {
-  try {
+// 작업중) 게시글 작성시 index 추가하는 기능 완성되면 sorting 가능
+// router.get("/most", auth ,async (req: Request, res: Response) => {
+//   try {
+//     const user = await Userdata.findById(req.body.user.id).select("-password");
 
-    const characters = await Character
-      .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
-      .sort({"activityDate" : -1})
-      .limit(10);
+//     const characters = await Character
+//       .find({ user_id : user.id })
+//       .sort({"activity.activityIndex" : -1});
 
-    if (!characters) {
-      return res.status(400).json({
-        "status" : 400,
-        "success" : false,
-        "message" : "캐릭터가 존재 하지 않습니다.",
-        "data" : null
-      });
-    }
+//     if (!characters) {
+//       return res.status(400).json({
+//         "status" : 400,
+//         "success" : false,
+//         "message" : "캐릭터가 존재 하지 않습니다.",
+//         "data" : null
+//       });
+//     }
 
-    res.json({
-      "status" : 200,
-      "success" : true,
-      "message" : "최다활동순 캐릭터 목록 가져오기 성공",
-      "data": {
-        "characters" : characters
-      }
-    })
+//     res.json({
+//       "status" : 200,
+//       "success" : true,
+//       "message" : "최다활동순 캐릭터 목록 가져오기 성공",
+//       "data": {
+//         "characters" : characters
+//       }
+//     })
     
-    console.log("캐릭터 목록 불러오기 성공");
+//     console.log("캐릭터 목록 불러오기 성공");
 
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({
-        "status" : 500,
-        "success" : false,
-        "message" : "서버 내부 오류"
-    });
-  }
-});
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json({
+//         "status" : 500,
+//         "success" : false,
+//         "message" : "서버 내부 오류"
+//     });
+//   }
+// });
 
 /**
  *  @route GET maincard/recent
@@ -105,11 +104,10 @@ router.get("/most", auth ,async (req: Request, res: Response) => {
 // characterBirth(yyyymmdd)로 sorting
 router.get("/recent", auth ,async (req: Request, res: Response) => {
   try {
-
+    const user = await Userdata.findById(req.body.user.id).select("-password");
     const characters = await Character
-      .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
-      .sort({"characterBirth" : -1})
-      .limit(10);
+      .find({ user_id : user.id })
+      .sort({"character.characterBirth" : -1});
 
     if (!characters) {
       return res.status(400).json({
@@ -159,9 +157,10 @@ router.get("/recent", auth ,async (req: Request, res: Response) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const user = await Userdata.findById(req.body.user.id).select("-password");
 
-    const characterCount = await Character.find({user_id : req.body.email}).countDocuments()
-    const characterBirth = getDateString.nowDate;
+    const characterCount = await Character.find({user_id : user.id}).countDocuments();
+    const characterBirth = getDateString.nowDateFull;
 
     const { 
       characterName,
@@ -170,17 +169,18 @@ router.get("/recent", auth ,async (req: Request, res: Response) => {
     } = req.body;
 
     try {
-      const user = await Userdata.findById(req.body.user.id).select("-password");
-
-
       const newCharacter = new Character({
         user_id : user.id,
-        characterName : characterName,
-        characterIndex : characterCount,
-        characterImageIndex : characterImageIndex,
-        characterPrivacy : characterPrivacy,
-        characterLevel : 1,
-        characterBirth : characterBirth
+        character : [
+          {
+            characterName : characterName,
+            characterIndex : characterCount,
+            characterImageIndex : characterImageIndex,
+            characterPrivacy : characterPrivacy,
+            characterLevel : 1,
+            characterBirth : characterBirth
+          }
+        ]
       });
 
       await newCharacter.save();

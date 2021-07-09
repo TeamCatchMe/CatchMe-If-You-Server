@@ -29,6 +29,9 @@ const CharacterSchema = new mongoose.Schema({
           type: Boolean,
           required: true,
         },
+        characterBirth: {
+          type: String,
+        },
       }
     ],
     activity: [
