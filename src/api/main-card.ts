@@ -1,13 +1,12 @@
 import { Router, Request, Response } from "express";
-import { check, validationResult } from "express-validator";
 import auth from "../middleware/auth"
+
 const moment = require('moment');
 
 import Character from "../models/Character";
 import Userdata from "../models/Userdata";
 
 const router = Router();
-const time = moment();
 
 /**
  *  @route GET maincard/
@@ -19,7 +18,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     const user = await Userdata.findById(req.body.user.id).select("-password");
     const characters = await Character
       .find({ user_id : user.id })
-      .sort({"activityDate" : -1});
+      .sort({"activity.activityDate" : -1});
 
     if (!characters) {
       return res.status(400).json({
@@ -103,7 +102,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  */
 
 // characterBirth(yyyymmdd)로 sorting
-router.get("/recent", auth ,async (req: Request, res: Response) => {
+router.get("/recent", auth, async (req: Request, res: Response) => {
   try {
     const user = await Userdata.findById(req.body.user.id).select("-password");
     const characters = await Character
@@ -146,16 +145,14 @@ router.get("/recent", auth ,async (req: Request, res: Response) => {
  *  @access Public
  */
 
- router.post(
-  "/create",
-  auth,
-  async (req, res) => {
+ router.post("/create", auth, async (req, res) => {
     const user = await Userdata.findById(req.body.user.id).select("-password");
     const lastCharacter = await Character.find({user_id : user.id}).sort({_id : -1});
+    const time = moment();
 
     var characterIndex = lastCharacter[0]['character'][0].characterIndex + 1;
     var characterBirth = time.format('YYYYMMDDHHmmss')
-    
+
     const { 
       characterName,
       characterImageIndex,
