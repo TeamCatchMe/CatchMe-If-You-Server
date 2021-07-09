@@ -1,11 +1,8 @@
 import { Router, Request, Response } from "express";
-import { check, validationResult } from "express-validator";
 import auth from "../middleware/auth"
-const getDateString = require("../modules/getDate");
+import Character from "../models/Character";
 
-import CharacterTest from "../models/CharacterTest";
-import Userdata from "../models/Userdata";
-
+const moment = require('moment');
 const router = Router();
 
 /**
@@ -15,14 +12,20 @@ const router = Router();
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {
+    const characters = await Character
+      .find({ user_id : req.body.user.id })
+      .sort({"activity.activityDate" : -1})
+      .select({ user_id: 0, _id: 0 })
 
-    const characters = await CharacterTest
-      .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
-      .sort({"activityDate" : -1})
-      .limit(10);
+      ;
 
     if (!characters) {
-      return res.status(400).json(null);
+      return res.status(400).json({
+        "status" : 400,
+        "success" : false,
+        "message" : "캐릭터가 존재 하지 않습니다.",
+        "data" : null
+      });
     }
 
     res.json({
@@ -52,39 +55,43 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  *  @access Public
  */
 
-// 유저 캐릭터 별 activity count 해서 sorting 
- router.get("/most", auth ,async (req: Request, res: Response) => {
-  try {
+// 작업중) 게시글 작성시 index 추가하는 기능 완성되면 sorting 가능
+// router.get("/most", auth ,async (req: Request, res: Response) => {
+//   try {
 
-    const characters = await CharacterTest
-      .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
-      .sort({"activityDate" : -1})
-      .limit(10);
+//     const characters = await Character
+//       .find({ user_id : req.body.user.id })
+//       .sort({"activity.activityIndex" : -1});
 
-    if (!characters) {
-      return res.status(400).json(null);
-    }
+//     if (!characters) {
+//       return res.status(400).json({
+//         "status" : 400,
+//         "success" : false,
+//         "message" : "캐릭터가 존재 하지 않습니다.",
+//         "data" : null
+//       });
+//     }
 
-    res.json({
-      "status" : 200,
-      "success" : true,
-      "message" : "최다활동순 캐릭터 목록 가져오기 성공",
-      "data": {
-        "characters" : characters
-      }
-    })
+//     res.json({
+//       "status" : 200,
+//       "success" : true,
+//       "message" : "최다활동순 캐릭터 목록 가져오기 성공",
+//       "data": {
+//         "characters" : characters
+//       }
+//     })
     
-    console.log("캐릭터 목록 불러오기 성공");
+//     console.log("캐릭터 목록 불러오기 성공");
 
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({
-        "status" : 500,
-        "success" : false,
-        "message" : "서버 내부 오류"
-    });
-  }
-});
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json({
+//         "status" : 500,
+//         "success" : false,
+//         "message" : "서버 내부 오류"
+//     });
+//   }
+// });
 
 /**
  *  @route GET maincard/recent
@@ -93,16 +100,20 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  */
 
 // characterBirth(yyyymmdd)로 sorting
- router.get("/recent", auth ,async (req: Request, res: Response) => {
+router.get("/recent", auth, async (req: Request, res: Response) => {
   try {
-
-    const characters = await CharacterTest
-      .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
-      .sort({"characterBirth" : -1})
-      .limit(10);
+    const characters = await Character
+      .find({ user_id : req.body.user.id })
+      .sort({"character.characterBirth" : -1})
+      .select({ user_id: 0, _id: 0 });
 
     if (!characters) {
-      return res.status(400).json(null);
+      return res.status(400).json({
+        "status" : 400,
+        "success" : false,
+        "message" : "캐릭터가 존재 하지 않습니다.",
+        "data" : null
+      });
     }
 
     res.json({
@@ -110,7 +121,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       "success" : true,
       "message" : "최근생성순 캐릭터 목록 가져오기 성공",
       "data": {
-        "characters" : characters
+        "recent_character" : characters
       }
     })
     
@@ -132,37 +143,25 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  *  @access Public
  */
 
- router.post(
-  "/create",
-  [
-    check("characterName", "characterName is required").exists(),
-    check("characterPrivacy", "characterPrivacy is required").exists(),
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+ router.post("/create", auth, async (req, res) => {
+    const lastCharacter = await Character.find({ user_id : req.body.user.id }).sort({_id : -1}).select({ user_id: 0, _id: 0 });
+  
+    const time = moment();
 
-    // 마지막 캐릭터 where 선언
-    // 첫 생성시에는 예외처리 
+    var characterIndex = lastCharacter[0]['characterIndex'] + 1;
+    var characterBirth = time.format('YYYYMMDDHHmmss')
 
     const { 
       characterName,
-      // characterIndex,
       characterImageIndex,
       characterPrivacy
     } = req.body;
 
-    const characterBirth = getDateString.nowDate;
-
     try {
-      // const user = await Userdata.findById(req.body.user.id).select("-password");
-
-      const newCharacter = new CharacterTest({
-        user_id : req.body.email,
+      const newCharacter = new Character({
+        user_id : req.body.user.id,
         characterName : characterName,
-        characterIndex : 1,
+        characterIndex : characterIndex,
         characterImageIndex : characterImageIndex,
         characterPrivacy : characterPrivacy,
         characterLevel : 1,
@@ -174,10 +173,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       return res.status(200).json({
         status: 200,
         success: true,
-        message: "캐릭터 생성 성공",
-        data : {
-          "createdCharacter" : newCharacter
-        }
+        message: "캐릭터 생성 성공"
       });
     } catch (err) {
       console.error(err.message);
