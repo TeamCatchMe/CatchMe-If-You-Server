@@ -4,13 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const CharacterSchema = new mongoose_1.default.Schema({
+const CharacterTestSchema = new mongoose_1.default.Schema({
     user: {
         type: mongoose_1.default.SchemaTypes.ObjectId,
         // ref: "User",
     },
     user_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     characterName: {
@@ -26,8 +26,34 @@ const CharacterSchema = new mongoose_1.default.Schema({
     characterLevel: {
         type: Number,
     },
+    characterPrivacy: {
+        type: Boolean,
+    },
+    characterBirth: {
+        type: String,
+    },
+    activity: [
+        {
+            activityIndex: {
+                type: Number,
+                required: true,
+            },
+            activityContent: {
+                type: String,
+                required: true,
+            },
+            activityImage: {
+                type: String,
+                required: true,
+            },
+            activityDate: {
+                type: String,
+                required: true,
+            },
+        }
+    ]
 }, {
     versionKey: false
 });
-exports.default = mongoose_1.default.model("Character", CharacterSchema);
+exports.default = mongoose_1.default.model("CharacterTest", CharacterTestSchema);
 //# sourceMappingURL=CharacterTest.js.map
