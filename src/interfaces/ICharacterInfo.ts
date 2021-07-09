@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
-import { IActivityTest } from './IActivityTest'
-export interface ICharacterTest {
+
+export interface ICharacterInfo {
     user : mongoose.Types.ObjectId;
     user_id : string;
     characterName : string;
     characterIndex : number;
     characterImageIndex : number;
-    characterImage : number;
     characterPrivacy : boolean;
+    characterLevel : number;
     characterBirth : string;
-    activity : [IActivityTest]
 }

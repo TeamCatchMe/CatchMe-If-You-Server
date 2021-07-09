@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Test from "../models/test";
 import UserData from "../models/Userdata";
-import CharacterTest from "../models/CharacterTest";
+import Character from "../models/Character";
 
 import config from "../config";
 

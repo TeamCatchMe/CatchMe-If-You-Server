@@ -10,23 +10,27 @@ const CharacterSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    characterName: {
-        type: String,
-        required: true,
-    },
-    characterIndex: {
-        type: Number,
-    },
-    characterImageIndex: {
-      type: Number,
-    },
-    characterLevel: {
-      type: Number,
-    },
-    characterPrivacy: {
-      type: Boolean,
-      required: true,
-    },
+    character : [
+      {
+        characterName: {
+          type: String,
+          required: true,
+        },
+        characterIndex: {
+            type: Number,
+        },
+        characterImageIndex: {
+          type: Number,
+        },
+        characterLevel: {
+          type: Number,
+        },
+        characterPrivacy: {
+          type: Boolean,
+          required: true,
+        },
+      }
+    ],
     activity: [
       {
         activityIndex: {

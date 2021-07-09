@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
-
+import { IActivityTest } from './IActivityTest'
+import { ICharacterInfo } from './ICharacterInfo';
 export interface ICharacter {
     user : mongoose.Types.ObjectId;
-    user_id : number;
-    characterName : string;
-    characterIndex : number;
-    characterImageIndex : number;
-    characterImage : number;
+    user_id : string;
+    character : [ICharacterInfo]
+    activity : [IActivityTest]
 }

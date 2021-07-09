@@ -3,7 +3,7 @@ import { check, validationResult } from "express-validator";
 import auth from "../middleware/auth"
 const getDateString = require("../modules/getDate");
 
-import CharacterTest from "../models/CharacterTest";
+import Character from "../models/Character";
 import Userdata from "../models/Userdata";
 
 const router = Router();
@@ -16,13 +16,18 @@ const router = Router();
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {
 
-    const characters = await CharacterTest
+    const characters = await Character
       .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
       .sort({"activityDate" : -1})
       .limit(10);
 
     if (!characters) {
-      return res.status(400).json(null);
+      return res.status(400).json({
+        "status" : 400,
+        "success" : false,
+        "message" : "캐릭터가 존재 하지 않습니다.",
+        "data" : null
+      });
     }
 
     res.json({
@@ -53,16 +58,21 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  */
 
 // 유저 캐릭터 별 activity count 해서 sorting 
- router.get("/most", auth ,async (req: Request, res: Response) => {
+router.get("/most", auth ,async (req: Request, res: Response) => {
   try {
 
-    const characters = await CharacterTest
+    const characters = await Character
       .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
       .sort({"activityDate" : -1})
       .limit(10);
 
     if (!characters) {
-      return res.status(400).json(null);
+      return res.status(400).json({
+        "status" : 400,
+        "success" : false,
+        "message" : "캐릭터가 존재 하지 않습니다.",
+        "data" : null
+      });
     }
 
     res.json({
@@ -93,16 +103,21 @@ router.get("/", auth ,async (req: Request, res: Response) => {
  */
 
 // characterBirth(yyyymmdd)로 sorting
- router.get("/recent", auth ,async (req: Request, res: Response) => {
+router.get("/recent", auth ,async (req: Request, res: Response) => {
   try {
 
-    const characters = await CharacterTest
+    const characters = await Character
       .find({ user_id : req.body.user_id }) // 컬렉션의 user_id 속성은 나중에 캐릭터 생성 시 넘겨주는 유저 정보로 수정
       .sort({"characterBirth" : -1})
       .limit(10);
 
     if (!characters) {
-      return res.status(400).json(null);
+      return res.status(400).json({
+        "status" : 400,
+        "success" : false,
+        "message" : "캐릭터가 존재 하지 않습니다.",
+        "data" : null
+      });
     }
 
     res.json({
@@ -134,6 +149,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 
  router.post(
   "/create",
+  auth,
   [
     check("characterName", "characterName is required").exists(),
     check("characterPrivacy", "characterPrivacy is required").exists(),
@@ -144,25 +160,23 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    // 마지막 캐릭터 where 선언
-    // 첫 생성시에는 예외처리 
+    const characterCount = await Character.find({user_id : req.body.email}).countDocuments()
+    const characterBirth = getDateString.nowDate;
 
     const { 
       characterName,
-      // characterIndex,
       characterImageIndex,
       characterPrivacy
     } = req.body;
 
-    const characterBirth = getDateString.nowDate;
-
     try {
-      // const user = await Userdata.findById(req.body.user.id).select("-password");
+      const user = await Userdata.findById(req.body.user.id).select("-password");
 
-      const newCharacter = new CharacterTest({
-        user_id : req.body.email,
+
+      const newCharacter = new Character({
+        user_id : user.id,
         characterName : characterName,
-        characterIndex : 1,
+        characterIndex : characterCount,
         characterImageIndex : characterImageIndex,
         characterPrivacy : characterPrivacy,
         characterLevel : 1,
