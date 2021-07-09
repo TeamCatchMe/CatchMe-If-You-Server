@@ -29,9 +29,9 @@ router.post(
 
     try {
       let user = await UserData.findOne({ email });
-      console.log();
       // 없는 유저
       if (!user) {
+        console.log("로그인 실패 - 존재하지 않는 이메일");
         res.status(400).json({
           status: 400,
           success: false,
@@ -43,6 +43,7 @@ router.post(
 
       // 비밀번호 일치하지 않음
       if (!isMatch) {
+        console.log("로그인 실패 - 비밀번호 불일치");
         res.status(400).json({
           status: 400,
           success: false,
@@ -58,13 +59,13 @@ router.post(
           id: user.id,
         },
       };
-      console.log(user.id, payload);
       jwt.sign(
         payload,
         config.jwtSecret,
         { expiresIn: "14d" },
         (err, token) => {
           if (err) throw err;
+          console.log("로그인 성공 -- user.id : ", user.id);
           res.json({
             status: 200,
             success: true,
@@ -152,6 +153,7 @@ router.post(
       const userdata = await UserData.find({ email: req.body.email }).count();
 
       if (userdata == 0) {
+        console.log("이메일 중복 체크 - 사용 가능한 이메일");
         return res.json({
           status: 200,
           success: true,
@@ -162,6 +164,7 @@ router.post(
         });
       }
 
+      console.log("이메일 중복 체크 - 사용중인 이메일");
       return res.status(400).json({
         status: 200,
         success: true,

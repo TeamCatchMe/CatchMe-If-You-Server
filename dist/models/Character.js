@@ -10,7 +10,7 @@ const CharacterSchema = new mongoose_1.default.Schema({
         ref: "User",
     },
     user_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     characterName: {
@@ -26,6 +26,30 @@ const CharacterSchema = new mongoose_1.default.Schema({
     characterLevel: {
         type: Number,
     },
+    characterPrivacy: {
+        type: Boolean,
+        required: true,
+    },
+    activity: [
+        {
+            activityIndex: {
+                type: Number,
+                required: true,
+            },
+            activityContent: {
+                type: String,
+                required: true,
+            },
+            activityImage: {
+                type: String,
+                required: true,
+            },
+            activityDate: {
+                type: String,
+                required: true,
+            },
+        }
+    ]
 }, {
     versionKey: false
 });
