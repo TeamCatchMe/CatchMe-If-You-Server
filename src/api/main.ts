@@ -1,11 +1,11 @@
-// import express from "express";
-// import auth from "../middleware/auth";
-// import jwt from "jsonwebtoken";
-// import bcrypt from "bcryptjs";
-// import config from "../config";
-// import { check, validationResult } from "express-validator";
+import express from "express";
+import auth from "../middleware/auth";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import config from "../config";
+import { check, validationResult } from "express-validator";
 
-// const router = express.Router();
+const router = express.Router();
 
 import UserData from "../models/Userdata";
 import Character from "../models/Character";
@@ -30,4 +30,4 @@ router.get("/", auth, async function (req, res) {
 });
 
 
-// module.exports = router;
+module.exports = router;

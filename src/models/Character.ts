@@ -36,10 +36,25 @@ const CharacterSchema = new mongoose.Schema(
     },
     activity: [
       {
-        type: Activity,
-        required: true,
-      },
-    ],
+          activityIndex: {
+            type: Number,
+            required: true,
+          },
+          activityContent: {
+            type: String,
+            required: true,
+          },
+          activityImage: {
+            type: String,
+            required: true,
+          },
+          activityDate: {
+            type: String,
+            required: true,
+          },
+    }
+  ],
+      
   },
   {
     versionKey: false,
