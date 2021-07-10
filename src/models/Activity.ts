@@ -5,7 +5,11 @@ const ActivitySchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: "User",
+      ref: "Activity",
+    },
+    user_id: {
+      type: String,
+      required: true,
     },
     activityIndex: {
       type: Number,
@@ -17,7 +21,6 @@ const ActivitySchema = new mongoose.Schema(
     },
     activityImage: {
       type: String,
-      required: true,
     },
     activityDate: {
       type: String,

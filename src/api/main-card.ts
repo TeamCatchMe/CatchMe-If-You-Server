@@ -1,8 +1,8 @@
 import { Router, Request, Response } from "express";
-import auth from "../middleware/auth"
+import auth from "../middleware/auth";
 import Character from "../models/Character";
 
-const moment = require('moment');
+const moment = require("moment");
 const router = Router();
 
 /**
@@ -10,41 +10,37 @@ const router = Router();
  *  @desc Get all characters (최근 활동순)
  *  @access Public
  */
-router.get("/", auth ,async (req: Request, res: Response) => {
+router.get("/", auth, async (req: Request, res: Response) => {
   try {
-    const characters = await Character
-      .find({ user_id : req.body.user.id })
-      .sort({"activity.activityDate" : -1})
-      .select({ user_id: 0, _id: 0 })
-
-      ;
+    const characters = await Character.find({ user_id: req.body.user.id })
+      .sort({ "activity.activityDate": -1 })
+      .select({ user_id: 0, _id: 0 });
 
     if (!characters) {
       return res.status(400).json({
-        "status" : 400,
-        "success" : false,
-        "message" : "캐릭터가 존재 하지 않습니다.",
-        "data" : null
+        status: 400,
+        success: false,
+        message: "캐릭터가 존재 하지 않습니다.",
+        data: null,
       });
     }
 
     res.json({
-      "status" : 200,
-      "success" : true,
-      "message" : "최근활동순 캐릭터 목록 가져오기 성공",
-      "data": {
-        "characters" : characters
-      }
-    })
-    
-    console.log("캐릭터 목록 불러오기 성공");
+      status: 200,
+      success: true,
+      message: "최근활동순 캐릭터 목록 가져오기 성공",
+      data: {
+        characters: characters,
+      },
+    });
 
+    console.log("캐릭터 목록 불러오기 성공");
   } catch (error) {
     console.error(error.message);
     res.status(500).json({
-        "status" : 500,
-        "success" : false,
-        "message" : "서버 내부 오류"
+      status: 500,
+      success: false,
+      message: "서버 내부 오류",
     });
   }
 });
@@ -80,7 +76,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 //         "characters" : characters
 //       }
 //     })
-    
+
 //     console.log("캐릭터 목록 불러오기 성공");
 
 //   } catch (error) {
@@ -102,37 +98,35 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 // characterBirth(yyyymmdd)로 sorting
 router.get("/recent", auth, async (req: Request, res: Response) => {
   try {
-    const characters = await Character
-      .find({ user_id : req.body.user.id })
-      .sort({"character.characterBirth" : -1})
+    const characters = await Character.find({ user_id: req.body.user.id })
+      .sort({ "character.characterBirth": -1 })
       .select({ user_id: 0, _id: 0 });
 
     if (!characters) {
       return res.status(400).json({
-        "status" : 400,
-        "success" : false,
-        "message" : "캐릭터가 존재 하지 않습니다.",
-        "data" : null
+        status: 400,
+        success: false,
+        message: "캐릭터가 존재 하지 않습니다.",
+        data: null,
       });
     }
 
     res.json({
-      "status" : 200,
-      "success" : true,
-      "message" : "최근생성순 캐릭터 목록 가져오기 성공",
-      "data": {
-        "recent_character" : characters
-      }
-    })
-    
-    console.log("캐릭터 목록 불러오기 성공");
+      status: 200,
+      success: true,
+      message: "최근생성순 캐릭터 목록 가져오기 성공",
+      data: {
+        recent_character: characters,
+      },
+    });
 
+    console.log("캐릭터 목록 불러오기 성공");
   } catch (error) {
     console.error(error.message);
     res.status(500).json({
-        "status" : 500,
-        "success" : false,
-        "message" : "서버 내부 오류"
+      status: 500,
+      success: false,
+      message: "서버 내부 오류",
     });
   }
 });
@@ -143,48 +137,45 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
  *  @access Public
  */
 
- router.post("/create", auth, async (req, res) => {
-    const lastCharacter = await Character.find({ user_id : req.body.user.id }).sort({_id : -1}).select({ user_id: 0, _id: 0 });
-  
-    const time = moment();
+router.post("/create", auth, async (req, res) => {
+  const lastCharacter = await Character.find({ user_id: req.body.user.id })
+    .sort({ _id: -1 })
+    .select({ user_id: 0, _id: 0 });
 
-    var characterIndex = lastCharacter[0]['characterIndex'] + 1;
-    var characterBirth = time.format('YYYYMMDDHHmmss')
+  const time = moment();
 
-    const { 
-      characterName,
-      characterImageIndex,
-      characterPrivacy
-    } = req.body;
+  var characterIndex = lastCharacter[0]["characterIndex"] + 1;
+  var characterBirth = time.format("YYYYMMDDHHmmss");
 
-    try {
-      const newCharacter = new Character({
-        user_id : req.body.user.id,
-        characterName : characterName,
-        characterIndex : characterIndex,
-        characterImageIndex : characterImageIndex,
-        characterPrivacy : characterPrivacy,
-        characterLevel : 1,
-        characterBirth : characterBirth
-      });
+  const { characterName, characterImageIndex, characterPrivacy } = req.body;
 
-      await newCharacter.save();
+  try {
+    const newCharacter = new Character({
+      user_id: req.body.user.id,
+      characterName: characterName,
+      characterIndex: characterIndex,
+      characterImageIndex: characterImageIndex,
+      characterPrivacy: characterPrivacy,
+      characterLevel: 1,
+      characterBirth: characterBirth,
+    });
 
-      return res.status(200).json({
-        status: 200,
-        success: true,
-        message: "캐릭터 생성 성공"
-      });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).json({
-        status: 500,
-        success: false,
-        message: "서버 내부 오류",
-      });
-    }
+    await newCharacter.save();
+
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      message: "캐릭터 생성 성공",
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      status: 500,
+      success: false,
+      message: "서버 내부 오류",
+    });
   }
-);
+});
 
 console.log("maincard API 불러오기 성공");
 
