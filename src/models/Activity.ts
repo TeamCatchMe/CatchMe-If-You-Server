@@ -24,7 +24,15 @@ const ActivitySchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
-    activityDate: {
+    activityYear: {
+      type: String,
+      required: true,
+    },
+    activityMonth: {
+      type: String,
+      required: true,
+    },
+    activityDay: {
       type: String,
       required: true,
     },
