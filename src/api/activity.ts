@@ -70,19 +70,28 @@ router.post("/add", auth, async (req, res) => {
 
 // 모델 테스트
 router.post("/test", auth, async (req, res) => {
-  const { activityContent, activityDate, activityImage, characterIndex } =
-    req.body;
+  
+  const time = moment();
+  const activityImage = "test"
+  const { activityContent, characterIndex } = req.body;
 
-  const lastActivity = await Activity.find({
-    user_id: req.body.user.id,
-    characterIndex: req.body.characterIndex,
-  })
-    .sort({ _id: -1 })
-    .select({ _id: 0 });
+  const lastActivity = await Activity
+  .find({user_id: req.body.user.id, characterIndex: req.body.characterIndex})
+  .sort({ _id: -1 })
+  .select({ _id: 0 });
+
+  if ( lastActivity.length == 0 ) {
+    console.log("해당 데이터가 없습니다. 불러올 수 없습니다.");
+    res.status(400).json({
+      status: 400,
+      success: false,
+      message: "데이터가 비어있습니다.",
+    });
+  }
 
   console.log("출력시도", lastActivity);
-  const time = moment();
-  console.log(time);
+  var activityDate = time.format('YYYYMMDDHHmmss');
+  
   var activityIndex = lastActivity[0]["activityIndex"] + 1;
   console.log("activityIndex check ", activityIndex);
 
@@ -93,7 +102,7 @@ router.post("/test", auth, async (req, res) => {
       activityContent: activityContent,
       activityImage: activityImage,
       activityDate: activityDate,
-      characterIndex: characterIndex,
+      characterIndex: req.body.characterIndex,
     });
 
     await newActivity.save();
@@ -103,9 +112,7 @@ router.post("/test", auth, async (req, res) => {
       success: true,
       message: "캐릭터 생성 성공",
       data: {
-        newActivity: newActivity,
-        hello: "hello",
-        lastActivity: [lastActivity],
+          newActivity,
       },
     });
   } catch (err) {

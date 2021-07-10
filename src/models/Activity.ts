@@ -10,7 +10,6 @@ const ActivitySchema = new mongoose.Schema(
     user_id: {
       type: String,
       required: true,
-
     },
     activityIndex: {
       type: Number,

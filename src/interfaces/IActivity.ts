@@ -6,5 +6,5 @@ export interface IActivity {
     activityContent: string;
     activityImage: string;
     activityDate: string;
-    characterIndex: mongoose.Types.ObjectId;
+    characterIndex: number;
 }
