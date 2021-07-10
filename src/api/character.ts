@@ -9,7 +9,7 @@ const router = Router();
 
 /**
  *  @route GET character/
- *  @desc Get all characters (최근 활동순)
+ *  @desc Get character information and all activities
  *  @access Public
  */
 router.get("/", auth ,async (req: Request, res: Response) => {

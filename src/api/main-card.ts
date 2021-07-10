@@ -13,7 +13,7 @@ const router = Router();
 router.get("/", auth, async (req: Request, res: Response) => {
   try {
     const characters = await Character.find({ user_id: req.body.user.id })
-      .sort({ "activity.activityDate": -1 })
+      .sort({ "ResentActivityTime": -1 })
       .select({ user_id: 0, _id: 0 });
 
     if (!characters) {
@@ -50,14 +50,11 @@ router.get("/", auth, async (req: Request, res: Response) => {
  *  @desc Get all characters (최다 활동순)
  *  @access Public
  */
-
-// 작업중) 게시글 작성시 index 추가하는 기능 완성되면 sorting 가능
+// (작업중)
 // router.get("/most", auth ,async (req: Request, res: Response) => {
 //   try {
 
-//     const characters = await Character
-//       .find({ user_id : req.body.user.id })
-//       .sort({"activity.activityIndex" : -1});
+//     const characters = await Character.find({ user_id : req.body.user.id }).sort({"activityIndex" : -1});
 
 //     if (!characters) {
 //       return res.status(400).json({
@@ -73,7 +70,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
 //       "success" : true,
 //       "message" : "최다활동순 캐릭터 목록 가져오기 성공",
 //       "data": {
-//         "characters" : characters
+//         characters
 //       }
 //     })
 
