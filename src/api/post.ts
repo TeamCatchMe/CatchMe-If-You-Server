@@ -6,6 +6,8 @@ const router = express.Router();
 router.post("/", auth, upload.single("image"), function (req, res, next) {
   try {
     console.log(req.file);
+    console.log(req.body);
+
     res.json({
       status: 200,
       success: true,
