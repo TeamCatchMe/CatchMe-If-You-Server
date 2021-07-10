@@ -1,7 +1,7 @@
 // import express from "express";
 import auth from "../middleware/auth";
 import upload from "../utils/s3";
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 import Activity from "../models/Activity";
@@ -23,17 +23,18 @@ router.post("/add", auth, async (req, res) => {
   const { activityContent } = req.body;
   const characterIndex = req.body.user.id;
 
-  const lastActivity = await Activity.find({characterIndex : req.body.characterIndex}).sort({_id:-1});
+  const lastActivity = await Activity.find({
+    characterIndex: req.body.characterIndex,
+  }).sort({ _id: -1 });
   console.log(lastActivity);
 
-
   // var activityIndex = lastActivity[0]["activityIndex"] + 1;
-  let activityIndex = 1; 
-  if ( lastActivity.length ) {
-      activityIndex = lastActivity[0]["activityIndex"]+1;
+  let activityIndex = 1;
+  if (lastActivity.length) {
+    activityIndex = lastActivity[0]["activityIndex"] + 1;
   }
-  var activityDate = time.format('YYYYMMDDHHmmss');
-  
+  var activityDate = time.format("YYYYMMDDHHmmss");
+
   try {
     const newActivity = new Activity({
       user_id: req.body.user.id,
@@ -50,7 +51,7 @@ router.post("/add", auth, async (req, res) => {
       status: 200,
       success: true,
       message: "게시글 생성 성공",
-      data : newActivity
+      data: newActivity,
     });
   } catch (err) {
     console.error(err.message);
@@ -70,16 +71,18 @@ router.post("/add", auth, async (req, res) => {
 
 // 모델 테스트
 router.post("/test", auth, async (req, res) => {
-  
+
   const time = moment();
-  const activityImage = "test"
-  const { activityContent, characterIndex } = req.body;
+  const { activityContent, activityYear, activityMonth, activityDay, activityImage, characterIndex } =
+    req.body;
 
-  const lastActivity = await Activity
-  .find({user_id: req.body.user.id, characterIndex: req.body.characterIndex})
-  .sort({ _id: -1 })
-  .select({ _id: 0 });
-
+  const lastActivity = await Activity.find({
+    user_id: req.body.user.id,
+    characterIndex: req.body.characterIndex,
+  })
+    .sort({ _id: -1 })
+    .select({ _id: 0 });
+  
   if ( lastActivity.length == 0 ) {
     console.log("해당 데이터가 없습니다. 불러올 수 없습니다.");
     res.status(400).json({
@@ -101,8 +104,10 @@ router.post("/test", auth, async (req, res) => {
       activityIndex: activityIndex,
       activityContent: activityContent,
       activityImage: activityImage,
-      activityDate: activityDate,
-      characterIndex: req.body.characterIndex,
+      activityYear: activityYear,
+      activityMonth: activityMonth,
+      activityDay: activityDay,
+      characterIndex: characterIndex,
     });
 
     await newActivity.save();
