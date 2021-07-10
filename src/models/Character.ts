@@ -54,6 +54,7 @@ const CharacterSchema = new mongoose.Schema(
         },
       },
     ],
+
   },
   {
     versionKey: false,

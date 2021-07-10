@@ -11,4 +11,5 @@ export interface ICharacter {
   characterBirth: string;
   ResentActivityTime: string;
   activity: [IActivity];
+
 }

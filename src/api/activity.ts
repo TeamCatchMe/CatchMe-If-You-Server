@@ -1,10 +1,8 @@
 // import express from "express";
-import { Router, Request, Response } from "express";
 import auth from "../middleware/auth";
 import upload from "../utils/s3";
-
-const express = require("express");
-const router = Router();
+const express = require('express');
+const router = express.Router();
 
 import Activity from "../models/Activity";
 import Character from "../models/Character";
@@ -18,24 +16,30 @@ const moment = require("moment");
  */
 
 //updateOne, image 업로드
-router.post("/add", auth, upload.single("activityImage"), async (req, res) => {
-  const lastActivity = await Activity.find({ user_id: req.body.user.id })
-    .sort({ _id: -1 })
-    .select({ user_id: 0, _id: 0 });
 
+router.post("/add", auth, async (req, res) => {
+  console.log(req.body.user.id);
   const time = moment();
+  const { activityContent } = req.body;
+  const characterIndex = req.body.user.id;
 
-  var activityIndex = lastActivity[0]["activityIndex"] + 1;
+  const lastActivity = await Activity.find({characterIndex : req.body.characterIndex}).sort({_id:-1});
+  console.log(lastActivity);
 
-  const { activityContent, activityDate, characterIndex } = req.body;
-  console.log(req.body.file.location);
 
+  // var activityIndex = lastActivity[0]["activityIndex"] + 1;
+  let activityIndex = 1; 
+  if ( lastActivity.length ) {
+      activityIndex = lastActivity[0]["activityIndex"]+1;
+  }
+  var activityDate = time.format('YYYYMMDDHHmmss');
+  
   try {
     const newActivity = new Activity({
       user_id: req.body.user.id,
       activityIndex: activityIndex,
       activityContent: activityContent,
-      activityImage: req.body.file.location,
+      // activityImage: req.body.file.location,
       activityDate: activityDate,
       characterIndex: characterIndex,
     });
@@ -45,7 +49,8 @@ router.post("/add", auth, upload.single("activityImage"), async (req, res) => {
     return res.status(200).json({
       status: 200,
       success: true,
-      message: "캐릭터 생성 성공",
+      message: "게시글 생성 성공",
+      data : newActivity
     });
   } catch (err) {
     console.error(err.message);
