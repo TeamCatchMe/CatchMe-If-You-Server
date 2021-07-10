@@ -2,6 +2,7 @@
 
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth"
+import Activity from "../models/Activity";
 import Character from "../models/Character";
 
 const moment = require('moment');
@@ -9,7 +10,7 @@ const router = Router();
 
 /**
  *  @route GET report/
- *  @desc Get all characters (최근 활동순)
+ *  @desc Get all activities (YYYYMM)
  *  @access Public
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
@@ -18,19 +19,20 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     const time = moment();
     var month = time.format('MM');
 
-    const characters = await Character
+    const activities = await Activity
       .find({ user_id : req.body.user.id}) //, activityDateMonth : month
       .select({ user_id : 0, _id : 0 });
     
+    const catching = activities.length;
     // const catching = characters.find( element => activityDate.slice(4,6) == month );
 
-    console.log(characters);
+    console.log(activities);
 
-    if (!characters) {
+    if ( activities.length == 0 ) {
       return res.status(400).json({
         "status" : 400,
         "success" : false,
-        "message" : "캐릭터가 존재 하지 않습니다.",
+        "message" : month + "월의 게시글이 존재 하지 않습니다.",
         "data" : null
       });
     };
@@ -40,7 +42,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       "success" : true,
       "message" : "월별 게시글 데이터 불러오기 성공",
       "data": {
-        "characters" : characters
+        activities
       }
     });
     

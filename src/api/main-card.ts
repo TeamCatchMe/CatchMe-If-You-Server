@@ -99,8 +99,8 @@ router.get("/", auth, async (req: Request, res: Response) => {
 router.get("/recent", auth, async (req: Request, res: Response) => {
   try {
     const characters = await Character.find({ user_id: req.body.user.id })
-      .sort({ "character.characterBirth": -1 })
-      .select({ user_id: 0, _id: 0 });
+      .sort({ "characterBirth": -1 })
+      .select({ user_id: 0, _id: 0 })
 
     if (!characters) {
       return res.status(400).json({
@@ -116,7 +116,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
       success: true,
       message: "최근생성순 캐릭터 목록 가져오기 성공",
       data: {
-        recent_character: characters,
+        characters,
       },
     });
 
@@ -132,7 +132,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
 });
 
 /**
- *  @route Post main-card/create
+ *  @route Post maincard/create
  *  @desc Create new character
  *  @access Public
  */
@@ -158,6 +158,7 @@ router.post("/create", auth, async (req, res) => {
       characterPrivacy: characterPrivacy,
       characterLevel: 1,
       characterBirth: characterBirth,
+      ResentActivityTime: characterBirth,
     });
 
     await newCharacter.save();
