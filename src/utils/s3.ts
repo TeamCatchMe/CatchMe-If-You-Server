@@ -12,7 +12,7 @@ const upload = multer({
         s3: s3,
         bucket: "catchmeserver",
         contentType: multerS3.AUTO_CONTENT_TYPE,
-        acl: 'public-read',
+        acl: 'public-read-write',
         key: function (req, file, cb) {
           console.log(file);
           cb(null, file.originalname)
