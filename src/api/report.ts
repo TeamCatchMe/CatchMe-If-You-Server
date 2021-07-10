@@ -22,12 +22,13 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 
     const activities = await Activity
       .find({ user_id : req.body.user.id, activityYear : year, activityMonth : month})
+      .sort({ activityDay : 1})
       .select({ user_id : 0, _id : 0 }); // 7월에 해당하는 모든 게시글
     
-    const characterOfMonth = await Activity
-    .find({ user_id : req.body.user.id, activityYear : year, activityMonth : month}, { _id : false, characterIndex : true });
-
-    console.log(characterOfMonth)
+    const characterOfMonth = await Character
+    .find({ user_id : req.body.user.id }, { _id : false, characterIndex : true, activityCount : true });
+    
+    console.log(characterOfMonth);
     
     // const catching = activities.length;
     // const catching = characters.find( element => activityDate.slice(4,6) == month );

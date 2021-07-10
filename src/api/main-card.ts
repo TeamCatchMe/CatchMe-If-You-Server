@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth";
 import Character from "../models/Character";
+import Activity from "../models/Activity";
 
 const moment = require("moment");
 const router = Router();
@@ -135,13 +136,23 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
  */
 
 router.post("/create", auth, async (req, res) => {
+  const time = moment();
+  var year = time.format('YYYY');
+  var month = time.format('MM');
+  
   const lastCharacter = await Character.find({ user_id: req.body.user.id })
     .sort({ _id: -1 })
     .select({ user_id: 0, _id: 0 });
 
-  const time = moment();
-
   var characterIndex = lastCharacter[0]["characterIndex"] + 1;
+  
+  var activityCount = await Activity
+  .find({ user_id : req.body.user.id, activityYear : year, activityMonth : month, characterIndex : characterIndex }).countDocuments();
+  
+  if ( activityCount == 0 ) {
+    activityCount = 0;
+  };
+  
   var characterBirth = time.format("YYYYMMDDHHmmss");
 
   const { characterName, characterImageIndex, characterPrivacy } = req.body;
@@ -156,6 +167,7 @@ router.post("/create", auth, async (req, res) => {
       characterLevel: 1,
       characterBirth: characterBirth,
       ResentActivityTime: characterBirth,
+      activityCount : activityCount
     });
 
     await newCharacter.save();
