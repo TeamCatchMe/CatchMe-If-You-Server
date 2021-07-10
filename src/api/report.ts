@@ -17,16 +17,21 @@ router.get("/", auth ,async (req: Request, res: Response) => {
   try {//4,6
   
     const time = moment();
+    var year = time.format('YYYY');
     var month = time.format('MM');
 
     const activities = await Activity
-      .find({ user_id : req.body.user.id}) //, activityDateMonth : month
-      .select({ user_id : 0, _id : 0 });
+      .find({ user_id : req.body.user.id, activityYear : year, activityMonth : month})
+      .sort({ activityDay : 1})
+      .select({ user_id : 0, _id : 0 }); // 7월에 해당하는 모든 게시글
     
-    const catching = activities.length;
+    const characterOfMonth = await Character
+    .find({ user_id : req.body.user.id }, { _id : false, characterIndex : true, activityCount : true });
+    
+    console.log(characterOfMonth);
+    
+    // const catching = activities.length;
     // const catching = characters.find( element => activityDate.slice(4,6) == month );
-
-    console.log(activities);
 
     if ( activities.length == 0 ) {
       return res.status(400).json({
@@ -42,7 +47,9 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       "success" : true,
       "message" : "월별 게시글 데이터 불러오기 성공",
       "data": {
-        activities
+        activities,
+        // catching,
+        //characterOfMonth
       }
     });
     

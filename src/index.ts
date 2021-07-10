@@ -16,6 +16,7 @@ app.use("/main", require("./api/main"));
 app.use("/maincard", require("./api/main-card"));
 app.use("/activity", require("./api/activity"));
 app.use("/report", require("./api/report"));
+app.use("/character", require("./api/character"));
 
 // error handler
 app.use(function (err, req, res, next) {

@@ -34,6 +34,9 @@ const CharacterSchema = new mongoose.Schema(
     ResentActivityTime: {
       type: String,
     },
+    activityCount: {
+      type: Number,
+    },
     activity: [
       {
         activityIndex: {
