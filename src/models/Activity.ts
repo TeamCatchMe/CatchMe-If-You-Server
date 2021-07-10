@@ -5,7 +5,12 @@ const ActivitySchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: "UserData",
+      ref: "Activity",
+    },
+    user_id: {
+      type: String,
+      required: true,
+
     },
     activityIndex: {
       type: Number,
