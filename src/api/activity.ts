@@ -97,6 +97,11 @@ router.post("/test", auth, async (req, res) => {
       status: 200,
       success: true,
       message: "캐릭터 생성 성공",
+      data: {
+        newActivity: newActivity,
+        hello: "hello",
+        lastActivity: [lastActivity],
+      },
     });
   } catch (err) {
     console.error(err.message);
