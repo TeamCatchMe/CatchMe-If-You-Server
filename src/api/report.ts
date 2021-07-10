@@ -10,7 +10,7 @@ const router = Router();
 
 /**
  *  @route GET report/
- *  @desc Get all characters (최근 활동순)
+ *  @desc Get all activities (YYYYMM)
  *  @access Public
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
@@ -23,6 +23,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       .find({ user_id : req.body.user.id}) //, activityDateMonth : month
       .select({ user_id : 0, _id : 0 });
     
+    const catching = activities.length;
     // const catching = characters.find( element => activityDate.slice(4,6) == month );
 
     console.log(activities);

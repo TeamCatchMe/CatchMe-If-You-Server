@@ -132,7 +132,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
 });
 
 /**
- *  @route Post main-card/create
+ *  @route Post maincard/create
  *  @desc Create new character
  *  @access Public
  */
