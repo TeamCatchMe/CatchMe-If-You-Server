@@ -5,7 +5,7 @@ const CharacterSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: "User",
+      ref: "UserData",
     },
     user_id: {
       type: String,
@@ -34,26 +34,6 @@ const CharacterSchema = new mongoose.Schema(
     ResentActivityTime: {
       type: String,
     },
-    activity: [
-      {
-          activityIndex: {
-            type: Number,
-            required: true,
-          },
-          activityContent: {
-            type: String,
-            required: true,
-          },
-          activityImage: {
-            type: String,
-            required: true,
-          },
-          activityDate: {
-            type: String,
-            required: true,
-          },
-    }
-  ],
   },
   {
     versionKey: false,
