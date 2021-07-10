@@ -18,10 +18,12 @@ const moment = require("moment");
  */
 
 //updateOne, image 업로드
-router.post("/add", upload.single("activityImage"), auth, async (req, res) => {
-  console.log(req.body.user);
+router.post("/add", auth, async (req, res) => {
+  console.log(req.body.user.id);
+  const time = moment();
+  const { activityContent } = req.body;
+  const characterIndex = req.body.user.id;
 
-  const { activityContent, activityDate, characterIndex } = req.body;
   const lastActivity = await Activity.find({characterIndex : req.body.characterIndex}).sort({_id:-1});
   console.log(lastActivity);
 
@@ -30,14 +32,14 @@ router.post("/add", upload.single("activityImage"), auth, async (req, res) => {
   if ( lastActivity.length ) {
       activityIndex = lastActivity[0]["activityIndex"]+1;
   }
-  // const { activityContent, activityDate, characterIndex } = req.body;
+  var activityDate = time.format('YYYYMMDDHHmmss');
   
   try {
     const newActivity = new Activity({
       user_id: req.body.user.id,
-      activity: 1,
+      activityIndex: activityIndex,
       activityContent: activityContent,
-      activityImage: req.body.file.location,
+      // activityImage: req.body.file.location,
       activityDate: activityDate,
       characterIndex: characterIndex,
     });

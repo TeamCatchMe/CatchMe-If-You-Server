@@ -1,9 +1,9 @@
 const multer = require("multer");
-const multerS3 = require('multer-s3');
+const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 
-
 AWS.config.loadFromPath(__dirname + "/../../awsconfig.json"); // 인증
+
 let s3 = new AWS.S3();
 
 const upload = multer({
@@ -13,9 +13,11 @@ const upload = multer({
         bucket: "catchmeserver",
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read-write',
-        key: function (req, file, cb) {
-          console.log(file);
-          cb(null, file.originalname)
+        metadata: function (req, file, cb) {
+          cb(null, { fieldName: file.fieldname }) 
+        },
+        key: function (req, file, cb) { 
+          cb(null, `uploads/${Date.now()}_${file.originalname}`)
         },
     })
 
