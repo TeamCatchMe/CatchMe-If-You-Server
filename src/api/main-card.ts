@@ -15,7 +15,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
   try {
     const characters = await Character.find({ user_id: req.body.user.id })
       .sort({ "ResentActivityTime": -1 })
-      .select({ user_id: 0, _id: 0 });
+      .select({ user_id: 0, _id: 0, activity : 0 });
 
     if (!characters) {
       return res.status(400).json({

@@ -15,29 +15,39 @@ const router = Router();
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {//4,6
-  
-    const time = moment();
-    var year = time.format('YYYY');
-    var month = time.format('MM');
+    var max = 0;
 
-    const activities = await Activity
-      .find({ user_id : req.body.user.id, activityYear : year, activityMonth : month})
-      .sort({ activityDay : 1})
-      .select({ user_id : 0, _id : 0 }); // 7월에 해당하는 모든 게시글
-    
+    const time = moment();
+    // var year = time.format('YYYY');
+    // var month = time.format('MM');
+
+    const { activityYear, activityMonth, activityDay} = req.body;
+
+    // 필요 : 1) 해당년월의 게시글 전부 2) 그 달의 베스트 캐릭터 정보
+    // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) / activities : activityYear, activity : activityMonth 
+    const activities = await Character
+      .find({ user_id : req.body.user.id, activityYear : 2021, activityMonth : 7 })
+      .sort({ activityDay : 1 }) // 일별로 정렬
+      .select({ user_id : 0, _id : 0 }); 
+    console.log(activities);
+
+    for (var i = 0; i < activities.length; i++) {
+      if ( max < activities[i]["activity"].length) { max = activities[i]["characterIndex"] }
+    }
+
+    // 해당 월의 베스트 캐릭터, 그리고 그 캐릭터의 캐칭수
     const characterOfMonth = await Character
-    .find({ user_id : req.body.user.id }, { _id : false, characterIndex : true, activityCount : true });
-    
+    .findOne({user_id : req.body.user.id, characterIndex : max }, { _id : false })
+    .select({ user_id : 0, _id : 0 });
     console.log(characterOfMonth);
-    
-    // const catching = activities.length;
-    // const catching = characters.find( element => activityDate.slice(4,6) == month );
+
+    const catching = characterOfMonth['activity'].length;
 
     if ( activities.length == 0 ) {
       return res.status(400).json({
         "status" : 400,
         "success" : false,
-        "message" : month + "월의 게시글이 존재 하지 않습니다.",
+        "message" : activityMonth + "월의 게시글이 존재 하지 않습니다.",
         "data" : null
       });
     };
@@ -47,9 +57,9 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       "success" : true,
       "message" : "월별 게시글 데이터 불러오기 성공",
       "data": {
+        characterOfMonth,
+        catching,
         activities,
-        // catching,
-        //characterOfMonth
       }
     });
     

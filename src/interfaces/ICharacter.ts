@@ -11,5 +11,5 @@ export interface ICharacter {
   characterBirth: string;
   ResentActivityTime: string;
   activityCount: number;
-  activity: [IActivity];
+  activity: IActivity[];
 }
