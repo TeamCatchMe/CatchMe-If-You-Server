@@ -17,12 +17,19 @@ import Character from "../models/Character";
  */
 router.get("/", auth, async function (req, res) {
   try {
-    const user = await Character.find({
+    const data = await Character.find({
       user_id: req.body.user.id,
     })
-      .select({ user_id: 0, _id: 0 })
+      .select({ user_id: 0, _id: 0, activity: 0 })
+      .sort({ ResentActivityTime: -1 })
       .limit(5);
-    return res.json(user);
+
+    return res.json({
+      status: 200,
+      success: true,
+      message: "게시글 생성 성공",
+      data,
+    });
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Err");
