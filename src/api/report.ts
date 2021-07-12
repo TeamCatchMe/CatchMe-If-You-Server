@@ -1,16 +1,13 @@
-// 작업중
-
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth"
 import Activity from "../models/Activity";
 import Character from "../models/Character";
 
-const moment = require('moment');
 const router = Router();
 
 /**
  *  @route GET report/
- *  @desc Get all activities (YYYYMM)
+ *  @desc Get all activities
  *  @access Public
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
@@ -19,17 +16,16 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 
     const { activityYear, activityMonth } = req.body;
 
-    // 필요 : 1) 해당년월의 게시글 전부 2) 그 달의 베스트 캐릭터 정보
-
     // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) 
     const activitiesOfMonth = await Activity
     .find( { user_id : req.body.user.id, activityYear: activityYear, activityMonth : activityMonth } )
 
-    // 제일 게시글 수가 많은 캐릭터. 캐릭터 컬렉션에서 얻어와야함
+    // 게시글 작성 수로 내림차순 정렬 (Array)
     const character = await Character
     .findOne({user_id : req.body.user.id})
     .sort({activityCount : -1})
 
+    // 게시글 제일 많은 캐릭터의 인덱스
     max = character['characterIndex'];
   
     // 해당 월의 베스트 캐릭터, 그리고 그 캐릭터의 캐칭수
@@ -48,7 +44,8 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       });
     };
 
-    res.json({
+    console.log("월별 게시글 데이터 불러오기 성공");
+    return res.status(200).json({
       "status" : 200,
       "success" : true,
       "message" : "월별 게시글 데이터 불러오기 성공",
@@ -59,9 +56,8 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       }
     });
     
-    console.log("월별 게시글 데이터 불러오기 성공");
-
   } catch (error) {
+    console.log("월별 게시글 데이터 불러오기 실패");
     console.error(error.message);
     res.status(500).json({
         "status" : 500,
