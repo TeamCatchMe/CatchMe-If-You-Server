@@ -26,10 +26,21 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     // 필요 : 1) 해당년월의 게시글 전부 2) 그 달의 베스트 캐릭터 정보
     // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) / activities : activityYear, activity : activityMonth 
     const activities = await Character
-      .find({ user_id : req.body.user.id, activityYear : 2021, activityMonth : 7 })
-      .sort({ activityDay : 1 }) // 일별로 정렬
-      .select({ user_id : 0, _id : 0 }); 
-    console.log(activities);
+    .find(
+      { user_id : req.body.user.id }, 
+      {"activity" : { $elemMatch : {activityYear : activityYear, activityMonth : activityMonth, activityDay : activityDay}}}
+      )
+
+
+    // .find({ $and : [
+    //                 { "user_id" : req.body.user.id },
+    //                 { "activity" : { "$elemMatch" : { "activityYear" :  "2021", "activityMonth" :  "07" } } }
+    //     ]})
+      // .activityYear === '2021' 
+      // { "activity" : { "$elemMatch" : { "activityYear" === "2021", "activityMonth" === "07" } } }
+      // .sort({ activityDay : 1 }) // 일별로 정렬
+      // .select({  _id : 0 }); 
+    console.log(activities[0]);
 
     for (var i = 0; i < activities.length; i++) {
       if ( max < activities[i]["activity"].length) { max = activities[i]["characterIndex"] }
@@ -37,9 +48,9 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 
     // 해당 월의 베스트 캐릭터, 그리고 그 캐릭터의 캐칭수
     const characterOfMonth = await Character
-    .findOne({user_id : req.body.user.id, characterIndex : max }, { _id : false })
+    .findOne({user_id : req.body.user.id, characterIndex : max, }, { _id : false })
     .select({ user_id : 0, _id : 0 });
-    console.log(characterOfMonth);
+    // console.log(characterOfMonth);
 
     const catching = characterOfMonth['activity'].length;
 
