@@ -30,9 +30,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
       status: 200,
       success: true,
       message: "최근활동순 캐릭터 목록 가져오기 성공",
-      data: {
-        characters: characters,
-      },
+      data: characters,
     });
 
     console.log("캐릭터 목록 불러오기 성공");
@@ -70,9 +68,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
 //       "status" : 200,
 //       "success" : true,
 //       "message" : "최다활동순 캐릭터 목록 가져오기 성공",
-//       "data": {
-//         characters
-//       }
+//       "data" : characters
 //     })
 
 //     console.log("캐릭터 목록 불러오기 성공");
@@ -113,9 +109,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
       status: 200,
       success: true,
       message: "최근생성순 캐릭터 목록 가져오기 성공",
-      data: {
-        characters,
-      },
+      data: characters,
     });
 
     console.log("캐릭터 목록 불러오기 성공");
