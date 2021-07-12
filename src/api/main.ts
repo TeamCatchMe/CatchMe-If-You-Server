@@ -38,16 +38,23 @@ router.get("/", auth, async function (req, res) {
       {
         user_id: req.body.user.id,
       },
-      { _id: false, user_id: false, activity: false }
+      {
+        _id: false,
+        user_id: false,
+        activity: false,
+        characterBirth: false,
+        ResentActivityTime: false,
+        characterPrivacy: false,
+      }
     )
       .sort({ ResentActivityTime: -1 })
       .limit(5);
 
+    // 다섯개 캐릭터의 게시글 개수를 구합니다.
     const activityCount = new Array();
     for (var i = 0; i < maindata.length; i++) {
       activityCount.push(maindata[i]["activity"].length);
     }
-    console.log(activityCount);
 
     // 전체 캐릭터가 쓴 게시글의 총 개수를 구합니다.
     var allActivityCount = 0;
@@ -55,6 +62,7 @@ router.get("/", auth, async function (req, res) {
       allActivityCount += dataForCount[i]["activity"].length;
     }
 
+    // 사용자에게 전달한 간단 리포트의 총 게시물수, 전체중 퍼센트 값을 추가합니다.
     for (var i = 0; i < resultData.length; i++) {
       resultData[i]["activityCount"] = activityCount[i];
       resultData[i]["countPercentage"] = Math.floor(
