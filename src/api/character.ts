@@ -27,7 +27,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
         "status" : 200,
         "success" : true,
         "message" : "통신성공, 당월 게시글이 존재하지 않습니다.",
-        "data" : null
+        "data" : character
       });
     };
 
