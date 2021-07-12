@@ -9,4 +9,5 @@ export interface IActivity {
   activityMonth: string;
   activityDay: string;
   characterIndex: number;
+  activityImageName: string;
 }
