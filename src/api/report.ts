@@ -26,10 +26,14 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     // 필요 : 1) 해당년월의 게시글 전부 2) 그 달의 베스트 캐릭터 정보
     // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) / activities : activityYear, activity : activityMonth 
     const activities = await Character
-    .find(
-      { user_id : req.body.user.id }, 
-      {"activity" : { $elemMatch : {activityYear : activityYear, activityMonth : activityMonth, activityDay : activityDay}}}
-      )
+    .find( {$and : [{ "activity.activityYear" : activityYear}, {"activity.activityMonth" : activityMonth}, {"activity.activityDay" : activityDay }]})
+    // .find( 
+    //        { $and : 
+    //         [
+    //          { user_id : req.body.user.id },
+    //          { activity : { $elemMatch : { activityYear : activityYear, activityMonth : activityMonth, activityDay : activityDay } } }
+    //         ] 
+    //        } 
 
 
     // .find({ $and : [
@@ -40,7 +44,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       // { "activity" : { "$elemMatch" : { "activityYear" === "2021", "activityMonth" === "07" } } }
       // .sort({ activityDay : 1 }) // 일별로 정렬
       // .select({  _id : 0 }); 
-    console.log(activities[0]);
+
 
     for (var i = 0; i < activities.length; i++) {
       if ( max < activities[i]["activity"].length) { max = activities[i]["characterIndex"] }

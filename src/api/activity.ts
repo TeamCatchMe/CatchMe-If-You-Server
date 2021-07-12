@@ -168,7 +168,7 @@ router.post("/test", upload.single("activityImage"), auth, async (req, res) => {
 
     await Character.findOneAndUpdate({characterIndex : characterIndex}, { $push : { activity:  newActivity } });
     await Character.findOneAndUpdate({characterIndex : characterIndex}, { ResentActivityTime : activityUpdateTime });
-
+    
     return res.status(200).json({
       status: 200,
       success: true,
