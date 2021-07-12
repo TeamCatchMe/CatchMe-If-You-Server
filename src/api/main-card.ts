@@ -14,7 +14,7 @@ const router = Router();
 router.get("/", auth, async (req: Request, res: Response) => {
   try {
     const characters = await Character.find({ user_id: req.body.user.id })
-      .sort({ "ResentActivityTime": -1 })
+      .sort({ ResentActivityTime : -1 })
       .select({ user_id: 0, _id: 0, activity : 0 });
 
     if (!characters) {
@@ -50,38 +50,41 @@ router.get("/", auth, async (req: Request, res: Response) => {
  *  @access Public
  */
 // (작업중)
-// router.get("/most", auth ,async (req: Request, res: Response) => {
-//   try {
+router.get("/most", auth ,async (req: Request, res: Response) => {
+  try {
 
-//     const characters = await Character.find({ user_id : req.body.user.id }).sort({"activityIndex" : -1});
+    const characters = await Character
+    .find({ user_id : req.body.user.id })
+    .sort({activityCount : -1})
+    .select({ user_id: 0, _id: 0, activity : 0 });;
 
-//     if (!characters) {
-//       return res.status(400).json({
-//         "status" : 400,
-//         "success" : false,
-//         "message" : "캐릭터가 존재 하지 않습니다.",
-//         "data" : null
-//       });
-//     }
+    if (characters.length == 0) {
+      return res.status(400).json({
+        "status" : 400,
+        "success" : false,
+        "message" : "캐릭터가 존재 하지 않습니다.",
+        "data" : null
+      });
+    }
 
-//     res.json({
-//       "status" : 200,
-//       "success" : true,
-//       "message" : "최다활동순 캐릭터 목록 가져오기 성공",
-//       "data" : characters
-//     })
+    res.json({
+      "status" : 200,
+      "success" : true,
+      "message" : "최다활동순 캐릭터 목록 가져오기 성공",
+      "data" : characters
+    })
 
-//     console.log("캐릭터 목록 불러오기 성공");
+    console.log("캐릭터 목록 불러오기 성공");
 
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json({
-//         "status" : 500,
-//         "success" : false,
-//         "message" : "서버 내부 오류"
-//     });
-//   }
-// });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+        "status" : 500,
+        "success" : false,
+        "message" : "서버 내부 오류"
+    });
+  }
+});
 
 /**
  *  @route GET maincard/recent
@@ -92,9 +95,10 @@ router.get("/", auth, async (req: Request, res: Response) => {
 // characterBirth(yyyymmdd)로 sorting
 router.get("/recent", auth, async (req: Request, res: Response) => {
   try {
-    const characters = await Character.find({ user_id: req.body.user.id })
-      .sort({ "characterBirth": -1 })
-      .select({ user_id: 0, _id: 0 })
+    const characters = await Character
+    .find({ user_id: req.body.user.id })
+    .sort({ "characterBirth": -1 })
+    .select({ user_id: 0, _id: 0, activity : 0 });
 
     if (!characters) {
       return res.status(400).json({
@@ -131,24 +135,13 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
 
 router.post("/create", auth, async (req, res) => {
   const time = moment();
-  var year = time.format('YYYY');
-  var month = time.format('MM');
   
   const lastCharacter = await Character.find({ user_id: req.body.user.id })
     .sort({ _id: -1 })
     .select({ user_id: 0, _id: 0 });
 
   var characterIndex = lastCharacter[0]["characterIndex"] + 1;
-  
-  var activityCount = await Activity
-  .find({ user_id : req.body.user.id, activityYear : year, activityMonth : month, characterIndex : characterIndex }).countDocuments();
-  
-  if ( activityCount == 0 ) {
-    activityCount = 0;
-  };
-  
   var characterBirth = time.format("YYYYMMDDHHmmss");
-
   const { characterName, characterImageIndex, characterPrivacy } = req.body;
 
   try {
@@ -161,7 +154,7 @@ router.post("/create", auth, async (req, res) => {
       characterLevel: 1,
       characterBirth: characterBirth,
       ResentActivityTime: characterBirth,
-      activityCount : activityCount
+      activityCount : 0
     });
 
     await newCharacter.save();
