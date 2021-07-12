@@ -1,19 +1,13 @@
 import express from "express";
 import auth from "../middleware/auth";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import config from "../config";
-import { check, validationResult } from "express-validator";
 
 const router = express.Router();
 
-import UserData from "../models/Userdata";
 import Character from "../models/Character";
-import Activity from "../models/Activity";
 
 /*
  *  @route GET /main
- *  @desc Test Route
+ *  @desc get main character ata
  *  @access Public
  */
 router.get("/", auth, async function (req, res) {
@@ -70,6 +64,7 @@ router.get("/", auth, async function (req, res) {
       );
     }
 
+    console.log("메인 캐릭터 조회 성공 ");
     return res.json({
       status: 200,
       success: true,
@@ -77,6 +72,7 @@ router.get("/", auth, async function (req, res) {
       data: resultData,
     });
   } catch (err) {
+    console.log("메인 캐릭터 조회 실패 (500)");
     console.error(err.message);
     return res.status(500).send("Server Err");
   }
