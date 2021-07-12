@@ -154,7 +154,7 @@ router.post(
 
       if (userdata == 0) {
         console.log("이메일 중복 체크 - 사용 가능한 이메일");
-        return res.json({
+        return res.status(200).json({
           status: 200,
           success: true,
           message: "사용 가능한 이메일 입니다.",
@@ -165,7 +165,7 @@ router.post(
       }
 
       console.log("이메일 중복 체크 - 사용중인 이메일");
-      return res.status(400).json({
+      return res.status(200).json({
         status: 200,
         success: true,
         message: "이미 사용중인 이메일입니다.",
