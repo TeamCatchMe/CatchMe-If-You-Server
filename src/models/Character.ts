@@ -37,6 +37,9 @@ const CharacterSchema = new mongoose.Schema(
     activityCount: {
       type: Number,
     },
+    countPercentage: {
+      type: Number,
+    },
     activity: [
       {
         activityIndex: {
@@ -49,7 +52,6 @@ const CharacterSchema = new mongoose.Schema(
         },
         activityImage: {
           type: String,
-          required: true,
         },
         activityYear: {
           type: String,
@@ -64,7 +66,7 @@ const CharacterSchema = new mongoose.Schema(
           required: true,
         },
       },
-    ]
+    ],
   },
   {
     versionKey: false,

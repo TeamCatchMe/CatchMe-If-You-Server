@@ -10,5 +10,7 @@ export interface ICharacter {
   characterLevel: number;
   characterBirth: string;
   ResentActivityTime: string;
+  activityCount: number;
+  countPercentage: number;
   activity: IActivity[];
 }

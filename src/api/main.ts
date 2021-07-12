@@ -9,6 +9,7 @@ const router = express.Router();
 
 import UserData from "../models/Userdata";
 import Character from "../models/Character";
+import Activity from "../models/Activity";
 
 /*
  *  @route GET /main
@@ -17,12 +18,56 @@ import Character from "../models/Character";
  */
 router.get("/", auth, async function (req, res) {
   try {
-    const user = await Character.find({
-      user_id: req.body.user.id,
-    })
-      .select({ user_id: 0, _id: 0 })
+    const maindata = await Character.find(
+      {
+        user_id: req.body.user.id,
+      },
+      { _id: false, user_id: false }
+    )
+      .sort({ ResentActivityTime: -1 })
       .limit(5);
-    return res.json(user);
+
+    const dataForCount = await Character.find(
+      {
+        user_id: req.body.user.id,
+      },
+      { activity: true, _id: false }
+    );
+
+    const resultData = await Character.find(
+      {
+        user_id: req.body.user.id,
+      },
+      { _id: false, user_id: false, activity: false }
+    )
+      .sort({ ResentActivityTime: -1 })
+      .limit(5);
+
+    const activityCount = new Array();
+    for (var i = 0; i < maindata.length; i++) {
+      activityCount.push(maindata[i]["activity"].length);
+    }
+    console.log(activityCount);
+
+    // 전체 캐릭터가 쓴 게시글의 총 개수를 구합니다.
+    var allActivityCount = 0;
+    for (var i = 0; i < dataForCount.length; i++) {
+      allActivityCount += dataForCount[i]["activity"].length;
+    }
+
+    for (var i = 0; i < resultData.length; i++) {
+      resultData[i]["activityCount"] = activityCount[i];
+      resultData[i]["countPercentage"] = Math.floor(
+        (activityCount[i] / allActivityCount) * 100
+      );
+    }
+
+    return res.json({
+      status: 200,
+      success: true,
+      message: "메인 캐릭터 조회 성공",
+      data: resultData,
+    });
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Err");
