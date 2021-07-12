@@ -21,11 +21,9 @@ const ActivitySchema = new mongoose.Schema(
     },
     activityImage: {
       type: String,
-      // required: true,
     },
     activityImageName: {
       type: String,
-      // required: true,
     },
     activityYear: {
       type: String,

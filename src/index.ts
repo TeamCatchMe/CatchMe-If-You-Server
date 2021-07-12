@@ -8,7 +8,7 @@ connectDB();
 app.use(express.json());
 
 // Define Routes
-// app.use("/test", require("./api/test"));
+app.use("/test", require("./api/test"));
 app.use("/post", require("./api/post"));
 
 app.use("/user", require("./api/user"));
