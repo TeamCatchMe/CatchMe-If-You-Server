@@ -14,55 +14,36 @@ const router = Router();
  *  @access Public
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
-  try {//4,6
+  try {
     var max = 0;
 
-    const time = moment();
-    // var year = time.format('YYYY');
-    // var month = time.format('MM');
-
-    const { activityYear, activityMonth, activityDay} = req.body;
+    const { activityYear, activityMonth } = req.body;
 
     // 필요 : 1) 해당년월의 게시글 전부 2) 그 달의 베스트 캐릭터 정보
-    // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) / activities : activityYear, activity : activityMonth 
-    const activities = await Character
-    .find( {$and : [{ "activity.activityYear" : activityYear}, {"activity.activityMonth" : activityMonth}, {"activity.activityDay" : activityDay }]})
-    // .find( 
-    //        { $and : 
-    //         [
-    //          { user_id : req.body.user.id },
-    //          { activity : { $elemMatch : { activityYear : activityYear, activityMonth : activityMonth, activityDay : activityDay } } }
-    //         ] 
-    //        } 
 
+    // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) 
+    const activitiesOfMonth = await Activity
+    .find( { user_id : req.body.user.id, activityYear: activityYear, activityMonth : activityMonth } )
 
-    // .find({ $and : [
-    //                 { "user_id" : req.body.user.id },
-    //                 { "activity" : { "$elemMatch" : { "activityYear" :  "2021", "activityMonth" :  "07" } } }
-    //     ]})
-      // .activityYear === '2021' 
-      // { "activity" : { "$elemMatch" : { "activityYear" === "2021", "activityMonth" === "07" } } }
-      // .sort({ activityDay : 1 }) // 일별로 정렬
-      // .select({  _id : 0 }); 
+    // 제일 게시글 수가 많은 캐릭터. 캐릭터 컬렉션에서 얻어와야함
+    const character = await Character
+    .findOne({user_id : req.body.user.id})
+    .sort({activityCount : -1})
 
-
-    for (var i = 0; i < activities.length; i++) {
-      if ( max < activities[i]["activity"].length) { max = activities[i]["characterIndex"] }
-    }
-
+    max = character['characterIndex'];
+  
     // 해당 월의 베스트 캐릭터, 그리고 그 캐릭터의 캐칭수
-    const characterOfMonth = await Character
-    .findOne({user_id : req.body.user.id, characterIndex : max, }, { _id : false })
+    const characterOfMonth = await Activity
+    .find({user_id : req.body.user.id, characterIndex : max, }, { _id : false })
     .select({ user_id : 0, _id : 0 });
-    // console.log(characterOfMonth);
+    
+    const catching = characterOfMonth.length;
 
-    const catching = characterOfMonth['activity'].length;
-
-    if ( activities.length == 0 ) {
+    if ( activitiesOfMonth.length == 0 ) {
       return res.status(400).json({
         "status" : 400,
         "success" : false,
-        "message" : activityMonth + "월의 게시글이 존재 하지 않습니다.",
+        "message" : activityYear + "년 " + activityMonth + "월의 게시글이 존재 하지 않습니다.",
         "data" : null
       });
     };
@@ -74,7 +55,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       "data": {
         characterOfMonth,
         catching,
-        activities,
+        activitiesOfMonth,
       }
     });
     
