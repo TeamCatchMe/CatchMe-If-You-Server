@@ -7,7 +7,6 @@ import { check, validationResult } from "express-validator";
 const router = express.Router();
 
 import UserData from "../models/Userdata";
-import auth from "../middleware/auth";
 
 /**
  *  @route Post user/login

@@ -1,19 +1,13 @@
 import express from "express";
 import auth from "../middleware/auth";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import config from "../config";
-import { check, validationResult } from "express-validator";
 
 const router = express.Router();
 
-import UserData from "../models/Userdata";
 import Character from "../models/Character";
-import Activity from "../models/Activity";
 
 /*
  *  @route GET /main
- *  @desc Test Route
+ *  @desc get main character ata
  *  @access Public
  */
 router.get("/", auth, async function (req, res) {
