@@ -37,6 +37,9 @@ const CharacterSchema = new mongoose.Schema(
     activityCount: {
       type: Number,
     },
+    countPercentage: {
+      type: Number,
+    },
     activity: [
       {
         activityIndex: {

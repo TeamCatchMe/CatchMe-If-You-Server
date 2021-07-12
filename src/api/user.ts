@@ -65,7 +65,7 @@ router.post(
         { expiresIn: "14d" },
         (err, token) => {
           if (err) throw err;
-          console.log("로그인 성공 -- user.id : ", user.id);
+          console.log("로그인 성공 -- user.id : ", user.id, "email : ", email);
           res.json({
             status: 200,
             success: true,
@@ -118,7 +118,7 @@ router.post(
 
       // db에 데이터 저장
       await user.save();
-
+      console.log("회원가입 성공 -- ", nickname);
       return res.status(200).json({
         status: 200,
         success: true,
@@ -185,5 +185,3 @@ router.post(
 );
 
 module.exports = router;
-
-
