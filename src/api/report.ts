@@ -13,7 +13,7 @@ const router = Router();
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {
     var max = 0;
-    var target = '00';
+
     const { activityYear, activityMonth } = req.body;
 
     // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) 
@@ -29,8 +29,45 @@ router.get("/", auth ,async (req: Request, res: Response) => {
         "message" : activityYear + "년 " + activityMonth + "월의 게시글이 존재 하지 않습니다.",
         "data" : null
       });
-    };
+    }
+    const activities = await Activity
+    .aggregate([
+      { $sort : { activityDay : 1 } },
+      { $group : 
+        { _id : { 
+          "activityYear" : "$activityYear", 
+          "activityMonth":"$activityMonth", 
+          "activityDay":"$activityDay"}, 
+        character_array: { $push:"$characterIndex" } } 
+      }
+    ])
     
+    console.log(activities)
+
+    for ( var i = 0; i<activities.length; i++ ) {
+      const counts = activities[i]['character_array'].reduce((pv, cv)=>{ 
+        pv[cv] = (pv[cv] || 0) + 1; 
+        return pv; 
+      }, {});
+
+      const keys = Object.keys(counts); 
+      let mode = keys[0]; 
+      keys.forEach((val, idx)=>{ 
+        if(counts[val] > counts[mode]){
+          mode = val; 
+        } 
+      });
+
+      console.log(mode)
+    } 
+    
+
+
+    
+
+    
+
+
     // 게시글 작성 수로 내림차순 정렬 (Array)
     const character = await Character
     .findOne({user_id : req.body.user.id})
@@ -75,3 +112,4 @@ router.get("/", auth ,async (req: Request, res: Response) => {
 
 console.log("report API 불러오기 성공");
 module.exports = router;
+
