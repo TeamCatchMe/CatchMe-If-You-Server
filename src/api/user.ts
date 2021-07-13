@@ -64,12 +64,19 @@ router.post(
         { expiresIn: "14d" },
         (err, token) => {
           if (err) throw err;
-          console.log("로그인 성공 -- user.id : ", user.id, "email : ", email);
+          console.log(
+            "로그인 성공 -- [user.id] : ",
+            user.id,
+            "[email] : ",
+            email,
+            "[nickname] : ",
+            user.nickname
+          );
           res.json({
             status: 200,
             success: true,
             message: "로그인 성공",
-            data: { token },
+            data: { token, nickname: user.nickname },
           });
         }
       );
