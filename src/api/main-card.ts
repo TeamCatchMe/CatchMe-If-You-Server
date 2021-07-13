@@ -119,7 +119,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
       message: "최근생성순 캐릭터 목록 가져오기 성공",
       data: characters,
     });
-    
+
   } catch (error) {
     console.log("최근생성순 캐릭터 목록 불러오기 실패");
     console.error(error.message);
@@ -143,8 +143,13 @@ router.post("/create", auth, async (req, res) => {
   const lastCharacter = await Character.find({ user_id: req.body.user.id })
     .sort({ _id: -1 })
     .select({ user_id: 0, _id: 0 });
-
-  var characterIndex = lastCharacter[0]["characterIndex"] + 1;
+  
+  if ( lastCharacter.length == 0 ) {
+    var characterIndex = 1
+  } else {
+    characterIndex = lastCharacter[0]["characterIndex"] + 1;
+  }
+  
   var characterBirth = time.format("YYYYMMDDHHmmss");
   const { characterName, characterImageIndex, characterPrivacy } = req.body;
 
