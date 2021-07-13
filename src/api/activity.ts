@@ -145,7 +145,6 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
       activityImage = req.file.location;
       activityImageName = req.file.key;
     }
-    console.log("자자 테스트를 해봅시다~ ", activityImage, activityImageName);
 
     // 수정할 값들을 바탕으로 데이터를 수정해준다.
     await Activity.findOneAndUpdate(
