@@ -28,12 +28,13 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     // 게시글 제일 많은 캐릭터의 인덱스
     max = character['characterIndex'];
   
-    // 해당 월의 베스트 캐릭터, 그리고 그 캐릭터의 캐칭수
-    const characterOfMonth = await Activity
-    .find({user_id : req.body.user.id, characterIndex : max, }, { _id : false })
+    // 해당 월의 베스트 캐릭터 정보
+    const characterOfMonth = await Character
+    .findOne({user_id : req.body.user.id, characterIndex : max, }, { _id : false, activity: false })
     .select({ user_id : 0, _id : 0 });
     
-    const catching = characterOfMonth.length;
+    // 그 캐릭터의 캐칭수
+    const catching = characterOfMonth['activityCount'];
 
     if ( activitiesOfMonth.length == 0 ) {
       return res.status(400).json({
