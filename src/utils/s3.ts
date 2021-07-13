@@ -16,10 +16,6 @@ const upload = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-      console.log("s3에서 !!!!!!@@@@@@@@@@@@@@@@", req.hello);
-      // if (!req.body.isAuth){
-      //   cb(null, false);
-      // } else
       cb(null, `uploads/${Date.now()}_${file.originalname}`);
     },
   }),

@@ -9,11 +9,11 @@ const CharacterSchema = new mongoose.Schema(
     },
     user_id: {
       type: String,
-      required: true,
+      // required: true,
     },
     characterName: {
       type: String,
-      required: true,
+      // required: true,
     },
     characterIndex: {
       type: Number,
@@ -26,7 +26,7 @@ const CharacterSchema = new mongoose.Schema(
     },
     characterPrivacy: {
       type: Boolean,
-      required: true,
+      // required: true,
     },
     characterBirth: {
       type: String,
