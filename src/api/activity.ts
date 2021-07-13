@@ -106,7 +106,8 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       return res.status(222).json({
         status: 222,
         success: true,
-        message: "게시물 등록 성공 && 캐릭터 레벨 업",
+        message:
+          "게시물 등록 성공 && 캐릭터 레벨 업!!! 끼얏호오오~~ 레벨업이다!!",
       });
     } else if (countAfterUpdate == 31) {
       await Character.findOneAndUpdate(
@@ -118,7 +119,8 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       return res.status(222).json({
         status: 222,
         success: true,
-        message: "게시물 등록 성공 && 캐릭터 레벨 업",
+        message:
+          "게시물 등록 성공 && 캐릭터 레벨 업!!! 끼얏호오오~~ 레벨업이다!!",
       });
     }
 
@@ -290,7 +292,7 @@ router.post("/delete", auth, async (req, res) => {
       return res.status(222).json({
         status: 222,
         success: true,
-        message: "게시물 삭제 성공 && 캐릭터 레벨 다운",
+        message: "게시물 삭제 성공 && 캐릭터 레벨 다운... 에휴 쯧쯧...",
       });
     } else if (activityCount == 30) {
       await Character.findOneAndUpdate(
@@ -302,7 +304,7 @@ router.post("/delete", auth, async (req, res) => {
       return res.status(222).json({
         status: 222,
         success: true,
-        message: "게시물 삭제 성공 && 캐릭터 레벨 다운",
+        message: "게시물 삭제 성공 && 캐릭터 레벨 다운... 에휴 쯧쯧...",
       });
     }
 
