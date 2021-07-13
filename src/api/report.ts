@@ -12,8 +12,7 @@ const router = Router();
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {
-    var max = 0;
-
+    var characterIndexArr = [];
     const { activityYear, activityMonth } = req.body;
 
     // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) 
@@ -30,59 +29,73 @@ router.get("/", auth ,async (req: Request, res: Response) => {
         "data" : null
       });
     }
+
+    // 해당 월 날마다의 베스트 캐릭터 인덱스를 구함
     const activities = await Activity
     .aggregate([
-      { $sort : { activityDay : 1 } },
       { $group : 
         { _id : { 
           "activityYear" : "$activityYear", 
-          "activityMonth":"$activityMonth", 
-          "activityDay":"$activityDay"}, 
-        character_array: { $push:"$characterIndex" } } 
+          "activityMonth" : "$activityMonth", 
+          "activityDay" : "$activityDay"}, 
+        characterIndexArray: { $push:"$characterIndex" } } 
       }
-    ])
-    
-    console.log(activities)
+    ]).sort({ "_id.activityDay" : 1 });
 
     for ( var i = 0; i<activities.length; i++ ) {
-      const counts = activities[i]['character_array'].reduce((pv, cv)=>{ 
+      const countsDay = activities[i]['characterIndexArray'].reduce((pv, cv)=>{ 
         pv[cv] = (pv[cv] || 0) + 1; 
         return pv; 
       }, {});
-
-      const keys = Object.keys(counts); 
+      const keys = Object.keys(countsDay); 
       let mode = keys[0]; 
       keys.forEach((val, idx)=>{ 
-        if(counts[val] > counts[mode]){
+        if(countsDay[val] > countsDay[mode]){
           mode = val; 
         } 
       });
+      characterIndexArr.push(Number(mode));
+    }
 
-      console.log(mode)
-    } 
-    
+    // 해당 월 베스트 캐릭터 인덱스를 구함 = modeM
+    const character = await Activity
+    .aggregate([
+      { $group : 
+        { _id : { 
+          "activityYear" : "$activityYear", 
+          "activityMonth" : "$activityMonth" }, 
+        characterIndexArray: { $push:"$characterIndex" } } 
+      }
+    ])
 
+    const countsMonth = character[0]['characterIndexArray'].reduce((pv, cv)=>{ 
+      pv[cv] = (pv[cv] || 0) + 1; 
+      return pv; 
+    }, {});
 
-    
+    const keys = Object.keys(countsMonth); 
+    let modeM = keys[0]; 
+    keys.forEach((val, idx)=>{ 
+      if(countsMonth[val] > countsMonth[modeM]){
+        modeM = val; 
+      } 
+    });
 
-    
-
-
-    // 게시글 작성 수로 내림차순 정렬 (Array)
-    const character = await Character
-    .findOne({user_id : req.body.user.id})
-    .sort({activityCount : -1})
-
-    // 게시글 제일 많은 캐릭터의 인덱스
-    max = character['characterIndex'];
-  
-    // 해당 월의 베스트 캐릭터 정보
+    // 해당 월의 베스트 캐릭터 정보 
     const characterOfMonth = await Character
-    .findOne({user_id : req.body.user.id, characterIndex : max, }, { _id : false, activity: false })
+    .findOne({user_id : req.body.user.id, characterIndex : Number(modeM) }, { _id : false, activity: false })
     .select({ user_id : 0, _id : 0 });
     
     // 그 캐릭터의 캐칭수
     const catching = characterOfMonth['activityCount'];
+
+    // 캐릭터 인덱스마다의 레벨 가져오기
+    const characterInfo = await Character
+    .find({user_id : req.body.user.id}, {_id : false, characterLevel : true })
+    var characterLevelArr = [];
+    for (var j = 0; j<characterInfo.length; j++) {
+      characterLevelArr.push(characterInfo[j]["characterLevel"])  
+    }
 
     console.log("월별 게시글 데이터 불러오기 성공");
     return res.status(200).json({
@@ -90,12 +103,14 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       "success" : true,
       "message" : "월별 게시글 데이터 불러오기 성공",
       "data": {
-        characterName : character.characterName,
-        characterIndex : character.characterIndex,
-        characterImageIndex : character.characterImageIndex,
-        characterLevel : character.characterLevel,
+        characterName : characterOfMonth.characterName,
+        characterIndex : characterOfMonth.characterIndex,
+        characterImageIndex : characterOfMonth.characterImageIndex,
+        characterLevel : characterOfMonth.characterLevel,
         catching,
         activitiesOfMonth,
+        characterIndexArr,
+        characterLevelArr
       }
     });
     
