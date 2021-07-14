@@ -19,6 +19,15 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     .findOne({ user_id : req.body.user.id, characterIndex : characterIndex})
     .select({ user_id : 0, _id : 0 });
 
+    if (!character) {
+      console.log("[/character] 캐릭터 데이터 없음");
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "루꿍아. 캐릭터 데이터가 존재 하지 않는다니까. 다시.",
+      });
+    }
+
     if ( character['activityCount'] == 0 ) {
       console.log("통신 성공, 당월 게시글 데이터 없음.");
       return res.status(200).json({
