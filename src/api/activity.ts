@@ -268,7 +268,6 @@ router.post("/delete", auth, async (req, res) => {
     }).sort({ recentActivityTime: -1 });
 
     const activityUpdateTime = activityForTime[0]["recentActivityTime"];
-    console.log("너무 찾고 싶다구요.,..", activityUpdateTime);
 
     // Character에 수정된 activity 데이터들로 바꿔준다.
     await Character.findOneAndUpdate(
