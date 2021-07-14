@@ -8,24 +8,25 @@ const router = Router();
  *  @desc Get character information and all activities
  *  @access Public
  */
-router.get("/", auth, async (req: Request, res: Response) => {
+
+router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
   try {
     console.log("[/character] 캐릭터 상세정보 가져오기 시도");
     var allActivitiesCount = 0;
-    const { characterIndex } = req.body;
+    const characterIndex = req.params.characterIndex;
 
     // req.body 의 characterIndex를 가지는 캐릭터의 데이터를 가져옵니다. (객체)
-    const character = await Character.findOne({
-      user_id: req.body.user.id,
-      characterIndex: characterIndex,
-    }).select({ user_id: 0, _id: 0 });
+
+    const character = await Character
+    .findOne({ user_id : req.body.user.id, characterIndex : Number(characterIndex)})
+    .select({ user_id : 0, _id : 0 });
 
     if (!character) {
       console.log("[/character] 캐릭터 데이터 없음");
       return res.status(400).json({
         status: 400,
         success: false,
-        message: "루꿍아. 캐릭터 데이터가 존재 하지 않는다니까. 다시.",
+        message: "캐릭터 데이터가 존재 하지 않는다. 미안.",
       });
     }
 
@@ -40,10 +41,10 @@ router.get("/", auth, async (req: Request, res: Response) => {
     }
 
     // 전체 캐릭터의 전체 게시글을 가져옵니다.
-    const allActivities = await Character.find({
-      user_id: req.body.user.id,
-    }).sort({ activityYear: -1, activityMonth: -1 });
-
+    const allActivities = await Character
+    .find({ user_id : req.body.user.id })
+    .sort({ activityYear : -1, activityMonth : -1 });
+    
     // 전체 캐릭터가 쓴 게시글의 총 개수를 구합니다.
     for (var i = 0; i < allActivities.length; i++) {
       allActivitiesCount += allActivities[i]["activityCount"];

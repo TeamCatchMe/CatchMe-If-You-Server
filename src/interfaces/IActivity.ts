@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 export interface IActivity {
   user: mongoose.Types.ObjectId;
-  user_id: number;
+  user_id: string;
   activityIndex: number;
   activityContent: string;
   activityImage: string;

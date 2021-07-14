@@ -10,11 +10,12 @@ const router = Router();
  *  @desc Get all activities
  *  @access Public
  */
-router.get("/", auth ,async (req: Request, res: Response) => {
+router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Response) => {
   try {
     console.log("[/report] 리포트 데이터 불러오기 시도");
     var characterIndexArr = [];
-    const { activityYear, activityMonth } = req.body;
+    const activityYear = req.params.activityYear;
+    const activityMonth = req.params.activityMonth;
 
     // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) 
     const activitiesOfMonth = await Activity
@@ -36,8 +37,8 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     .aggregate([
       { $group : 
         { _id : { 
-          "activityYear" : "$activityYear", 
-          "activityMonth" : "$activityMonth", 
+          "activityYear" : activityYear, 
+          "activityMonth" : activityMonth,
           "activityDay" : "$activityDay"}, 
         characterIndexArray: { $push:"$characterIndex" } } 
       }
@@ -63,11 +64,13 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     .aggregate([
       { $group : 
         { _id : { 
-          "activityYear" : "$activityYear", 
-          "activityMonth" : "$activityMonth" }, 
+          "activityYear" : activityYear, 
+          "activityMonth" : activityMonth }, 
         characterIndexArray: { $push:"$characterIndex" } } 
       }
     ])
+
+    console.log(character)
 
     const countsMonth = character[0]['characterIndexArray'].reduce((pv, cv)=>{ 
       pv[cv] = (pv[cv] || 0) + 1; 
@@ -81,6 +84,8 @@ router.get("/", auth ,async (req: Request, res: Response) => {
         modeM = val; 
       } 
     });
+
+    console.log(modeM)
 
     // 해당 월의 베스트 캐릭터 정보 
     const characterOfMonth = await Character
