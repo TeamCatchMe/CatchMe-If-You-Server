@@ -82,7 +82,6 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
   }
 });
 
-
 /**
  *  @route Post character/edit
  *  @desc edit character info
@@ -91,6 +90,18 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
  router.post("/edit", auth, async (req, res) => {
 
   const { characterIndex, characterName, characterPrivacy } = req.body;
+
+  const checkIndex = await Character
+  .find({user_id : req.body.user.id, characterIndex : characterIndex }).countDocuments();
+
+  if ( checkIndex == 0 ) {
+    console.log("[/character/edit] 실패 : 존재하지 않는 캐릭터 인덱스 입력");
+    return res.status(400).json({
+      status: 400,
+      success: false,
+      message: "실패 - 존재하지 않는 캐릭터 인덱스 입력",
+    });
+  }
 
   try {
     console.log("[/character/edit] 캐릭터 수정 시도");
