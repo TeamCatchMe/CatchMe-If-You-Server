@@ -37,8 +37,8 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     .aggregate([
       { $group : 
         { _id : { 
-          "activityYear" : "$activityYear", 
-          "activityMonth" : "$activityMonth", 
+          "activityYear" : activityYear, 
+          "activityMonth" : activityMonth,
           "activityDay" : "$activityDay"}, 
         characterIndexArray: { $push:"$characterIndex" } } 
       }
@@ -64,11 +64,13 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     .aggregate([
       { $group : 
         { _id : { 
-          "activityYear" : "$activityYear", 
-          "activityMonth" : "$activityMonth" }, 
+          "activityYear" : activityYear, 
+          "activityMonth" : activityMonth }, 
         characterIndexArray: { $push:"$characterIndex" } } 
       }
     ])
+
+    console.log(character)
 
     const countsMonth = character[0]['characterIndexArray'].reduce((pv, cv)=>{ 
       pv[cv] = (pv[cv] || 0) + 1; 
@@ -83,6 +85,8 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
       } 
     });
 
+    console.log(modeM)
+
     // 해당 월의 베스트 캐릭터 정보 
     const characterOfMonth = await Character
     .findOne({user_id : req.body.user.id, characterIndex : Number(modeM) }, { _id : false, activity: false })
@@ -90,7 +94,6 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     
     // 그 캐릭터의 캐칭수
     const catching = characterOfMonth['activityCount'];
-    console.log(characterOfMonth);
 
     // 캐릭터 인덱스마다의 레벨 가져오기
     const characterInfo = await Character
