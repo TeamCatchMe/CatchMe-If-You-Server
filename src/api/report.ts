@@ -70,8 +70,6 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
       }
     ])
 
-    console.log(character)
-
     const countsMonth = character[0]['characterIndexArray'].reduce((pv, cv)=>{ 
       pv[cv] = (pv[cv] || 0) + 1; 
       return pv; 
@@ -84,8 +82,6 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
         modeM = val; 
       } 
     });
-
-    console.log(modeM)
 
     // 해당 월의 베스트 캐릭터 정보 
     const characterOfMonth = await Character
