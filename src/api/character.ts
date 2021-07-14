@@ -21,9 +21,12 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
     .findOne({ user_id : req.body.user.id, characterIndex : Number(characterIndex)})
     .select({ user_id : 0, _id : 0 });
 
+    var characterActivitiesCount = character["activityCount"];
+    var catchRate = 0;
+
     if (!character) {
-      console.log("[/character] 캐릭터 데이터 없음");
-      return res.status(400).json({
+      console.log("[/character] 통신 성공, 캐릭터 데이터 없음");
+      res.status(400).json({
         status: 400,
         success: false,
         message: "캐릭터 데이터가 존재 하지 않는다. 미안.",
@@ -31,12 +34,16 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
     }
 
     if (character["activityCount"] == 0) {
-      console.log("통신 성공, 당월 게시글 데이터 없음.");
+      console.log("[/character] 통신 성공, 당월 게시글 데이터 없음");
       return res.status(200).json({
         status: 200,
         success: true,
         message: "통신성공, 당월 게시글이 존재하지 않습니다.",
-        data: character,
+        data: {
+          character,
+          characterActivitiesCount,
+          catchRate
+        }
       });
     }
 
@@ -50,19 +57,13 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
       allActivitiesCount += allActivities[i]["activityCount"];
     }
 
-    // 캐릭터가 쓴 게시글의 총 개수를 구합니다.
-    // 캐치지수 : 전체 활동중 해당 캐릭터의 활동 비율
+    console.log(characterActivitiesCount)
+    console.log(catchRate)
 
-    var characterActivitiesCount = character["activityCount"];
-    var catchRate = 0;
-
-    if ( characterActivitiesCount == 0 ) {
-      characterActivitiesCount = 0;
-    } else {
-      catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
-    }
+    catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
     
-    console.log(character['characterName'], "님의 상세정보 불러오기 성공");
+    console.log("[/character] <", character['characterName'], "> 님의 상세정보 불러오기 성공");
+    
 
     return res.status(200).json({
       status: 200,
@@ -71,7 +72,7 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
       data: {
         character,
         characterActivitiesCount,
-        catchRate,
+        catchRate
       },
     });
   } catch (error) {
