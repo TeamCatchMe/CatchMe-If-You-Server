@@ -52,14 +52,14 @@ router.get("/", auth, async (req: Request, res: Response) => {
  *  @desc Get character info for other 
  *  @access Public
  */
- router.get("/detail", auth, async (req: Request, res: Response) => {
+ router.get("/detail/:user_id/:characterIndex", auth, async (req: Request, res: Response) => {
   try {
     console.log("[/other/detail] 구경하기 캐릭터 상세보기 시도");
 
-    const { user_id, characterIndex } = req.body;
+    const { user_id, characterIndex} = req.params;
 
     const character = await Character
-    .findOne({ user_id : user_id, characterIndex : characterIndex})
+    .findOne({ user_id : user_id, characterIndex : Number(characterIndex)})
     .select({  _id: 0 })
 
     if (!character) {

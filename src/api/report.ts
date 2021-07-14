@@ -10,11 +10,12 @@ const router = Router();
  *  @desc Get all activities
  *  @access Public
  */
-router.get("/", auth ,async (req: Request, res: Response) => {
+router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Response) => {
   try {
     console.log("[/report] 리포트 데이터 불러오기 시도");
     var characterIndexArr = [];
-    const { activityYear, activityMonth } = req.body;
+    const activityYear = req.params.activityYear;
+    const activityMonth = req.params.activityMonth;
 
     // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) 
     const activitiesOfMonth = await Activity
@@ -89,6 +90,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     
     // 그 캐릭터의 캐칭수
     const catching = characterOfMonth['activityCount'];
+    console.log(characterOfMonth);
 
     // 캐릭터 인덱스마다의 레벨 가져오기
     const characterInfo = await Character
