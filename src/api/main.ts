@@ -39,6 +39,7 @@ router.get("/", auth, async function (req, res) {
         characterBirth: false,
         ResentActivityTime: false,
         characterPrivacy: false,
+        recentActivityTime: false,
       }
     )
       .sort({ ResentActivityTime: -1 })
