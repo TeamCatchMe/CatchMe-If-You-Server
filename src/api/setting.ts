@@ -165,25 +165,18 @@ router.post("/password", auth, async (req, res) => {
  */
 router.post("/withdraw", auth, async (req, res) => {
   try {
-    console.log("[/setting/withdraw] 회원탈퇴");
+    console.log("[/setting/withdraw] 회원 탈퇴 시도");
 
-    var password = req.body.password;
+    await UserData.deleteOne({ _id: req.body.user.id });
 
-    let user = await UserData.findOne({ _id: req.body.user.id });
-
-    await UserData.findOneAndUpdate(
-      { _id: req.body.user.id },
-      { password: password }
-    );
-
-    console.log("[/setting/password] 비밀번호 변경 성공");
+    console.log("[/setting/withdraw] 회원 탈퇴 성공");
     return res.status(200).json({
       status: 200,
       success: true,
-      message: "비밀번호 변경 성공",
+      message: "회원 탈퇴 성공",
     });
   } catch (err) {
-    console.log("[/setting/password] 비밀번호 변경 실패 - 서버 내부 오류");
+    console.log("[/setting/withdraw] 회원 탈퇴 실패 - 서버 내부 오류");
     console.error(err.message);
     res.status(500).json({
       status: 500,
