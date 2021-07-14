@@ -51,14 +51,19 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
     }
 
     // 캐릭터가 쓴 게시글의 총 개수를 구합니다.
-    const characterActivitiesCount = character["activityCount"];
-
     // 캐치지수 : 전체 활동중 해당 캐릭터의 활동 비율
-    const catchRate = Math.floor(
-      (characterActivitiesCount / allActivitiesCount) * 100
-    );
 
-    console.log(character["characterName"], "님의 상세정보 불러오기 성공");
+    var characterActivitiesCount = character["activityCount"];
+    var catchRate = 0;
+
+    if ( characterActivitiesCount == 0 ) {
+      characterActivitiesCount = 0;
+    } else {
+      catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
+    }
+    
+    console.log(character['characterName'], "님의 상세정보 불러오기 성공");
+
     return res.status(200).json({
       status: 200,
       success: true,
