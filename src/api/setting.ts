@@ -9,7 +9,7 @@ const router = express.Router();
 import UserData from "../models/Userdata";
 
 /**
- *  @route Post user/editnickname
+ *  @route Post setting/editnickname
  *  @desc edit nickname
  *  @access Public
  */
@@ -47,6 +47,55 @@ router.post("/nickname", auth, async (req, res) => {
     });
   } catch (err) {
     console.log("[/setting/nickname] 닉네임 변경 실패 - 서버 내부 오류");
+    console.error(err.message);
+    res.status(500).json({
+      status: 500,
+      success: false,
+      message: "서버 내부 오류",
+    });
+  }
+});
+
+/**
+ *  @route Post setting/passwordcheck
+ *  @desc password check
+ *  @access Public
+ */
+router.post("/passwordcheck", auth, async (req, res) => {
+  try {
+    console.log("[/setting/passwordcheck] 현재 비밀번호 확인 시도");
+
+    const password = req.body.password;
+    let user = await UserData.findOne({ _id: req.body.user.id });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    // 비밀번호 일치하지 않음
+    if (!isMatch) {
+      console.log(
+        "[/setting/passwordcheck] 비밀번호 확인 실패 - 비밀번호 불일치"
+      );
+      res.status(400).json({
+        status: 400,
+        success: false,
+        message: "현재 비밀번호와 일치하지 않습니다.",
+        data: {
+          check: "false",
+        },
+      });
+    }
+
+    console.log("[/setting/passwordcheck] 비밀번호 확인 성공");
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      message: "현재 비밀번호와 일치합니다",
+      data: {
+        check: "true",
+      },
+    });
+  } catch (err) {
+    console.log("[/setting/passwordcheck] 비밀번호 확인 실패 - 서버 내부 오류");
     console.error(err.message);
     res.status(500).json({
       status: 500,
