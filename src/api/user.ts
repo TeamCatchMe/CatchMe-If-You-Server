@@ -176,7 +176,7 @@ router.post(
       console.log("이메일 중복 체크 - 사용중인 이메일");
       return res.status(200).json({
         status: 200,
-        success: true,
+        success: false,
         message: "이미 사용중인 이메일입니다.",
         data: {
           duplicate: "unavailable",
