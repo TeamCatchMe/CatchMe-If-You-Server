@@ -37,9 +37,9 @@ const ActivitySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    recentActivityTime : {
-      type : String,
-      required : true,
+    recentActivityTime: {
+      type: String,
+      required: true,
     },
     characterIndex: {
       type: Number,
