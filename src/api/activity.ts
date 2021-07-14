@@ -73,6 +73,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       activityYear: activityYear,
       activityMonth: activityMonth,
       activityDay: activityDay,
+      recentActivityTime : activityUpdateTime,
       characterIndex: characterIndex,
       activityImageName: activityImageName,
     });

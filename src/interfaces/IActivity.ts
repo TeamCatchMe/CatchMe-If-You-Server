@@ -8,6 +8,7 @@ export interface IActivity {
   activityYear: string;
   activityMonth: string;
   activityDay: string;
+  recentActivityTime : string;
   characterIndex: number;
   activityImageName: string;
 }

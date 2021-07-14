@@ -31,7 +31,7 @@ const CharacterSchema = new mongoose.Schema(
     characterBirth: {
       type: String,
     },
-    ResentActivityTime: {
+    recentActivityTime : {
       type: String,
     },
     activityCount: {
