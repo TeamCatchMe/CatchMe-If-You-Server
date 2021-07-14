@@ -98,8 +98,11 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
 
     // 캐릭터 인덱스마다의 레벨 가져오기
     const characterInfo = await Character
-    .find({user_id : req.body.user.id}, {_id : false, characterLevel : true })
-    var characterLevelArr, characterImageArr = [];
+    .find({user_id : req.body.user.id}, {_id : false, characterLevel : true, characterImageIndex : true })
+
+    var characterLevelArr = [];
+    var characterImageArr = [];
+
     for (var j = 0; j<characterInfo.length; j++) {
       characterLevelArr.push(characterInfo[j]["characterLevel"])
       characterImageArr.push(characterInfo[j]["characterImageIndex"])  
