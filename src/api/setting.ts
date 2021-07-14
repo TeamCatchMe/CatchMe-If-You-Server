@@ -28,7 +28,7 @@ router.post("/nickname", auth, async (req, res) => {
 
       return res.status(200).json({
         status: 200,
-        success: true,
+        success: false,
         message: "현재와 같은 닉네임",
       });
     }
@@ -74,7 +74,7 @@ router.post("/passwordcheck", auth, async (req, res) => {
         "[/setting/passwordcheck] 비밀번호 확인 실패 - 비밀번호 불일치"
       );
       res.status(400).json({
-        status: 400,
+        status: 200,
         success: false,
         message: "현재 비밀번호와 일치하지 않습니다.",
         data: {
