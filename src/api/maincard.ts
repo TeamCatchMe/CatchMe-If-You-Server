@@ -74,7 +74,7 @@ router.get("/most", auth ,async (req: Request, res: Response) => {
     return res.status(200).json({
       "status" : 200,
       "success" : true,
-      "message" : "[/maincard/most] 최다활동순 캐릭터 목록 가져오기 성공",
+      "message" : "최다활동순 캐릭터 목록 가져오기 성공",
       "data" : characters
     })
 

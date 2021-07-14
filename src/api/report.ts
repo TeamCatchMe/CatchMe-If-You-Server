@@ -16,13 +16,15 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     var characterIndexArr = [];
     const activityYear = req.params.activityYear;
     const activityMonth = req.params.activityMonth;
+    const user_id = req.body.user.id;
+    console.log(user_id)
 
     // xxxx년 xx월의 모든 게시글 가져오기 = activities (Array) 
     const activitiesOfMonth = await Activity
     .find({ user_id : req.body.user.id, activityYear: activityYear, activityMonth : activityMonth })
     .select({ user_id : 0, _id : 0, activityImage : 0, activityContent : 0, activityImageName : 0 })
     .sort({ activityDay : 1 });
-
+    
     if ( activitiesOfMonth.length == 0 ) {
       return res.status(400).json({
         "status" : 400,
@@ -35,6 +37,7 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     // 해당 월 날마다의 베스트 캐릭터 인덱스를 구함
     const activities = await Activity
     .aggregate([
+      { $match : { user_id : user_id } },
       { $group : 
         { _id : { 
           "activityYear" : activityYear, 
@@ -43,6 +46,8 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
         characterIndexArray: { $push:"$characterIndex" } } 
       }
     ]).sort({ "_id.activityDay" : 1 });
+
+    console.log(activities)
 
     for ( var i = 0; i<activities.length; i++ ) {
       const countsDay = activities[i]['characterIndexArray'].reduce((pv, cv)=>{ 
@@ -56,6 +61,7 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
           mode = val; 
         } 
       });
+      console.log(mode)
       characterIndexArr.push(Number(mode));
     }
 
@@ -64,12 +70,13 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     .aggregate([
       { $group : 
         { _id : { 
+          "user_id" : user_id,
           "activityYear" : activityYear, 
           "activityMonth" : activityMonth }, 
         characterIndexArray: { $push:"$characterIndex" } } 
       }
     ])
-
+    console.log(character)
     const countsMonth = character[0]['characterIndexArray'].reduce((pv, cv)=>{ 
       pv[cv] = (pv[cv] || 0) + 1; 
       return pv; 
