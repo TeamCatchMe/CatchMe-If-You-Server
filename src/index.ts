@@ -8,9 +8,6 @@ connectDB();
 app.use(express.json());
 
 // Define Routes
-app.use("/test", require("./api/test"));
-app.use("/post", require("./api/post"));
-
 app.use("/user", require("./api/user"));
 app.use("/main", require("./api/main"));
 app.use("/maincard", require("./api/maincard"));
@@ -18,6 +15,7 @@ app.use("/activity", require("./api/activity"));
 app.use("/report", require("./api/report"));
 app.use("/character", require("./api/character"));
 app.use("/other", require("./api/other"));
+app.use("/setting", require("./api/setting"));
 
 // error handler
 app.use(function (err, req, res, next) {
