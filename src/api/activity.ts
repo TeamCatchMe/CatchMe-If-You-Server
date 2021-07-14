@@ -1,6 +1,5 @@
 // import express from "express";
 import auth from "../middleware/auth";
-import authtest from "../middleware/authtest";
 
 import upload from "../utils/s3";
 const express = require("express");
@@ -212,12 +211,12 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     });
     // Character에 수정된 activity 데이터들로 바꿔준다.
     await Character.findOneAndUpdate(
-      { characterIndex: characterIndex },
+      { user_id: req.body.user.id, characterIndex: characterIndex },
       { activity: activityForPush }
     );
 
     await Character.findOneAndUpdate(
-      { characterIndex: characterIndex },
+      { user_id: req.body.user.id, characterIndex: characterIndex },
       {
         ResentActivityTime: activityUpdateTime,
       }
@@ -285,7 +284,7 @@ router.post("/delete", auth, async (req, res) => {
 
     // Character에 수정된 activity 데이터들로 바꿔준다.
     await Character.findOneAndUpdate(
-      { characterIndex: characterIndex },
+      { user_id: req.body.user.id, characterIndex: characterIndex },
       { activity: activityForPush, recentActivityTime: activityUpdateTime }
     );
 
@@ -297,7 +296,7 @@ router.post("/delete", auth, async (req, res) => {
 
     const activityCount = lastActivity[0]["activity"].length;
     await Character.findOneAndUpdate(
-      { characterIndex: characterIndex },
+      { user_id: req.body.user.id, characterIndex: characterIndex },
       {
         activityCount: activityCount,
       }
