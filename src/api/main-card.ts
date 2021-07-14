@@ -50,7 +50,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
  *  @desc Get all characters (최다 활동순)
  *  @access Public
  */
-// (작업중)
+
 router.get("/most", auth ,async (req: Request, res: Response) => {
   try {
 
@@ -149,7 +149,7 @@ router.post("/create", auth, async (req, res) => {
   } else {
     characterIndex = lastCharacter[0]["characterIndex"] + 1;
   }
-  
+
   var characterBirth = time.format("YYYYMMDDHHmmss");
   const { characterName, characterImageIndex, characterPrivacy } = req.body;
 

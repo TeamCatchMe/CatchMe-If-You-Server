@@ -46,7 +46,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     // 캐치지수 : 전체 활동중 해당 캐릭터의 활동 비율
     const catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
     
-    console.log("캐릭터 상세정보 불러오기 성공");
+    console.log(character['characterName'], "님의 상세정보 불러오기 성공");
     return res.status(200).json({
       "status" : 200,
       "success" : true,
