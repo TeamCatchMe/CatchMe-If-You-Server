@@ -12,6 +12,7 @@ const router = Router();
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {
+    console.log("[/report] 리포트 데이터 불러오기 시도");
     var characterIndexArr = [];
     const { activityYear, activityMonth } = req.body;
 
@@ -97,7 +98,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
       characterLevelArr.push(characterInfo[j]["characterLevel"])  
     }
 
-    console.log("월별 게시글 데이터 불러오기 성공");
+    console.log("[/report] 월별 게시글 데이터 불러오기 성공");
     return res.status(200).json({
       "status" : 200,
       "success" : true,
@@ -115,7 +116,7 @@ router.get("/", auth ,async (req: Request, res: Response) => {
     });
     
   } catch (error) {
-    console.log("월별 게시글 데이터 불러오기 실패");
+    console.log("[/report] 월별 게시글 데이터 불러오기 실패");
     console.error(error.message);
     res.status(500).json({
         "status" : 500,
