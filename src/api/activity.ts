@@ -29,6 +29,8 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   var activityIndex = 0;
 
   try {
+    console.log("[/activity/new] activity 활동 기록 등록 시도 ");
+
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const lastActivity = await Character.find(
       { user_id: req.body.user.id, characterIndex: characterIndex },
@@ -104,6 +106,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
           characterLevel: 2,
         }
       );
+      console.log("[/activity/new] 활동 기록 등록 성공 및 2레벨 도달 ");
       return res.status(222).json({
         status: 222,
         success: true,
@@ -117,6 +120,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
           characterLevel: 3,
         }
       );
+      console.log("[/activity/new] 활동 기록 등록 성공 및 3레벨 도달 ");
       return res.status(222).json({
         status: 222,
         success: true,
@@ -125,13 +129,14 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       });
     }
 
-    console.log("new activity 생성 완료 --");
+    console.log("[/activity/new] 활동 기록 등록 성공");
     return res.status(200).json({
       status: 200,
       success: true,
       message: "게시글 생성 성공",
     });
   } catch (err) {
+    console.log("[/activity/new] 활동 기록 등록 실패 - 서버 내부 오류 ");
     console.error(err.message);
     res.status(500).json({
       status: 500,
@@ -159,6 +164,8 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
   } = req.body;
 
   try {
+    console.log("[/activity/edit] 활동 기록 수정 시도");
+
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const objectActivity = await Activity.find({
       user_id: req.body.user.id,
@@ -224,13 +231,14 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
       activityImageName: activityImageName,
     });
 
-    console.log("activity 수정 완료 --");
+    console.log("[/activity/edit] 활동 기록 수정 성공");
     return res.status(200).json({
       status: 200,
       success: true,
       message: "게시글 수정 성공",
     });
   } catch (err) {
+    console.log("[/activity/edit] 활동 기록 수정 실패 - 서버 내부 오류 (500)");
     console.error(err.message);
     res.status(500).json({
       status: 500,
@@ -249,6 +257,8 @@ router.post("/delete", auth, async (req, res) => {
   const { characterIndex, activityIndex } = req.body;
 
   try {
+    console.log("[/activity/delete] 활동 기록 삭제 시도");
+
     // 수정할 값들을 바탕으로 데이터를 삭제한다.
     const deletedActivity = await Activity.findOneAndDelete({
       user_id: req.body.user.id,
@@ -299,6 +309,7 @@ router.post("/delete", auth, async (req, res) => {
           characterLevel: 1,
         }
       );
+      console.log("[/activity/delete] 활동 기록 삭제 성공 및 레벨 1 강등");
       return res.status(222).json({
         status: 222,
         success: true,
@@ -311,6 +322,7 @@ router.post("/delete", auth, async (req, res) => {
           characterLevel: 2,
         }
       );
+      console.log("[/activity/delete] 활동 기록 삭제 성공 및 레벨 2 강등");
       return res.status(222).json({
         status: 222,
         success: true,
@@ -318,13 +330,14 @@ router.post("/delete", auth, async (req, res) => {
       });
     }
 
-    console.log("activity 삭제 완료 --");
+    console.log("[/activity/delete] 활동 기록 삭제 성공");
     return res.status(200).json({
       status: 200,
       success: true,
       message: "게시글 삭제 성공",
     });
   } catch (err) {
+    console.log("[/activity/delete] 활동 기록 삭제 실패 - 서버 내부 오류");
     console.error(err.message);
     res.status(500).json({
       status: 500,
