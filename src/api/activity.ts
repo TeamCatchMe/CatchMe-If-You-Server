@@ -1,6 +1,5 @@
 // import express from "express";
 import auth from "../middleware/auth";
-import authtest from "../middleware/authtest";
 
 import upload from "../utils/s3";
 const express = require("express");

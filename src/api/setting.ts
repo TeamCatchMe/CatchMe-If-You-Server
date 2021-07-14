@@ -1,8 +1,6 @@
 import express from "express";
 import auth from "../middleware/auth";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import config from "../config";
 
 const router = express.Router();
 
