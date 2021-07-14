@@ -73,7 +73,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       activityYear: activityYear,
       activityMonth: activityMonth,
       activityDay: activityDay,
-      recentActivityTime : activityUpdateTime,
+      recentActivityTime: activityUpdateTime,
       characterIndex: characterIndex,
       activityImageName: activityImageName,
     });
@@ -261,10 +261,19 @@ router.post("/delete", auth, async (req, res) => {
       user_id: req.body.user.id,
       characterIndex: characterIndex,
     });
+
+    const activityForTime = await Activity.find({
+      user_id: req.body.user.id,
+      characterIndex: characterIndex,
+    }).sort({ recentActivityTime: -1 });
+
+    const activityUpdateTime = activityForTime[0]["recentActivityTime"];
+    console.log("너무 찾고 싶다구요.,..", activityUpdateTime);
+
     // Character에 수정된 activity 데이터들로 바꿔준다.
     await Character.findOneAndUpdate(
       { characterIndex: characterIndex },
-      { activity: activityForPush }
+      { activity: activityForPush, recentActivityTime: activityUpdateTime }
     );
 
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
@@ -280,6 +289,7 @@ router.post("/delete", auth, async (req, res) => {
         activityCount: activityCount,
       }
     );
+
     console.log("[삭제된 데이터] \n", deletedActivity);
 
     // 활동 기록 수를 확인하여 캐릭터 레벨을 돌려준다.
