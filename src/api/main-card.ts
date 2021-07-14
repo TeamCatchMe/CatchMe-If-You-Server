@@ -13,7 +13,7 @@ const router = Router();
 router.get("/", auth, async (req: Request, res: Response) => {
   try {
     const characters = await Character.find({ user_id: req.body.user.id })
-      .sort({ ResentActivityTime : -1 })
+      .sort({ recentActivityTime : -1 })
       .select({ user_id: 0, _id: 0, activity : 0 });
 
     if (!characters) {
@@ -162,7 +162,7 @@ router.post("/create", auth, async (req, res) => {
       characterPrivacy: characterPrivacy,
       characterLevel: 1,
       characterBirth: characterBirth,
-      ResentActivityTime: characterBirth,
+      resentActivityTime: characterBirth,
       activityCount : 0
     });
 
