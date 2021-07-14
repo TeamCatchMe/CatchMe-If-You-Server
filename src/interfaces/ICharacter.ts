@@ -9,6 +9,7 @@ export interface ICharacter {
   characterPrivacy: boolean;
   characterLevel: number;
   characterBirth: string;
+  recentActivityTime : string;
   activityCount: number;
   countPercentage: number;
   activity: IActivity[];
