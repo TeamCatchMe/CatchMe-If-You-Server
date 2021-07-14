@@ -189,7 +189,6 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
         activityIndex: activityIndex,
       },
       {
-        user_id: req.body.user.id,
         activityIndex: objectActivity[0].activityIndex,
         activityContent: activityContent,
         activityImage: activityImage,
