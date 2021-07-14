@@ -57,13 +57,9 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
       allActivitiesCount += allActivities[i]["activityCount"];
     }
 
-    console.log(characterActivitiesCount)
-    console.log(catchRate)
-
     catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
     
     console.log("[/character] <", character['characterName'], "> 님의 상세정보 불러오기 성공");
-    
 
     return res.status(200).json({
       status: 200,
@@ -78,6 +74,53 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
   } catch (error) {
     console.log("캐릭터 상세정보 불러오기 실패");
     console.error(error.message);
+    res.status(500).json({
+      status: 500,
+      success: false,
+      message: "서버 내부 오류",
+    });
+  }
+});
+
+
+/**
+ *  @route Post character/edit
+ *  @desc edit character info
+ *  @access Public
+ */
+ router.post("/edit", auth, async (req, res) => {
+
+  const { characterIndex, characterName, characterPrivacy } = req.body;
+
+  try {
+    console.log("[/character/edit] 캐릭터 수정 시도");
+
+    // 수정할 값들을 바탕으로 데이터를 수정해준다.
+    await Character.findOneAndUpdate(
+      {
+        user_id: req.body.user.id,
+        characterIndex: characterIndex,
+      },
+      {
+        characterName: characterName,
+        characterPrivacy : characterPrivacy,
+      }
+    );
+
+    console.log("[수정된 데이터] \n", {
+      characterName: characterName,
+      characterPrivacy : characterPrivacy,
+    });
+
+    console.log("[/character/edit] 캐릭터 수정 성공");
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      message: "캐릭터 수정 성공",
+    });
+  } catch (err) {
+    console.log("[/character/edit] 캐릭터 수정 실패 - 서버 내부 오류 (500)");
+    console.error(err.message);
     res.status(500).json({
       status: 500,
       success: false,
