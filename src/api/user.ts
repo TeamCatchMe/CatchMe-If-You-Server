@@ -27,10 +27,12 @@ router.post(
     const { email, password } = req.body;
 
     try {
+      console.log("[/login] 로그인 시도");
+
       let user = await UserData.findOne({ email });
       // 없는 유저
       if (!user) {
-        console.log("로그인 실패 - 존재하지 않는 이메일");
+        console.log("[/login] 로그인 실패 - 존재하지 않는 이메일");
         res.status(400).json({
           status: 400,
           success: false,
@@ -42,7 +44,7 @@ router.post(
 
       // 비밀번호 일치하지 않음
       if (!isMatch) {
-        console.log("로그인 실패 - 비밀번호 불일치");
+        console.log("[/login] 로그인 실패 - 비밀번호 불일치");
         res.status(400).json({
           status: 400,
           success: false,
@@ -65,7 +67,7 @@ router.post(
         (err, token) => {
           if (err) throw err;
           console.log(
-            "로그인 성공 -- [user.id] : ",
+            "[/login] 로그인 성공 -- [user.id] : ",
             user.id,
             "[email] : ",
             email,
@@ -81,6 +83,7 @@ router.post(
         }
       );
     } catch (err) {
+      console.log("[/login] 로그인 - 서버내부오류");
       console.error(err.message);
       res.status(500).json({
         status: 500,
