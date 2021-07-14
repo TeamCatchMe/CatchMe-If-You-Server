@@ -54,18 +54,6 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       activityImageName = req.file.key;
     }
 
-    const newActivity = {
-      user_id: req.body.user.id,
-      activityIndex: activityIndex,
-      activityContent: activityContent,
-      activityImage: activityImage,
-      activityYear: activityYear,
-      activityMonth: activityMonth,
-      activityDay: activityDay,
-      characterIndex: characterIndex,
-      activityImageName: activityImageName,
-    };
-
     const activityAdded = new Activity({
       user_id: req.body.user.id,
       activityIndex: activityIndex,
@@ -83,7 +71,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     await Character.findOneAndUpdate(
       { user_id: req.body.user.id, characterIndex: characterIndex },
       {
-        ResentActivityTime: activityUpdateTime,
+        recentActivityTime: activityUpdateTime,
         activityCount: countAfterUpdate,
       }
     );
@@ -213,13 +201,6 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     await Character.findOneAndUpdate(
       { user_id: req.body.user.id, characterIndex: characterIndex },
       { activity: activityForPush }
-    );
-
-    await Character.findOneAndUpdate(
-      { user_id: req.body.user.id, characterIndex: characterIndex },
-      {
-        ResentActivityTime: activityUpdateTime,
-      }
     );
 
     console.log("[수정된 데이터] \n", {

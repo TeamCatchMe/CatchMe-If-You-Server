@@ -22,7 +22,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(200).json({ errors: errors.array() });
     }
     const { email, password } = req.body;
 
@@ -33,8 +33,8 @@ router.post(
       // 없는 유저
       if (!user) {
         console.log("[/login] 로그인 실패 - 존재하지 않는 이메일");
-        res.status(400).json({
-          status: 400,
+        res.status(200).json({
+          status: 200,
           success: false,
           message: "존재하지 않는 이메일 입니다.",
         });
@@ -45,8 +45,8 @@ router.post(
       // 비밀번호 일치하지 않음
       if (!isMatch) {
         console.log("[/login] 로그인 실패 - 비밀번호 불일치");
-        res.status(400).json({
-          status: 400,
+        res.status(200).json({
+          status: 200,
           success: false,
           message: "비밀번호가 일치하지 않습니다.",
         });
