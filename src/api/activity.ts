@@ -80,14 +80,9 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       activityImageName: activityImageName,
     });
 
-    await Character.findOneAndUpdate(
-      { characterIndex: characterIndex },
-      { $push: { activity: newActivity } }
-    );
-
     const countAfterUpdate = activityCount + 1;
     await Character.findOneAndUpdate(
-      { characterIndex: characterIndex },
+      { user_id: req.body.user.id, characterIndex: characterIndex },
       {
         ResentActivityTime: activityUpdateTime,
         activityCount: countAfterUpdate,
@@ -97,6 +92,16 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     console.log("[추가된 데이터] \n", activityAdded);
 
     await activityAdded.save();
+
+    const edittedActivity = await Activity.find({
+      user_id: req.body.user.id,
+      characterIndex: characterIndex,
+    });
+
+    await Character.findOneAndUpdate(
+      { user_id: req.body.user.id, characterIndex: characterIndex },
+      { activity: edittedActivity }
+    );
 
     // 활동 기록 수를 확인하여 캐릭터 레벨업
     if (countAfterUpdate == 11) {
