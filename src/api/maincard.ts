@@ -12,12 +12,13 @@ const router = Router();
  */
 router.get("/", auth, async (req: Request, res: Response) => {
   try {
+    console.log("[/maincard] 최근활동순 캐릭터 목록 불러오기 시도");
     const characters = await Character.find({ user_id: req.body.user.id })
       .sort({ recentActivityTime : -1 })
       .select({ user_id: 0, _id: 0, activity : 0 });
 
     if (!characters) {
-      console.log("캐릭터 데이터 없음");
+      console.log("[/maincard] 캐릭터 데이터 없음");
       return res.status(400).json({
         status: 400,
         success: false,
@@ -26,7 +27,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
       });
     }
 
-    console.log("최근활동순 캐릭터 목록 가져오기 성공");
+    console.log("[/maincard] 최근활동순 캐릭터 목록 가져오기 성공");
     return res.status(200).json({
       status: 200,
       success: true,
@@ -36,7 +37,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error(error.message);
-    console.log("최근활동순 캐릭터 목록 가져오기 실패");
+    console.log("[/maincard] 최근활동순 캐릭터 목록 가져오기 실패");
     res.status(500).json({
       status: 500,
       success: false,
@@ -53,14 +54,14 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
 router.get("/most", auth ,async (req: Request, res: Response) => {
   try {
-
+    console.log("[/maincard/most] 최다활동순 캐릭터 목록 불러오기 시도");
     const characters = await Character
     .find({ user_id : req.body.user.id })
     .sort({activityCount : -1})
     .select({ user_id: 0, _id: 0, activity : 0 });;
 
     if (characters.length == 0) {
-      console.log("캐릭터 데이터 없음");
+      console.log("[/maincard/most] 캐릭터 데이터 없음");
       return res.status(400).json({
         "status" : 400,
         "success" : false,
@@ -69,16 +70,16 @@ router.get("/most", auth ,async (req: Request, res: Response) => {
       });
     }
 
-    console.log("최다활동순 캐릭터 목록 불러오기 성공");
+    console.log("[/maincard/most] 최다활동순 캐릭터 목록 불러오기 성공");
     return res.status(200).json({
       "status" : 200,
       "success" : true,
-      "message" : "최다활동순 캐릭터 목록 가져오기 성공",
+      "message" : "[/maincard/most] 최다활동순 캐릭터 목록 가져오기 성공",
       "data" : characters
     })
 
   } catch (error) {
-    console.log("최다활동순 캐릭터 목록 불러오기 실패");
+    console.log("[/maincard/most] 최다활동순 캐릭터 목록 불러오기 실패");
     console.error(error.message);
     res.status(500).json({
         "status" : 500,
@@ -97,13 +98,14 @@ router.get("/most", auth ,async (req: Request, res: Response) => {
 // characterBirth(yyyymmdd)로 sorting
 router.get("/recent", auth, async (req: Request, res: Response) => {
   try {
+    console.log("[/maincard/recent] 최다활동순 캐릭터 목록 불러오기 시도");
     const characters = await Character
     .find({ user_id: req.body.user.id })
     .sort({ "characterBirth": -1 })
     .select({ user_id: 0, _id: 0, activity : 0 });
 
     if (!characters) {
-      console.log("캐릭터 데이터 없음");
+      console.log("[/maincard/recent] 캐릭터 데이터 없음");
       return res.status(400).json({
         status: 400,
         success: false,
@@ -112,7 +114,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
       });
     }
 
-    console.log("최근생성순 캐릭터 목록 불러오기 성공");
+    console.log("[/maincard/recent] 최근생성순 캐릭터 목록 불러오기 성공");
     return res.status(200).json({
       status: 200,
       success: true,
@@ -121,7 +123,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.log("최근생성순 캐릭터 목록 불러오기 실패");
+    console.log("[/maincard/recent] 최근생성순 캐릭터 목록 불러오기 실패");
     console.error(error.message);
     res.status(500).json({
       status: 500,
@@ -138,6 +140,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
  */
 
 router.post("/create", auth, async (req, res) => {
+  console.log("[/maincard/create] 캐릭터 생성 시도");
   const time = moment();
   
   const lastCharacter = await Character.find({ user_id: req.body.user.id })
@@ -168,14 +171,14 @@ router.post("/create", auth, async (req, res) => {
 
     await newCharacter.save();
 
-    console.log("캐릭터 생성 성공");
+    console.log("[/maincard/create] 캐릭터 생성 성공");
     return res.status(200).json({
       status: 200,
       success: true,
       message: "캐릭터 생성 성공",
     });
   } catch (err) {
-    console.log("캐릭터 생성 실패");
+    console.log("[/maincard/create] 캐릭터 생성 실패");
     console.error(err.message);
     res.status(500).json({
       status: 500,

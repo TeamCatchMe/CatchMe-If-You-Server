@@ -1,8 +1,6 @@
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth"
 import Character from "../models/Character";
-
-const moment = require('moment');
 const router = Router();
 
 /**
@@ -12,6 +10,7 @@ const router = Router();
  */
 router.get("/", auth ,async (req: Request, res: Response) => {
   try {
+    console.log("[/character] 캐릭터 상세정보 가져오기 시도");
     var allActivitiesCount = 0;
     const { characterIndex } = req.body;
 
