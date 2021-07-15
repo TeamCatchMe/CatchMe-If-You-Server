@@ -36,7 +36,7 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     // 해당 월 날마다의 베스트 캐릭터 인덱스를 구함
     const activities = await Activity
     .aggregate([
-      { $match : { user_id : user_id } },
+      { $match : { user_id : user_id, activityYear : activityYear, activityMonth : activityMonth } },
       { $group : 
         { _id : { 
           "activityYear" : activityYear, 
