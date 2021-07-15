@@ -1,7 +1,9 @@
 // import express from "express";
 import auth from "../middleware/auth";
-
 import upload from "../utils/s3";
+
+const logger = require("../modules/logger");
+
 const AWS = require("aws-sdk");
 let s3 = new AWS.S3();
 AWS.config.loadFromPath(__dirname + "/../../awsconfig.json");
@@ -22,6 +24,8 @@ const moment = require("moment");
 router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   const time = moment();
   var activityUpdateTime = time.format("YYYYMMDDHHmmss");
+  var logTime = time.format("HH-mm-ss"); //120704
+
   const {
     activityContent,
     activityYear,
@@ -33,7 +37,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
 
   try {
     console.log("[/activity/new] activity 활동 기록 등록 시도 ");
-
+    
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const lastActivity = await Character.find(
       { user_id: req.body.user.id, characterIndex: characterIndex },
