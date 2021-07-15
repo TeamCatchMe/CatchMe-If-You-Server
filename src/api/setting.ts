@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 const router = express.Router();
 
 import UserData from "../models/Userdata";
+import Character from "../models/Character";
 
 /**
  *  @route Post setting/editnickname
@@ -36,6 +37,11 @@ router.post("/nickname", auth, async (req, res) => {
       { _id: req.body.user.id },
       { nickname: req.body.nickname }
     );
+
+    await Character.updateMany(
+      { user_id : req.body.user.id },
+      { user_nickname : req.body.nickname }
+      );
 
     console.log("[/setting/nickname] 닉네임 변경 성공  : ", req.body.nickname);
     return res.status(200).json({
