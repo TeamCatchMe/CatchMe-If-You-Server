@@ -83,7 +83,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     const edittedActivity = await Activity.find({
       user_id: req.body.user.id,
       characterIndex: characterIndex,
-    });
+    }).sort({ activityYear: -1, activityMonth: -1, activityDay: -1 });
 
     await Character.findOneAndUpdate(
       { user_id: req.body.user.id, characterIndex: characterIndex },
@@ -196,7 +196,7 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     const activityForPush = await Activity.find({
       user_id: req.body.user.id,
       characterIndex: characterIndex,
-    });
+    }).sort({ activityYear: -1, activityMonth: -1, activityDay: -1 });
     // Character에 수정된 activity 데이터들로 바꿔준다.
     await Character.findOneAndUpdate(
       { user_id: req.body.user.id, characterIndex: characterIndex },
