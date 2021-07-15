@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import config from "../config";
 import { check, validationResult } from "express-validator";
-
+const logger = require("../modules/logger");
+const moment = require("moment");
 const router = express.Router();
 
 import UserData from "../models/Userdata";
@@ -27,8 +28,10 @@ router.post(
     const { email, password } = req.body;
 
     try {
+      const time = moment();
+      var logTime = time.format("HH:mm:ss"); //120704
       console.log("[/login] 로그인 시도");
-
+      console.log(logger.TRY_LOGIN, "[", logTime, "]")
       let user = await UserData.findOne({ email });
       // 없는 유저
       if (!user) {
