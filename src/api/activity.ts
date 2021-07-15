@@ -35,6 +35,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       { user_id: req.body.user.id, characterIndex: characterIndex },
       { _id: false, activity: true }
     );
+    console.log(lastActivity)
     const activityCount = lastActivity[0]["activity"].length;
 
     // 만약, 캐릭터의 activity가 비어있다면 activityIndex를 1로 설정해줌

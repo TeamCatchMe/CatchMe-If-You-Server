@@ -3,6 +3,7 @@ import { IActivity } from "./IActivity";
 export interface ICharacter {
   user: mongoose.Types.ObjectId;
   user_id: string;
+  user_nickname: string;
   characterName: string;
   characterIndex: number;
   characterImageIndex: number;
