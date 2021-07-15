@@ -2,6 +2,10 @@
 import auth from "../middleware/auth";
 
 import upload from "../utils/s3";
+const AWS = require("aws-sdk");
+let s3 = new AWS.S3();
+AWS.config.loadFromPath(__dirname + "/../../awsconfig.json");
+
 const express = require("express");
 const router = express.Router();
 
@@ -42,10 +46,17 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     if (activityCount == 0) {
       activityIndex = 1;
     } else {
-      // 그렇지 않으면 lastActivity에 담겨있는 것들중에서 제일 마지막 것의 인덱스를 lastIndex에 담아줌
-      const lastIndex = activityCount - 1;
-      activityIndex =
-        lastActivity[0]["activity"][lastIndex]["activityIndex"] + 1;
+      const edittedActivity = await Activity.find({
+        user_id: req.body.user.id,
+        characterIndex: characterIndex,
+      })
+        .sort({ activityIndex: -1 })
+        .limit(1);
+      console.log(
+        "edittedActivity.activityIndex",
+        edittedActivity[0]["activityIndex"]
+      );
+      activityIndex = edittedActivity[0]["activityIndex"] + 1;
     }
 
     var activityImage = "";
@@ -146,7 +157,6 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
  */
 router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
   const time = moment();
-  var activityUpdateTime = time.format("YYYYMMDDHHmmss");
   const {
     activityContent,
     activityYear,
@@ -169,7 +179,26 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     // 이미지를 새로 업로드하지 않는 경우에는 기존 이미지 값을 가져온다.
     var activityImage = objectActivity[0]["activityImage"];
     var activityImageName = objectActivity[0]["activityImageName"];
+
     if (req.file) {
+      if (activityImage != "" && activityImageName != "") {
+        // 새로 이미지를 업데이트 하는경우, 기존 이미지의 이름을 찾아 imageKey에 저장한다
+        const imageKey = objectActivity[0]["activityImageName"];
+        console.log("imageKey", imageKey);
+        // 서버에서 해당 이미지를 삭제한다.
+        s3.deleteObject(
+          {
+            Bucket: "catchmeserver", // 사용자 버켓 이름
+            Key: imageKey, // 버켓 내 경로
+          },
+          (err, data) => {
+            if (err) {
+              throw err;
+            }
+          }
+        );
+      }
+
       activityImage = req.file.location;
       activityImageName = req.file.key;
     }
@@ -281,6 +310,21 @@ router.post("/delete", auth, async (req, res) => {
       { user_id: req.body.user.id, characterIndex: characterIndex },
       {
         activityCount: activityCount,
+      }
+    );
+
+    // 삭제한 이미지의 위치를 imageKey에 저장한다
+    const imageKey = deletedActivity["activityImageName"];
+    // 서버에서 해당 이미지를 삭제한다.
+    s3.deleteObject(
+      {
+        Bucket: "catchmeserver", // 사용자 버켓 이름
+        Key: imageKey, // 버켓 내 경로
+      },
+      (err, data) => {
+        if (err) {
+          throw err;
+        }
       }
     );
 
