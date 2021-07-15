@@ -11,6 +11,9 @@ const CharacterSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    user_nickname : {
+      type : String,
+    },
     characterName: {
       type: String,
       // required: true,

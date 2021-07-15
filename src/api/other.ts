@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth";
 import Character from "../models/Character";
+import Userdata from "../models/Userdata";
 
 const router = Router();
 
@@ -12,6 +13,8 @@ const router = Router();
 router.get("/", auth, async (req: Request, res: Response) => {
   try {
     console.log("[/other] 구경하기 시도");
+    const userdata = await Userdata.find({ user_id : req.body.user.id })
+
     const characters = await Character
     .find({ characterPrivacy : false })
     .sort({ recentActivityTime : -1 })

@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth";
 import Character from "../models/Character";
+import Userdata from "../models/Userdata";
 
 const moment = require("moment");
 const router = Router();
@@ -15,7 +16,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
     console.log("[/maincard] 최근활동순 캐릭터 목록 불러오기 시도");
     const characters = await Character.find({ user_id: req.body.user.id })
       .sort({ recentActivityTime : -1 })
-      .select({ user_id: 0, _id: 0, activity : 0 });
+      .select({  _id: 0, activity : 0 });
 
     if (!characters) {
       console.log("[/maincard] 캐릭터 데이터 없음");
@@ -58,7 +59,7 @@ router.get("/most", auth ,async (req: Request, res: Response) => {
     const characters = await Character
     .find({ user_id : req.body.user.id })
     .sort({activityCount : -1})
-    .select({ user_id: 0, _id: 0, activity : 0 });;
+    .select({ _id: 0, activity : 0 });;
 
     if (characters.length == 0) {
       console.log("[/maincard/most] 캐릭터 데이터 없음");
@@ -102,7 +103,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
     const characters = await Character
     .find({ user_id: req.body.user.id })
     .sort({ "characterBirth": -1 })
-    .select({ user_id: 0, _id: 0, activity : 0 });
+    .select({ _id: 0, activity : 0 });
 
     if (!characters) {
       console.log("[/maincard/recent] 캐릭터 데이터 없음");
@@ -147,6 +148,9 @@ router.post("/create", auth, async (req, res) => {
     .sort({ _id: -1 })
     .select({ user_id: 0, _id: 0 });
   
+  const user_nickname = await Userdata.findOne({ _id: req.body.user.id })
+  console.log(user_nickname)
+
   if ( lastCharacter.length == 0 ) {
     var characterIndex = 1
   } else {
@@ -159,6 +163,7 @@ router.post("/create", auth, async (req, res) => {
   try {
     const newCharacter = new Character({
       user_id: req.body.user.id,
+      user_nickname : user_nickname['nickname'],
       characterName: characterName,
       characterIndex: characterIndex,
       characterImageIndex: characterImageIndex,
