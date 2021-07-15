@@ -15,7 +15,9 @@ import Activity from "../models/Activity";
 import Character from "../models/Character";
 
 const moment = require("moment");
-moment.tz.setDefalut("Asia/Seoul");
+require('moment-timezone'); 
+moment.tz.setDefault("Asia/Seoul"); 
+
 /**
  *  @route Post activity/new
  *  @desc create new activity
