@@ -25,7 +25,7 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
 
     const character = await Character
     .findOne({ user_id : req.body.user.id, characterIndex : Number(characterIndex)})
-    .select({ user_id : 0, _id : 0 });
+    .select({ user_id : 0, _id : 0, user_nickname : 0 });
 
     var characterActivitiesCount = character["activityCount"];
     var catchRate = 0;
