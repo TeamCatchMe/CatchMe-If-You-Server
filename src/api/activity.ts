@@ -188,8 +188,10 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     });
 
     // 이미지를 새로 업로드하지 않는 경우에는 기존 이미지 값을 가져온다.
-    var activityImage = objectActivity[0]["activityImage"];
-    var activityImageName = objectActivity[0]["activityImageName"];
+    // var activityImage = objectActivity[0]["activityImage"];
+    // var activityImageName = objectActivity[0]["activityImageName"];
+    var activityImage = "";
+    var activityImageName = "";
 
     if (req.file) {
       // 새로 이미지를 업데이트 하는경우, 기존 이미지의 이름을 찾아 imageKey에 저장한다
