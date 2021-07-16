@@ -2,8 +2,9 @@ import { Router, Request, Response } from "express";
 import auth from "../middleware/auth"
 import Activity from "../models/Activity";
 import Character from "../models/Character";
-
+const logger = require("../modules/logger");
 const router = Router();
+const moment = require("moment");
 
 /**
  *  @route GET report/
@@ -12,7 +13,10 @@ const router = Router();
  */
 router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Response) => {
   try {
-    console.log("[/report] 리포트 데이터 불러오기 시도");
+    const time = moment();
+    var logTime = time.format("HH:mm:ss");
+    console.log(logger.TRY_REPORT, "[", logTime, "]")
+    
     var characterIndexArr = [];
     const activityYear = req.params.activityYear;
     const activityMonth = req.params.activityMonth;
@@ -24,7 +28,9 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     .select({ user_id : 0, _id : 0, activityImage : 0, activityContent : 0, activityImageName : 0 })
     .sort({ activityDay : 1 });
     
+    
     if ( activitiesOfMonth.length == 0 ) {
+      console.log(logger.FAIL_REPORT, "[", logTime, "]")
       return res.status(400).json({
         "status" : 400,
         "success" : false,
@@ -106,7 +112,7 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
       characterInfoArr.push(characterInfo[j])  
     }
   
-    console.log("[/report] 월별 게시글 데이터 불러오기 성공");
+    console.log(logger.OK_REPORT, "[", logTime, "]")
     return res.status(200).json({
       "status" : 200,
       "success" : true,
@@ -124,7 +130,7 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     });
     
   } catch (error) {
-    console.log("[/report] 월별 게시글 데이터 불러오기 실패");
+    console.log(logger.FAIL_REPORT, "[", logTime, "]")
     console.error(error.message);
     res.status(500).json({
         "status" : 500,

@@ -3,6 +3,9 @@ import auth from "../middleware/auth";
 import Character from "../models/Character";
 const router = Router();
 
+const logger = require("../modules/logger");
+const moment = require("moment");
+
 /**
  *  @route GET character/
  *  @desc Get character information and all activities
@@ -11,7 +14,10 @@ const router = Router();
 
 router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
   try {
-    console.log("[/character] 캐릭터 상세정보 가져오기 시도");
+    const time = moment();
+    var logTime = time.format("HH:mm:ss");
+    console.log(logger.TRY_CHARACTER, "[", logTime, "]")
+    
     var allActivitiesCount = 0;
     const characterIndex = req.params.characterIndex;
 
@@ -25,16 +31,17 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
     var catchRate = 0;
 
     if (!character) {
-      console.log("[/character] 통신 성공, 캐릭터 데이터 없음");
+      console.log(logger.FAIL_CHARACTER, "[캐릭터 데이터 없음]", "[", logTime, "]")
       res.status(400).json({
         status: 400,
         success: false,
         message: "캐릭터 데이터가 존재 하지 않는다. 미안.",
+        data : null
       });
     }
 
     if (character["activityCount"] == 0) {
-      console.log("[/character] 통신 성공, 당월 게시글 데이터 없음");
+      console.log(logger.OK_CHARACTER, "[당월 게시글 데이터 없음]", "[", logTime, "]")
       return res.status(200).json({
         status: 200,
         success: true,
@@ -59,8 +66,7 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
 
     catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
     
-    console.log("[/character] <", character['characterName'], "> 님의 상세정보 불러오기 성공");
-
+    console.log(logger.OK_CHARACTER, "<", character['characterName'], ">", "[", logTime, "]")
     return res.status(200).json({
       status: 200,
       success: true,
@@ -72,7 +78,7 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.log("캐릭터 상세정보 불러오기 실패");
+    console.log(logger.FAIL_CHARACTER, "[", logTime, "]")
     console.error(error.message);
     res.status(500).json({
       status: 500,
@@ -88,14 +94,17 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
  *  @access Public
  */
  router.post("/edit", auth, async (req, res) => {
-
+  const time = moment();
+  var logTime = time.format("HH:mm:ss");
+  console.log(logger.TRY_CHARACTER_EDIT, "[", logTime, "]")
+  
   const { characterIndex, characterName, characterPrivacy } = req.body;
 
   const checkIndex = await Character
   .find({user_id : req.body.user.id, characterIndex : characterIndex }).countDocuments();
 
   if ( checkIndex == 0 ) {
-    console.log("[/character/edit] 실패 : 존재하지 않는 캐릭터 인덱스 입력");
+    console.log(logger.FAIL_CHARACTER_EDIT, "[존재하지 않는 캐릭터 인덱스 입력]","[", logTime, "]")
     return res.status(400).json({
       status: 400,
       success: false,
@@ -104,8 +113,6 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
   }
 
   try {
-    console.log("[/character/edit] 캐릭터 수정 시도");
-
     // 수정할 값들을 바탕으로 데이터를 수정해준다.
     await Character.findOneAndUpdate(
       {
@@ -123,14 +130,14 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
       characterPrivacy : characterPrivacy,
     });
 
-    console.log("[/character/edit] 캐릭터 수정 성공");
+    console.log(logger.OK_CHARACTER_EDIT, "[", logTime, "]")
     return res.status(200).json({
       status: 200,
       success: true,
       message: "캐릭터 수정 성공",
     });
   } catch (err) {
-    console.log("[/character/edit] 캐릭터 수정 실패 - 서버 내부 오류 (500)");
+    console.log(logger.FAIL_CHARACTER_EDIT, "[", logTime, "]")
     console.error(err.message);
     res.status(500).json({
       status: 500,
