@@ -178,8 +178,6 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
 
   try {
     console.log(logger.TRY_ACTIVITY_EDIT, "[", logTime, "]");
-    console.log("@@@@@@@@@@@@@@@수빈용 로그@@@@@@@@@@@@@@@");
-    console.log("req.body", req.body, "req.body.user.id", req.body.user.id);
 
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const objectActivity = await Activity.find({
@@ -187,8 +185,6 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
       characterIndex: characterIndex,
       activityIndex: activityIndex,
     });
-
-    console.log("출력 되는 것인가?", objectActivity);
 
     // 이미지를 새로 업로드하지 않는 경우에는 기존 이미지 값을 가져온다.
     // var activityImage = objectActivity[0]["activityImage"];
