@@ -160,7 +160,6 @@ router.post("/create", auth, async (req, res) => {
     .select({ user_id: 0, _id: 0 });
   
   const user_nickname = await Userdata.findOne({ _id: req.body.user.id })
-  console.log(user_nickname)
 
   if ( lastCharacter.length == 0 ) {
     var characterIndex = 1
