@@ -122,8 +122,8 @@
 
 <br></br>
 
+![Slide 16_9 - 53](https://user-images.githubusercontent.com/49263163/125941217-20a17343-75fe-455d-9356-06416a5ee7d3.png)
 
 <br></br>
 ---
 ###### 2021 CatchMe Server Team
-###### 서버 회의록은 [여기]()서 확인할 수 있습니다.
