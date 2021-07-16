@@ -22,9 +22,10 @@
 </p>
 <div align = "center">
 
-|                   최영재                    |                      권세훈                       |
-| :-----------------------------------------: | :-----------------------------------------------: |
-| [realwhyjay](https://github.com/realwhyjay) | [devkwonsehoon](https://github.com/devkwonsehoon) |
+| ![youngjae](https://user-images.githubusercontent.com/49263163/125936613-9933b742-9b8a-4304-9647-3285587a4007.png) | ![sehun](https://user-images.githubusercontent.com/49263163/125936605-efbfc943-1cc2-42ea-b958-deac6704242e.png) |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                            최영재                            |                            권세훈                            |
+|         [realwhyjay](https://github.com/realwhyjay)          |      [devkwonsehoon](https://github.com/devkwonsehoon)       |
 
 </div>
 
