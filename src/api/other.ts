@@ -3,7 +3,8 @@ import auth from "../middleware/auth";
 import Activity from "../models/Activity";
 import Character from "../models/Character";
 import Userdata from "../models/Userdata";
-
+const logger = require("../modules/logger");
+const moment = require("moment");
 const router = Router();
 
 /**
@@ -13,7 +14,9 @@ const router = Router();
  */
 router.get("/", auth, async (req: Request, res: Response) => {
   try {
-    console.log("[/other] 구경하기 시도");
+    const time = moment();
+    var logTime = time.format("HH:mm:ss");
+    console.log(logger.TRY_OTHER, "[", logTime, "]")
     const userdata = await Userdata.find({ user_id : req.body.user.id })
 
     const characters = await Character
@@ -23,7 +26,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
     .limit(30);
 
     if (!characters) {
-      console.log("[/other] 캐릭터 데이터 없음");
+      console.log(logger.FAIL_OTHER_DETAIL, "[캐릭터 데이터 없음]", "[", logTime, "]")
       return res.status(400).json({
         status: 400,
         success: false,
@@ -32,7 +35,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
       });
     }
 
-    console.log("[/other] 구경하기 데이터 가져오기 성공");
+    console.log(logger.OK_OTHER, "[", logTime, "]")
     return res.status(200).json({
       status: 200,
       success: true,
@@ -42,7 +45,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error(error.message);
-    console.log("[/other] 구경하기 데이터 가져오기 실패");
+    console.log(logger.FAIL_OTHER, "[", logTime, "]")
     res.status(500).json({
       status: 500,
       success: false,
@@ -58,7 +61,9 @@ router.get("/", auth, async (req: Request, res: Response) => {
  */
  router.get("/detail/:user_id/:characterIndex", auth, async (req: Request, res: Response) => {
   try {
-    console.log("[/other/detail] 구경하기 캐릭터 상세보기 시도");
+    const time = moment();
+    var logTime = time.format("HH:mm:ss");
+    console.log(logger.TRY_OTHER_DETAIL, "[", logTime, "]")
 
     const { user_id, characterIndex} = req.params;
 
@@ -71,7 +76,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
     var allActivitiesCount = 0;
 
     if (!character) {
-      console.log("[/other/detail] 캐릭터 데이터 없음");
+      console.log(logger.FAIL_OTHER_DETAIL, "[캐릭터 데이터 없음]", "[", logTime, "]")
       return res.status(400).json({
         status: 400,
         success: false,
@@ -81,7 +86,8 @@ router.get("/", auth, async (req: Request, res: Response) => {
     }
 
     if (character["activityCount"] == 0) {
-      console.log("[/character] 통신 성공, 당월 게시글 데이터 없음");
+      console.log(logger.OK_OTHER_DETAIL, "[당월 게시글 데이터 없음]", "[", logTime, "]")
+
       return res.status(200).json({
         status: 200,
         success: true,
@@ -105,9 +111,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
     catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
     
-    console.log("[/other/detail] <", character['characterName'], "> 님의 상세정보 불러오기 성공");
-
-    console.log("[/other/detail] 구경하기 캐릭터 상세정보 가져오기 성공");
+    console.log(logger.OK_OTHER_DETAIL, "<", character['characterName'], ">", "[", logTime, "]")
     return res.status(200).json({
       status: 200,
       success: true,
@@ -121,7 +125,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
   } catch (error) {
     console.error(error.message);
-    console.log("[/other/detail] 구경하기 캐릭터 상세정보 가져오기 실패");
+    console.log(logger.FAIL_OTHER_DETAIL, "[", logTime, "]")
     res.status(500).json({
       status: 500,
       success: false,
