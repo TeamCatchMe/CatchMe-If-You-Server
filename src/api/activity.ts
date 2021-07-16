@@ -52,7 +52,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     if (activityCount == 0) {
       activityIndex = 1;
     } else {
-      const edittedActivity = await Activity.find({
+        const edittedActivity = await Activity.find({
         user_id: req.body.user.id,
         characterIndex: characterIndex,
       })
@@ -187,33 +187,27 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
       activityIndex: activityIndex,
     });
 
-    console.log("출력 되는 것인가?", objectActivity);
-
     // 이미지를 새로 업로드하지 않는 경우에는 기존 이미지 값을 가져온다.
-    // var activityImage = objectActivity[0]["activityImage"];
-    // var activityImageName = objectActivity[0]["activityImageName"];
-    var activityImage = "";
-    var activityImageName = "";
+    var activityImage = objectActivity[0]["activityImage"];
+    var activityImageName = objectActivity[0]["activityImageName"];
 
     if (req.file) {
-      // 새로 이미지를 업데이트 하는경우 && 기존에 이미지가 업로드 되어있던 경우
-      // 기존 이미지를 삭제하기 위해 기존 이미지의 이름을 찾아 imageKey에 저장한다
-      if (objectActivity[0]["activityImageName"] != "") {
-        const imageKey = objectActivity[0]["activityImageName"];
+      // 새로 이미지를 업데이트 하는경우, 기존 이미지의 이름을 찾아 imageKey에 저장한다
+      const imageKey = objectActivity[0]["activityImageName"];
 
-        // 서버에서 해당 이미지를 삭제한다.
-        s3.deleteObject(
-          {
-            Bucket: "catchmeserver", // 사용자 버켓 이름
-            Key: imageKey, // 버켓 내 경로
-          },
-          (err, data) => {
-            if (err) {
-              throw err;
-            }
+      // 서버에서 해당 이미지를 삭제한다.
+      s3.deleteObject(
+        {
+          Bucket: "catchmeserver", // 사용자 버켓 이름
+          Key: imageKey, // 버켓 내 경로
+        },
+        (err, data) => {
+          if (err) {
+            throw err;
           }
-        );
-      }
+        }
+      );
+
       activityImage = req.file.location;
       activityImageName = req.file.key;
     }
@@ -226,11 +220,13 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
         activityIndex: activityIndex,
       },
       {
+        activityIndex: objectActivity[0].activityIndex,
         activityContent: activityContent,
         activityImage: activityImage,
         activityYear: activityYear,
         activityMonth: activityMonth,
         activityDay: activityDay,
+        characterIndex: objectActivity[0].characterIndex,
         activityImageName: activityImageName,
       }
     );
@@ -307,7 +303,7 @@ router.post("/delete", auth, async (req, res) => {
       characterIndex: characterIndex,
     }).sort({ recentActivityTime: -1 });
 
-    console.log(activityForTime);
+    console.log(activityForTime)
 
     const activityUpdateTime = activityForTime[0]["recentActivityTime"];
 
