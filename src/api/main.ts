@@ -2,7 +2,8 @@ import express from "express";
 import auth from "../middleware/auth";
 
 const router = express.Router();
-
+const logger = require("../modules/logger");
+const moment = require("moment");
 import Character from "../models/Character";
 
 /*
@@ -12,7 +13,9 @@ import Character from "../models/Character";
  */
 router.get("/", auth, async function (req, res) {
   try {
-    console.log("[/main] 메인 - 데이터 가져오기 시도");
+    const time = moment();
+    var logTime = time.format("HH:mm:ss");
+    console.log(logger.TRY_MAIN, "[", logTime, "]")
 
     const maindata = await Character.find(
       {
@@ -67,7 +70,7 @@ router.get("/", auth, async function (req, res) {
       );
     }
 
-    console.log("[/main] 메인 캐릭터 조회 성공 ");
+    console.log(logger.OK_MAIN, "[", logTime, "]")
     return res.json({
       status: 200,
       success: true,
@@ -75,7 +78,7 @@ router.get("/", auth, async function (req, res) {
       data: resultData,
     });
   } catch (err) {
-    console.log("[/main] 메인 캐릭터 조회 실패 (500)");
+    console.log(logger.FAIL_MAIN, "[", logTime, "]")
     console.error(err.message);
     return res.status(500).send("Server Err");
   }
