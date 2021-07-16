@@ -39,10 +39,6 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
 
   try {
     console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]");
-
-    console.log("수빈 테스트용 로그");
-    console.log("req.body : ", req.body, "req.body.user.id", req.body.user.id);
-
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const lastActivity = await Character.find(
       { user_id: req.body.user.id, characterIndex: characterIndex },
@@ -306,8 +302,6 @@ router.post("/delete", auth, async (req, res) => {
       characterIndex: characterIndex,
     }).sort({ recentActivityTime: -1 });
 
-    console.log(activityForTime)
-
     const activityUpdateTime = activityForTime[0]["recentActivityTime"];
 
     // Character에 수정된 activity 데이터들로 바꿔준다.
@@ -331,7 +325,7 @@ router.post("/delete", auth, async (req, res) => {
       }
     );
 
-    if (deletedActivity["activityImageName"]) {
+    if (deletedActivity["activityImageName"] != "") {
       // 삭제한 이미지의 위치를 imageKey에 저장한다
       const imageKey = deletedActivity["activityImageName"];
       // 서버에서 해당 이미지를 삭제한다.
