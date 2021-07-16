@@ -123,7 +123,7 @@
 
 ---
 
-![Slide 16_9 - 53](https://user-images.githubusercontent.com/49263163/125941217-20a17343-75fe-455d-9356-06416a5ee7d3.png)
+![Slide 16_9 - 53](https://user-images.githubusercontent.com/49263163/125943993-50fc2807-4465-468a-8636-375ba0b420a2.png)
 
 ---
 ###### 2021 CatchMe Server Team
