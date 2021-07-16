@@ -40,6 +40,9 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   try {
     console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]");
 
+    console.log("수빈 테스트용 로그");
+    console.log("req.body : ", req.body, "req.body.user.id", req.body.user.id);
+
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const lastActivity = await Character.find(
       { user_id: req.body.user.id, characterIndex: characterIndex },
