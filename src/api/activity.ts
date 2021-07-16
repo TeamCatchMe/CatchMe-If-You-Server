@@ -178,6 +178,8 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
 
   try {
     console.log(logger.TRY_ACTIVITY_EDIT, "[", logTime, "]");
+    console.log("@@@@@@@@@@@@@@@수빈용 로그@@@@@@@@@@@@@@@");
+    console.log("req.body", req.body, "req.body.user.id", req.body.user.id);
 
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const objectActivity = await Activity.find({
