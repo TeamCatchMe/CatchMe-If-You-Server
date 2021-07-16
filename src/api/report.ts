@@ -27,6 +27,8 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
     .find({ user_id : req.body.user.id, activityYear: activityYear, activityMonth : activityMonth })
     .select({ user_id : 0, _id : 0, activityImage : 0, activityContent : 0, activityImageName : 0 })
     .sort({ activityDay : 1 });
+
+    console.log(activitiesOfMonth)
     
     
     if ( activitiesOfMonth.length == 0 ) {
