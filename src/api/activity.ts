@@ -58,12 +58,6 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
         .sort({ activityIndex: -1 })
         .limit(1);
 
-      console.log(edittedActivity);
-
-      console.log(
-        "edittedActivity.activityIndex",
-        edittedActivity[0]["activityIndex"]
-      );
       activityIndex = edittedActivity[0]["activityIndex"] + 1;
     }
 
@@ -317,7 +311,7 @@ router.post("/delete", auth, async (req, res) => {
     );
 
     const activityCount = lastActivity[0]["activity"].length;
-    console.log(activityCount);
+
     await Character.findOneAndUpdate(
       { user_id: req.body.user.id, characterIndex: characterIndex },
       {
