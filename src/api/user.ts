@@ -31,7 +31,7 @@ router.post(
       const time = moment();
 
       var logTime = time.format("HH:mm:ss");
-      console.log(logger.TRY_LOGIN, "[", logTime, "]")
+      console.log(logger.TRY_LOGIN, "[", logTime, "]");
 
       let user = await UserData.findOne({ email });
       // 없는 유저
@@ -48,7 +48,7 @@ router.post(
 
       // 비밀번호 일치하지 않음
       if (!isMatch) {
-        console.log(logger.FAIL_LOGIN, "[", logTime, "]")
+        console.log(logger.FAIL_LOGIN, "[", logTime, "]");
         res.status(200).json({
           status: 200,
           success: false,
@@ -70,7 +70,15 @@ router.post(
         { expiresIn: "14d" },
         (err, token) => {
           if (err) throw err;
-          console.log(logger.OK_LOGIN, " -- [", user.nickname, "]", " [", logTime, "]")
+          console.log(
+            logger.OK_LOGIN,
+            " -- [",
+            user.nickname,
+            "]",
+            " [",
+            logTime,
+            "]"
+          );
           res.json({
             status: 200,
             success: true,
@@ -80,7 +88,7 @@ router.post(
         }
       );
     } catch (err) {
-      console.log(logger.FAIL_LOGIN, "[", logTime, "]")
+      console.log(logger.FAIL_LOGIN, "[", logTime, "]");
       console.error(err.message);
       res.status(500).json({
         status: 500,
@@ -106,7 +114,7 @@ router.post(
   async (req, res) => {
     const time = moment();
     var logTime = time.format("HH:mm:ss");
-    console.log(logger.TRY_SIGNUP, "[", logTime, "]")
+    console.log(logger.TRY_SIGNUP, "[", logTime, "]");
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -128,7 +136,7 @@ router.post(
 
       // db에 데이터 저장
       await user.save();
-      console.log(logger.OK_SIGNUP, " -- [", nickname, "]", " [", logTime, "]")
+      console.log(logger.OK_SIGNUP, " -- [", nickname, "]", " [", logTime, "]");
       return res.status(200).json({
         status: 200,
         success: true,
@@ -162,12 +170,12 @@ router.post(
     try {
       const time = moment();
       var logTime = time.format("HH:mm:ss");
-      console.log(logger.TRY_CHECK_EMAIL, "[", logTime, "]")
+      console.log(logger.TRY_CHECK_EMAIL, "[", logTime, "]");
 
       const userdata = await UserData.find({ email: req.body.email }).count();
 
       if (userdata == 0) {
-        console.log(logger.OK_CHECK_EMAIL, "[", logTime, "]")
+        console.log(logger.OK_CHECK_EMAIL, "[", logTime, "]");
         return res.status(200).json({
           status: 200,
           success: true,
@@ -178,7 +186,7 @@ router.post(
         });
       }
 
-      console.log(logger.FAIL_CHECK_EMAIL, "[", logTime, "]")
+      console.log(logger.FAIL_CHECK_EMAIL, "[", logTime, "]");
       return res.status(200).json({
         status: 200,
         success: false,
