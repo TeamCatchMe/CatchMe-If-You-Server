@@ -46,13 +46,15 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       { _id: false, activity: true }
     );
 
+    
+
     const activityCount = lastActivity[0]["activity"].length;
 
     // 만약, 캐릭터의 activity가 비어있다면 activityIndex를 1로 설정해줌
     if (activityCount == 0) {
       activityIndex = 1;
     } else {
-      const edittedActivity = await Activity.find({
+        const edittedActivity = await Activity.find({
         user_id: req.body.user.id,
         characterIndex: characterIndex,
       })
@@ -303,6 +305,8 @@ router.post("/delete", auth, async (req, res) => {
       characterIndex: characterIndex,
     }).sort({ recentActivityTime: -1 });
 
+    console.log(activityForTime)
+
     const activityUpdateTime = activityForTime[0]["recentActivityTime"];
 
     // Character에 수정된 activity 데이터들로 바꿔준다.
@@ -361,7 +365,7 @@ router.post("/delete", auth, async (req, res) => {
       });
     } else if (activityCount == 30) {
       await Character.findOneAndUpdate(
-        { user_id: req.body.user.id, haracterIndex: characterIndex },
+        { user_id: req.body.user.id, characterIndex: characterIndex },
         {
           characterLevel: 2,
         }
