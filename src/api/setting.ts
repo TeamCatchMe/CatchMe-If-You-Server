@@ -26,24 +26,6 @@ router.post("/nickname", auth, async (req, res) => {
       nickname: req.body.nickname,
     }).count();
 
-    const activityImagetest = await Activity.aggregate([
-      {
-        $match: {
-          user_id: req.body.user.id,
-          activityImageName: {
-            $exists: true,
-            $ne: null,
-          },
-        },
-      },
-      { $project: { activityImageName: 1, _id: 0 } },
-    ]);
-
-    console.log(
-      "이거 출력 되나구요ㅕ",
-      activityImagetest[0]["activityImageName"]
-    );
-
     if (nicknameCheck == 1) {
       console.log(
         "[/setting/nickname] 닉네임 변경 실패 - 현재와 같은 닉네임   : ",
