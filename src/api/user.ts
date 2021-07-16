@@ -29,9 +29,9 @@ router.post(
 
     try {
       const time = moment();
-      var logTime = time.format("HH:mm:ss"); //120704
-      console.log("[/login] 로그인 시도");
+      var logTime = time.format("HH:mm:ss");
       console.log(logger.TRY_LOGIN, "[", logTime, "]")
+      
       let user = await UserData.findOne({ email });
       // 없는 유저
       if (!user) {
@@ -47,7 +47,7 @@ router.post(
 
       // 비밀번호 일치하지 않음
       if (!isMatch) {
-        console.log("[/login] 로그인 실패 - 비밀번호 불일치");
+        console.log(logger.FAIL_LOGIN, "[", logTime, "]")
         res.status(200).json({
           status: 200,
           success: false,
@@ -69,14 +69,7 @@ router.post(
         { expiresIn: "14d" },
         (err, token) => {
           if (err) throw err;
-          console.log(
-            "[/login] 로그인 성공 -- [user.id] : ",
-            user.id,
-            "[email] : ",
-            email,
-            "[nickname] : ",
-            user.nickname
-          );
+          console.log(logger.OK_LOGIN, " -- [", user.nickname, "]", " [", logTime, "]")
           res.json({
             status: 200,
             success: true,
@@ -86,7 +79,7 @@ router.post(
         }
       );
     } catch (err) {
-      console.log("[/login] 로그인 - 서버내부오류");
+      console.log(logger.FAIL_LOGIN, "[", logTime, "]")
       console.error(err.message);
       res.status(500).json({
         status: 500,
@@ -110,6 +103,10 @@ router.post(
     check("password", "Password is required").exists(),
   ],
   async (req, res) => {
+    const time = moment();
+    var logTime = time.format("HH:mm:ss");
+    console.log(logger.TRY_SIGNUP, "[", logTime, "]")
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -130,7 +127,7 @@ router.post(
 
       // db에 데이터 저장
       await user.save();
-      console.log("회원가입 성공 -- ", nickname);
+      console.log(logger.OK_SIGNUP, " -- [", nickname, "]", " [", logTime, "]")
       return res.status(200).json({
         status: 200,
         success: true,
@@ -162,10 +159,14 @@ router.post(
     }
 
     try {
+      const time = moment();
+      var logTime = time.format("HH:mm:ss");
+      console.log(logger.TRY_CHECK_EMAIL, "[", logTime, "]")
+
       const userdata = await UserData.find({ email: req.body.email }).count();
 
       if (userdata == 0) {
-        console.log("이메일 중복 체크 - 사용 가능한 이메일");
+        console.log(logger.OK_CHECK_EMAIL, "[", logTime, "]")
         return res.status(200).json({
           status: 200,
           success: true,
@@ -176,7 +177,7 @@ router.post(
         });
       }
 
-      console.log("이메일 중복 체크 - 사용중인 이메일");
+      console.log(logger.FAIL_CHECK_EMAIL, "[", logTime, "]")
       return res.status(200).json({
         status: 200,
         success: false,
