@@ -33,6 +33,15 @@ module.exports = {
 🌏 /other 🌏  구경하기 시도 `,
   TRY_OTHER_DETAIL : ` 
 🌏 /other/detail 🌏  구경하기 상세정보 가져오기 시도 `,
+  TRY_SETTING_NICKNAME : ` 
+🛠️ /setting/nickname 🛠️  닉네임 변경 시도 `,
+  TRY_SETTING_PASSWORD : ` 
+🛠️ /setting/passwordcheck 🛠️  비밀번호 확인 시도 `,
+  TRY_SETTING_CHANGE_PASSWORD : ` 
+🛠️ /setting/passwordcheck 🛠️  비밀번호 변경 시도 `,
+  TRY_SETTING_WITHDRAW : ` 
+🛠️ /setting/withdraw 🛠️  회원 탈퇴 시도 `,
+
 
 
   // 성공
@@ -52,6 +61,10 @@ module.exports = {
   OK_CHARACTER_EDIT : "👨🏻‍🚀 /character/edit 👨🏻‍🚀  캐릭터 정보 수정 성공",
   OK_OTHER : "🌏 /other 🌏  구경하기 성공",
   OK_OTHER_DETAIL : "🌏 /other/detail 🌏  구경하기 상세정보 가져오기 성공",
+  OK_SETTING_NICKNAME : "🛠️ /setting/nickname 🛠️  닉네임 변경 성공",
+  OK_SETTING_PASSWORD : "🛠️ /setting/passwordcheck 🛠️  비밀번호 체크 성공",
+  OK_SETTING__CHANGE_PASSWORD : "🛠️ /setting/password 🛠️  비밀번호 변경 성공",
+  OK_SETTING_WITHDRAW : "🛠️ /setting/withdraw 🛠️  회원 탈퇴 성공",
   
   // 실패
   FAIL_LOGIN : "🔐 /user/login 🔐  로그인 실패",
@@ -70,6 +83,10 @@ module.exports = {
   FAIL_CHARACTER_EDIT : "👨🏻‍🚀 /character/edit 👨🏻‍🚀  캐릭터 정보 수정 실패",
   FAIL_OTHER : "🌏 /other 🌏  구경하기 실패",
   FAIL_OTHER_DETAIL : "🌏 /other/detail 🌏  구경하기 상세정보 가져오기 실패",
+  FAIL_SETTING_NICKNAME : "🛠️ /setting/nickname 🛠️  닉네임 변경 실패",
+  FAIL_SETTING_PASSWORD : "🛠️ /setting/passwordcheck 🛠️  비밀번호 체크 실패",
+  FAIL_SETTING__CHANGE_PASSWORD : "🛠️ /setting/password 🛠️  비밀번호 변경 실패",
+  FAIL_SETTING_WITHDRAW : "🛠️ /setting/withdraw 🛠️  회원 탈퇴 실패",
   
   // 기타
   ACTIVITY_LEVEL_UP_2 : "🤺 /activity/new 🤺  활동 기록 등록 성공 및 2레벨 도달",
