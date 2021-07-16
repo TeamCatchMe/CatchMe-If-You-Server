@@ -103,7 +103,10 @@
     "express-fileupload": "^1.2.1",
     "express-validator": "^6.10.0",
     "gravatar": "^1.8.1",
+    "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "mongoose": "^5.12.3",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
@@ -120,10 +123,7 @@
 
 ---
 
-<br></br>
+![Slide 16_9 - 53](https://user-images.githubusercontent.com/49263163/125941217-20a17343-75fe-455d-9356-06416a5ee7d3.png)
 
-
-<br></br>
 ---
 ###### 2021 CatchMe Server Team
-###### 서버 회의록은 [여기]()서 확인할 수 있습니다.
