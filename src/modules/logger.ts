@@ -1,6 +1,6 @@
 module.exports = {
-  
   // 접근
+
   TRY_LOGIN : ` 
 🔐 /user/login 🔐  로그인 시도 `,
   TRY_SIGNUP : ` 
@@ -77,4 +77,3 @@ module.exports = {
   ACTIVITY_LEVEL_DOWN_2 : "🤺 /activity/new 🤺  활동 기록 삭제 성공 및 레벨 2 강등",
   ACTIVITY_LEVEL_DOWN_1 : "🤺 /activity/new 🤺  활동 기록 삭제 성공 및 레벨 1 강등",
 };
-

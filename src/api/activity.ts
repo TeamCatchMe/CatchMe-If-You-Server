@@ -15,8 +15,8 @@ import Activity from "../models/Activity";
 import Character from "../models/Character";
 
 const moment = require("moment");
-require('moment-timezone'); 
-moment.tz.setDefault("Asia/Seoul"); 
+require("moment-timezone");
+moment.tz.setDefault("Asia/Seoul");
 
 /**
  *  @route Post activity/new
@@ -39,6 +39,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   var activityIndex = 0;
 
   try {
+
     console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]")
     
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
@@ -65,11 +66,11 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       activityIndex = edittedActivity[0]["activityIndex"] + 1;
     }
 
-    var activityImage = "";
-    var activityImageName = "";
+    // var activityImage = "";
+    // var activityImageName = "";
     if (req.file) {
-      activityImage = req.file.location;
-      activityImageName = req.file.key;
+      var activityImage = req.file.location;
+      var activityImageName = req.file.key;
     }
 
     const activityAdded = new Activity({
@@ -189,7 +190,7 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     var activityImageName = objectActivity[0]["activityImageName"];
 
     if (req.file) {
-      if (activityImage != "" && activityImageName != "") {
+      if (!activityImage && !activityImageName) {
         // 새로 이미지를 업데이트 하는경우, 기존 이미지의 이름을 찾아 imageKey에 저장한다
         const imageKey = objectActivity[0]["activityImageName"];
 

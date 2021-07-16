@@ -2,10 +2,15 @@ import express from "express";
 import auth from "../middleware/auth";
 import bcrypt from "bcryptjs";
 
+const AWS = require("aws-sdk");
+let s3 = new AWS.S3();
+AWS.config.loadFromPath(__dirname + "/../../awsconfig.json");
+
 const router = express.Router();
 
 import UserData from "../models/Userdata";
 import Character from "../models/Character";
+import Activity from "../models/Activity";
 
 /**
  *  @route Post setting/editnickname
@@ -39,9 +44,9 @@ router.post("/nickname", auth, async (req, res) => {
     );
 
     await Character.updateMany(
-      { user_id : req.body.user.id },
-      { user_nickname : req.body.nickname }
-      );
+      { user_id: req.body.user.id },
+      { user_nickname: req.body.nickname }
+    );
 
     console.log("[/setting/nickname] 닉네임 변경 성공  : ", req.body.nickname);
     return res.status(200).json({
@@ -171,7 +176,68 @@ router.post("/withdraw", auth, async (req, res) => {
   try {
     console.log("[/setting/withdraw] 회원 탈퇴 시도");
 
-    await UserData.deleteOne({ _id: req.body.user.id });
+    await UserData.deleteOne({
+      _id: req.body.user.id,
+    });
+
+    console.log(
+      "삭제 캐릭터",
+      await Character.find({
+        user_id: req.body.user.id,
+      })
+    );
+    await Character.deleteMany({
+      user_id: req.body.user.id,
+    });
+
+    const activityImagetest = await Activity.aggregate([
+      {
+        $match: {
+          user_id: req.body.user.id,
+          activityImageName: {
+            $exists: true,
+            $ne: null,
+          },
+        },
+      },
+      { $project: { activityImageName: 1, _id: 0 } },
+    ]);
+
+    // 삭제할 image Key 배열 선언
+    var keyArray = [];
+    for (var i = 0; i < activityImagetest.length; i++) {
+      var keyObject = new Object();
+      keyObject["Key"] = activityImagetest[0]["activityImageName"];
+      keyArray.push(keyObject);
+    }
+
+    // 이미지 삭제시도 (object에 위에서 만든 배열을 넣어준다.)
+    // keyarray에 있는 이미지들이 동시에 삭제된다.
+    var params = {
+      Bucket: "catchmeserver",
+      Delete: {
+        Objects: keyArray,
+        Quiet: false,
+      },
+    };
+    s3.deleteObjects(params, function (err, data) {
+      if (err) console.log(err, err.stack);
+      // an error occurred
+      else console.log(data); // successful response
+    });
+
+    // 삭제할 액티비티 출력
+    console.log(
+      "삭제 액티비티",
+      await Activity.find({
+        user_id: req.body.user.id,
+      })
+    );
+
+    // 해당 계정에 있는 activity를 전부 삭제
+    await Activity.deleteMany({
+      user_id: req.body.user.id,
+    });
 
     console.log("[/setting/withdraw] 회원 탈퇴 성공");
     return res.status(200).json({

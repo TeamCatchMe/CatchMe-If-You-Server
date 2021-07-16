@@ -16,11 +16,17 @@
 ---
 
 ## 💻 Server Developers
+
+<p align="center">
+<img align"center" src = https://user-images.githubusercontent.com/49263163/125932217-966aa807-cb1a-4a8f-875c-dfb5dc2e855f.jpg></img>
+</p>
+<div align = "center">
+
 |                   최영재                    |                      권세훈                       |
 | :-----------------------------------------: | :-----------------------------------------------: |
 | [realwhyjay](https://github.com/realwhyjay) | [devkwonsehoon](https://github.com/devkwonsehoon) |
 
-
+</div>
 
 ​    
 
