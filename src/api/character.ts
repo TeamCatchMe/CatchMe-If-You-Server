@@ -22,12 +22,9 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
     const characterIndex = req.params.characterIndex;
 
     // req.body 의 characterIndex를 가지는 캐릭터의 데이터를 가져옵니다. (객체)
-
     const character = await Character
     .findOne({ user_id : req.body.user.id, characterIndex : Number(characterIndex)})
     .select({ _id : 0, user_nickname : 0 });
-
-    
 
     var characterActivitiesCount = character["activityCount"];
     var catchRate = 0;

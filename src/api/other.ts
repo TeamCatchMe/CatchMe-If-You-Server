@@ -17,7 +17,6 @@ router.get("/", auth, async (req: Request, res: Response) => {
     const time = moment();
     var logTime = time.format("HH:mm:ss");
     console.log(logger.TRY_OTHER, "[", logTime, "]")
-    const userdata = await Userdata.find({ user_id : req.body.user.id })
 
     const characters = await Character
     .find({ characterPrivacy : false })
@@ -73,7 +72,6 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
     var characterActivitiesCount = character["activityCount"];
     var catchRate = 0;
-    var allActivitiesCount = 0;
 
     if (!character) {
       console.log(logger.FAIL_OTHER_DETAIL, "[캐릭터 데이터 없음]", "[", logTime, "]")
@@ -100,16 +98,13 @@ router.get("/", auth, async (req: Request, res: Response) => {
       });
     }
 
-    const allActivities = await Character
-    .find({ user_id : req.body.user.id })
-    .sort({ activityYear : -1, activityMonth : -1 });
+    // 해당 유저의 전체 게시글 수
+    const allActivities = await Activity
+    .find({ user_id : user_id })
+    .sort({ activityYear : -1, activityMonth : -1 }).countDocuments();
 
-    // 전체 캐릭터가 쓴 게시글의 총 개수를 구합니다.
-    for (var i = 0; i < allActivities.length; i++) {
-      allActivitiesCount += allActivities[i]["activityCount"];
-    }
- 
-    catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
+    // 캐치지수 계산
+    catchRate = Math.floor(characterActivitiesCount / allActivities * 100);
     
     console.log(logger.OK_OTHER_DETAIL, "<", character['characterName'], ">", "[", logTime, "]")
     return res.status(200).json({

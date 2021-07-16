@@ -46,6 +46,8 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       { _id: false, activity: true }
     );
 
+    console.log(lastActivity[0])
+
     
 
     const activityCount = lastActivity[0]["activity"].length;
