@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth";
+import Activity from "../models/Activity";
 import Character from "../models/Character";
 import Userdata from "../models/Userdata";
 const logger = require("../modules/logger");
@@ -86,6 +87,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
 
     if (character["activityCount"] == 0) {
       console.log(logger.OK_OTHER_DETAIL, "[당월 게시글 데이터 없음]", "[", logTime, "]")
+
       return res.status(200).json({
         status: 200,
         success: true,
