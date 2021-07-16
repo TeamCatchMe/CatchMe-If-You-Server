@@ -17,13 +17,13 @@
 
 ## 💻 Server Developers
 
-<div align="center"
+<div align="center">
 
 |                   최영재                    |                      권세훈                       |
 | :-----------------------------------------: | :-----------------------------------------------: |
 | [realwhyjay](https://github.com/realwhyjay) | [devkwonsehoon](https://github.com/devkwonsehoon) |
 
->
+</div>
 
 ​    
 
