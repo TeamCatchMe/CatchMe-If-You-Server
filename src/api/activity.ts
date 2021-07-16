@@ -47,18 +47,22 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       { user_id: req.body.user.id, characterIndex: characterIndex },
       { _id: false, activity: true }
     );
+
     const activityCount = lastActivity[0]["activity"].length;
 
     // 만약, 캐릭터의 activity가 비어있다면 activityIndex를 1로 설정해줌
     if (activityCount == 0) {
       activityIndex = 1;
     } else {
-      const edittedActivity = await Activity.find({
+        const edittedActivity = await Activity.find({
         user_id: req.body.user.id,
         characterIndex: characterIndex,
       })
         .sort({ activityIndex: -1 })
         .limit(1);
+
+      console.log(edittedActivity)
+
       console.log(
         "edittedActivity.activityIndex",
         edittedActivity[0]["activityIndex"]

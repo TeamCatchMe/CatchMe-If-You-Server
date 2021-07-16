@@ -103,12 +103,12 @@ router.get("/", auth, async (req: Request, res: Response) => {
     const allActivities = await Character
     .find({ user_id : req.body.user.id })
     .sort({ activityYear : -1, activityMonth : -1 });
-    
+
     // 전체 캐릭터가 쓴 게시글의 총 개수를 구합니다.
     for (var i = 0; i < allActivities.length; i++) {
       allActivitiesCount += allActivities[i]["activityCount"];
     }
-
+ 
     catchRate = Math.floor(characterActivitiesCount / allActivitiesCount * 100);
     
     console.log(logger.OK_OTHER_DETAIL, "<", character['characterName'], ">", "[", logTime, "]")
