@@ -23,8 +23,8 @@ router.post("/nickname", auth, async (req, res) => {
   try {
     const time = moment();
     var logTime = time.format("HH:mm:ss");
-    
-    console.log(logger.TRY_SETTING_NICKNAME, "[", logTime, "]")
+
+    console.log(logger.TRY_SETTING_NICKNAME, "[", logTime, "]");
 
     const nicknameCheck = await UserData.find({
       _id: req.body.user.id,
@@ -32,7 +32,14 @@ router.post("/nickname", auth, async (req, res) => {
     }).count();
 
     if (nicknameCheck == 1) {
-      console.log(logger.OK_SETTING_NICKNAME, "[현재와 같은 닉네임] -", req.body.nickname, "[", logTime, "]")
+      console.log(
+        logger.OK_SETTING_NICKNAME,
+        "[현재와 같은 닉네임] -",
+        req.body.nickname,
+        "[",
+        logTime,
+        "]"
+      );
       return res.status(200).json({
         status: 200,
         success: false,
@@ -49,14 +56,22 @@ router.post("/nickname", auth, async (req, res) => {
       { user_nickname: req.body.nickname }
     );
 
-    console.log(logger.OK_SETTING_NICKNAME, "[", req.body.nickname, "]로 변경됨 ", "[", logTime, "]")
+    console.log(
+      logger.OK_SETTING_NICKNAME,
+      "[",
+      req.body.nickname,
+      "]로 변경됨 ",
+      "[",
+      logTime,
+      "]"
+    );
     return res.status(200).json({
       status: 200,
       success: true,
       message: "닉네임 수정 완료",
     });
   } catch (err) {
-    console.log(logger.FAIL_SETTING_NICKNAME, "[", logTime, "]")
+    console.log(logger.FAIL_SETTING_NICKNAME, "[", logTime, "]");
     console.error(err.message);
     res.status(500).json({
       status: 500,
@@ -75,8 +90,8 @@ router.post("/passwordcheck", auth, async (req, res) => {
   try {
     const time = moment();
     var logTime = time.format("HH:mm:ss");
-    
-    console.log(logger.TRY_SETTING_PASSWORD, "[", logTime, "]")
+
+    console.log(logger.TRY_SETTING_PASSWORD, "[", logTime, "]");
 
     const password = req.body.password;
     let user = await UserData.findOne({ _id: req.body.user.id });
@@ -85,7 +100,13 @@ router.post("/passwordcheck", auth, async (req, res) => {
 
     // 비밀번호 일치하지 않음
     if (!isMatch) {
-      console.log(logger.FAIL_SETTING_PASSWORD, "[비밀번호 불일치]", "[", logTime, "]")
+      console.log(
+        logger.FAIL_SETTING_PASSWORD,
+        "[비밀번호 불일치]",
+        "[",
+        logTime,
+        "]"
+      );
       res.status(400).json({
         status: 200,
         success: false,
@@ -96,7 +117,7 @@ router.post("/passwordcheck", auth, async (req, res) => {
       });
     }
 
-    console.log(logger.OK_SETTING_PASSWORD, "[", logTime, "]")
+    console.log(logger.OK_SETTING_PASSWORD, "[", logTime, "]");
     return res.status(200).json({
       status: 200,
       success: true,
@@ -106,7 +127,7 @@ router.post("/passwordcheck", auth, async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(logger.FAIL_SETTING_PASSWORD, "[", logTime, "]")
+    console.log(logger.FAIL_SETTING_PASSWORD, "[", logTime, "]");
     console.error(err.message);
     res.status(500).json({
       status: 500,
@@ -125,8 +146,8 @@ router.post("/password", auth, async (req, res) => {
   try {
     const time = moment();
     var logTime = time.format("HH:mm:ss");
-    
-    console.log(logger.TRY_SETTING_CHANGE_PASSWORD, "[", logTime, "]")
+
+    console.log(logger.TRY_SETTING_CHANGE_PASSWORD, "[", logTime, "]");
     var password = req.body.password;
 
     // 현재 password를 찾아와 비교
@@ -135,7 +156,13 @@ router.post("/password", auth, async (req, res) => {
 
     // password 일치하는 경우
     if (isMatch) {
-      console.log(logger.OK_SETTING__CHANGE_PASSWORD, "[현재와 같은 비밀번호]", "[", logTime, "]");
+      console.log(
+        logger.OK_SETTING__CHANGE_PASSWORD,
+        "[현재와 같은 비밀번호]",
+        "[",
+        logTime,
+        "]"
+      );
       res.status(200).json({
         status: 200,
         success: false,
@@ -179,15 +206,15 @@ router.post("/withdraw", auth, async (req, res) => {
   try {
     const time = moment();
     var logTime = time.format("HH:mm:ss");
-    
-    console.log(logger.TRY_SETTING_WITHDRAW, "[", logTime, "]")
 
-    await UserData.deleteOne({
+    console.log(logger.TRY_SETTING_WITHDRAW, "[", logTime, "]");
+
+    const deletedUser = await UserData.findOneAndDelete({
       _id: req.body.user.id,
     });
-
+    console.log("[삭제 된 계정] : ", deletedUser.nickname);
     console.log(
-      "삭제 캐릭터",
+      "[삭제 된 캐릭터]",
       await Character.find({
         user_id: req.body.user.id,
       })
@@ -234,7 +261,7 @@ router.post("/withdraw", auth, async (req, res) => {
 
     // 삭제할 액티비티 출력
     console.log(
-      "삭제 액티비티",
+      "[삭제된 액티비티]",
       await Activity.find({
         user_id: req.body.user.id,
       })
@@ -245,14 +272,14 @@ router.post("/withdraw", auth, async (req, res) => {
       user_id: req.body.user.id,
     });
 
-    console.log(logger.OK_SETTING_WITHDRAW, "[", logTime, "]")
+    console.log(logger.OK_SETTING_WITHDRAW, "[", logTime, "]");
     return res.status(200).json({
       status: 200,
       success: true,
       message: "회원 탈퇴 성공",
     });
   } catch (err) {
-    console.log(logger.FAIL_SETTING_WITHDRAW, "[", logTime, "]")
+    console.log(logger.FAIL_SETTING_WITHDRAW, "[", logTime, "]");
     console.error(err.message);
     res.status(500).json({
       status: 500,
