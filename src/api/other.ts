@@ -2,7 +2,6 @@ import { Router, Request, Response } from "express";
 import auth from "../middleware/auth";
 import Activity from "../models/Activity";
 import Character from "../models/Character";
-import Userdata from "../models/Userdata";
 const logger = require("../modules/logger");
 const moment = require("moment");
 const router = Router();
