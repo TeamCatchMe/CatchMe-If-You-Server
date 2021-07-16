@@ -30,8 +30,7 @@ router.post(
     try {
       const time = moment();
       var logTime = time.format("HH:mm:ss"); //120704
-      console.log("[/login] 로그인 시도");
-      console.log(logger.TRY_LOGIN, "[", logTime, "]")
+      console.log(logger.TRY_LOGIN, "[", logTime, "]");
       let user = await UserData.findOne({ email });
       // 없는 유저
       if (!user) {
