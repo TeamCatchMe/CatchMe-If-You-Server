@@ -272,12 +272,12 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
 router.post("/delete", auth, async (req, res) => {
   const time = moment();
   var logTime = time.format("HH:mm:ss");
-
+  var activityUpdateTime = "0"
   const { characterIndex, activityIndex } = req.body;
 
   try {
     console.log(logger.TRY_ACTIVITY_DELETE, "[", logTime, "]");
-
+ 
     // 수정할 값들을 바탕으로 데이터를 삭제한다.
     const deletedActivity = await Activity.findOneAndDelete({
       user_id: req.body.user.id,
@@ -285,18 +285,32 @@ router.post("/delete", auth, async (req, res) => {
       activityIndex: activityIndex,
     });
 
+    console.log(deletedActivity)
+
     // Character 컬렉션에 추가하기 위해 새로 activity를 find 해준다.
-    const activityForPush = await Activity.find({
+    var activityForPush = await Activity.find({
       user_id: req.body.user.id,
       characterIndex: characterIndex,
     });
 
-    const activityForTime = await Activity.find({
-      user_id: req.body.user.id,
-      characterIndex: characterIndex,
-    }).sort({ recentActivityTime: -1 });
+    if ( activityForPush.length == 0 ) {
+      const forTime = await Character.findOne({user_id : req.body.user.id, characterIndex : characterIndex });
+      activityUpdateTime = forTime['characterBirth'];
+      activityForPush = [];
 
-    const activityUpdateTime = activityForTime[0]["recentActivityTime"];
+      await Character.findOneAndUpdate(
+        { user_id: req.body.user.id, characterIndex: characterIndex },
+        { activity: activityForPush, recentActivityTime: activityUpdateTime, activityCount : 0 }
+      );
+
+    } else {
+      const activityForTime = await Activity.find({
+        user_id: req.body.user.id,
+        characterIndex: characterIndex,
+      }).sort({ recentActivityTime: -1 });
+  
+      activityUpdateTime = activityForTime[0]["recentActivityTime"];
+    }
 
     // Character에 수정된 activity 데이터들로 바꿔준다.
     await Character.findOneAndUpdate(
