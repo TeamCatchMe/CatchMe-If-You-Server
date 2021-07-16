@@ -28,7 +28,6 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   var activityUpdateTime = time.format("YYYYMMDDHHmmss");
   var logTime = time.format("HH:mm:ss");
 
-
   const {
     activityContent,
     activityYear,
@@ -39,9 +38,8 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   var activityIndex = 0;
 
   try {
+    console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]");
 
-    console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]")
-    
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const lastActivity = await Character.find(
       { user_id: req.body.user.id, characterIndex: characterIndex },
@@ -66,11 +64,11 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       activityIndex = edittedActivity[0]["activityIndex"] + 1;
     }
 
-    // var activityImage = "";
-    // var activityImageName = "";
+    var activityImage = "";
+    var activityImageName = "";
     if (req.file) {
-      var activityImage = req.file.location;
-      var activityImageName = req.file.key;
+      activityImage = req.file.location;
+      activityImageName = req.file.key;
     }
 
     const activityAdded = new Activity({
@@ -117,7 +115,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
           characterLevel: 2,
         }
       );
-      console.log(logger.ACTIVITY_LEVEL_UP_2, "[", logTime, "]")
+      console.log(logger.ACTIVITY_LEVEL_UP_2, "[", logTime, "]");
       return res.status(222).json({
         status: 222,
         success: true,
@@ -131,7 +129,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
           characterLevel: 3,
         }
       );
-      console.log(logger.ACTIVITY_LEVEL_UP_3, "[", logTime, "]")
+      console.log(logger.ACTIVITY_LEVEL_UP_3, "[", logTime, "]");
       return res.status(222).json({
         status: 222,
         success: true,
@@ -140,14 +138,14 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       });
     }
 
-    console.log(logger.OK_ACTIVITY_NEW, "[", logTime, "]")
+    console.log(logger.OK_ACTIVITY_NEW, "[", logTime, "]");
     return res.status(200).json({
       status: 200,
       success: true,
       message: "게시글 생성 성공",
     });
   } catch (err) {
-    console.log(logger.FAIL_ACTIVITY_NEW, "[", logTime, "]")
+    console.log(logger.FAIL_ACTIVITY_NEW, "[", logTime, "]");
     console.error(err.message);
     res.status(500).json({
       status: 500,
@@ -176,7 +174,7 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
   } = req.body;
 
   try {
-    console.log(logger.TRY_ACTIVITY_EDIT, "[", logTime, "]")
+    console.log(logger.TRY_ACTIVITY_EDIT, "[", logTime, "]");
 
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
     const objectActivity = await Activity.find({
@@ -190,23 +188,21 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     var activityImageName = objectActivity[0]["activityImageName"];
 
     if (req.file) {
-      if (!activityImage && !activityImageName) {
-        // 새로 이미지를 업데이트 하는경우, 기존 이미지의 이름을 찾아 imageKey에 저장한다
-        const imageKey = objectActivity[0]["activityImageName"];
+      // 새로 이미지를 업데이트 하는경우, 기존 이미지의 이름을 찾아 imageKey에 저장한다
+      const imageKey = objectActivity[0]["activityImageName"];
 
-        // 서버에서 해당 이미지를 삭제한다.
-        s3.deleteObject(
-          {
-            Bucket: "catchmeserver", // 사용자 버켓 이름
-            Key: imageKey, // 버켓 내 경로
-          },
-          (err, data) => {
-            if (err) {
-              throw err;
-            }
+      // 서버에서 해당 이미지를 삭제한다.
+      s3.deleteObject(
+        {
+          Bucket: "catchmeserver", // 사용자 버켓 이름
+          Key: imageKey, // 버켓 내 경로
+        },
+        (err, data) => {
+          if (err) {
+            throw err;
           }
-        );
-      }
+        }
+      );
 
       activityImage = req.file.location;
       activityImageName = req.file.key;
@@ -254,14 +250,14 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
       activityImageName: activityImageName,
     });
 
-    console.log(logger.OK_ACTIVITY_EDIT, "[", logTime, "]")
+    console.log(logger.OK_ACTIVITY_EDIT, "[", logTime, "]");
     return res.status(200).json({
       status: 200,
       success: true,
       message: "게시글 수정 성공",
     });
   } catch (err) {
-    console.log(logger.FAIL_ACTIVITY_EDIT, "[", logTime, "]")
+    console.log(logger.FAIL_ACTIVITY_EDIT, "[", logTime, "]");
     console.error(err.message);
     res.status(500).json({
       status: 500,
@@ -283,7 +279,7 @@ router.post("/delete", auth, async (req, res) => {
   const { characterIndex, activityIndex } = req.body;
 
   try {
-    console.log(logger.TRY_ACTIVITY_DELETE, "[", logTime, "]")
+    console.log(logger.TRY_ACTIVITY_DELETE, "[", logTime, "]");
 
     // 수정할 값들을 바탕으로 데이터를 삭제한다.
     const deletedActivity = await Activity.findOneAndDelete({
@@ -318,6 +314,7 @@ router.post("/delete", auth, async (req, res) => {
     );
 
     const activityCount = lastActivity[0]["activity"].length;
+    console.log(activityCount);
     await Character.findOneAndUpdate(
       { user_id: req.body.user.id, characterIndex: characterIndex },
       {
@@ -325,20 +322,22 @@ router.post("/delete", auth, async (req, res) => {
       }
     );
 
-    // 삭제한 이미지의 위치를 imageKey에 저장한다
-    const imageKey = deletedActivity["activityImageName"];
-    // 서버에서 해당 이미지를 삭제한다.
-    s3.deleteObject(
-      {
-        Bucket: "catchmeserver", // 사용자 버켓 이름
-        Key: imageKey, // 버켓 내 경로
-      },
-      (err, data) => {
-        if (err) {
-          throw err;
+    if (deletedActivity["activityImageName"]) {
+      // 삭제한 이미지의 위치를 imageKey에 저장한다
+      const imageKey = deletedActivity["activityImageName"];
+      // 서버에서 해당 이미지를 삭제한다.
+      s3.deleteObject(
+        {
+          Bucket: "catchmeserver", // 사용자 버켓 이름
+          Key: imageKey, // 버켓 내 경로
+        },
+        (err, data) => {
+          if (err) {
+            throw err;
+          }
         }
-      }
-    );
+      );
+    }
 
     console.log("[삭제된 데이터] \n", deletedActivity);
 
@@ -350,7 +349,7 @@ router.post("/delete", auth, async (req, res) => {
           characterLevel: 1,
         }
       );
-      console.log(logger.ACTIVITY_LEVEL_DOWN_1, "[", logTime, "]")
+      console.log(logger.ACTIVITY_LEVEL_DOWN_1, "[", logTime, "]");
       return res.status(222).json({
         status: 222,
         success: true,
@@ -363,7 +362,7 @@ router.post("/delete", auth, async (req, res) => {
           characterLevel: 2,
         }
       );
-      console.log(logger.ACTIVITY_LEVEL_DOWN_2, "[", logTime, "]")
+      console.log(logger.ACTIVITY_LEVEL_DOWN_2, "[", logTime, "]");
       return res.status(222).json({
         status: 222,
         success: true,
@@ -371,14 +370,14 @@ router.post("/delete", auth, async (req, res) => {
       });
     }
 
-    console.log(logger.OK_ACTIVITY_DELETE, "[", logTime, "]")
+    console.log(logger.OK_ACTIVITY_DELETE, "[", logTime, "]");
     return res.status(200).json({
       status: 200,
       success: true,
       message: "게시글 삭제 성공",
     });
   } catch (err) {
-    console.log(logger.FAIL_ACTIVITY_DELETE, "[", logTime, "]")
+    console.log(logger.FAIL_ACTIVITY_DELETE, "[", logTime, "]");
     console.error(err.message);
     res.status(500).json({
       status: 500,

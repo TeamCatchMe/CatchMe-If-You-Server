@@ -229,13 +229,14 @@ router.post("/withdraw", auth, async (req, res) => {
           user_id: req.body.user.id,
           activityImageName: {
             $exists: true,
-            $ne: null,
+            $ne: "",
           },
         },
       },
       { $project: { activityImageName: 1, _id: 0 } },
     ]);
 
+    console.log("activityImagetest", activityImagetest);
     // 삭제할 image Key 배열 선언
     var keyArray = [];
     for (var i = 0; i < activityImagetest.length; i++) {
@@ -243,6 +244,7 @@ router.post("/withdraw", auth, async (req, res) => {
       keyObject["Key"] = activityImagetest[0]["activityImageName"];
       keyArray.push(keyObject);
     }
+    console.log("keyArray", keyArray);
 
     // 이미지 삭제시도 (object에 위에서 만든 배열을 넣어준다.)
     // keyarray에 있는 이미지들이 동시에 삭제된다.
