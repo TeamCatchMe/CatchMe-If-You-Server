@@ -52,14 +52,14 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     if (activityCount == 0) {
       activityIndex = 1;
     } else {
-        const edittedActivity = await Activity.find({
+      const edittedActivity = await Activity.find({
         user_id: req.body.user.id,
         characterIndex: characterIndex,
       })
         .sort({ activityIndex: -1 })
         .limit(1);
 
-      console.log(edittedActivity)
+      console.log(edittedActivity);
 
       console.log(
         "edittedActivity.activityIndex",
@@ -114,7 +114,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     // 활동 기록 수를 확인하여 캐릭터 레벨업
     if (countAfterUpdate == 11) {
       await Character.findOneAndUpdate(
-        { characterIndex: characterIndex },
+        { user_id: req.body.user.id, characterIndex: characterIndex },
         {
           characterLevel: 2,
         }
@@ -128,7 +128,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       });
     } else if (countAfterUpdate == 31) {
       await Character.findOneAndUpdate(
-        { characterIndex: characterIndex },
+        { user_id: req.body.user.id, characterIndex: characterIndex },
         {
           characterLevel: 3,
         }
@@ -348,7 +348,7 @@ router.post("/delete", auth, async (req, res) => {
     // 활동 기록 수를 확인하여 캐릭터 레벨을 돌려준다.
     if (activityCount == 10) {
       await Character.findOneAndUpdate(
-        { characterIndex: characterIndex },
+        { user_id: req.body.user.id, characterIndex: characterIndex },
         {
           characterLevel: 1,
         }
@@ -361,7 +361,7 @@ router.post("/delete", auth, async (req, res) => {
       });
     } else if (activityCount == 30) {
       await Character.findOneAndUpdate(
-        { characterIndex: characterIndex },
+        { user_id: req.body.user.id, haracterIndex: characterIndex },
         {
           characterLevel: 2,
         }
