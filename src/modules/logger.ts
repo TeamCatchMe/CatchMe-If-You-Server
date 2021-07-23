@@ -14,7 +14,7 @@ module.exports = {
   TRY_MAINCARD_MOST : ` 
 📙 /maincard/most 📙  최다 활동순 데이터 가져오기 시도 `,
   TRY_MAINCARD_CREATE : ` 
-📙 /maincard/create 📙  캐틱터 생성 시도 `,
+📙 /maincard/create 📙  캐릭터 생성 시도 `,
   TRY_REPORT : ` 
 📅 /report 📅  캘린더 데이터 가져오기 시도 `,
   TRY_ACTIVITY_NEW : ` 
