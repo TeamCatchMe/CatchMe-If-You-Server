@@ -142,8 +142,5 @@ router.get("/:activityYear/:activityMonth", auth ,async (req: Request, res: Resp
   }
 });
 
-// 캐릭터들 이름
-
 console.log("report API 불러오기 성공");
 module.exports = router;
-

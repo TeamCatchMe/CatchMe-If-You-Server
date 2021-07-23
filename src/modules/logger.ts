@@ -1,6 +1,4 @@
 module.exports = {
-  // 접근
-
   TRY_LOGIN : ` 
 🔐 /user/login 🔐  로그인 시도 `,
   TRY_SIGNUP : ` 
@@ -41,8 +39,6 @@ module.exports = {
 🛠️ /setting/passwordcheck 🛠️  비밀번호 변경 시도 `,
   TRY_SETTING_WITHDRAW : ` 
 🛠️ /setting/withdraw 🛠️  회원 탈퇴 시도 `,
-
-
 
   // 성공
   OK_LOGIN : "🔐 /user/login 🔐  로그인 성공",

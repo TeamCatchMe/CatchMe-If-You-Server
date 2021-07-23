@@ -1,19 +1,13 @@
-// import express from "express";
 import auth from "../middleware/auth";
 import upload from "../utils/s3";
-
 const logger = require("../modules/logger");
-
 const AWS = require("aws-sdk");
 let s3 = new AWS.S3();
 AWS.config.loadFromPath(__dirname + "/../../awsconfig.json");
-
 const express = require("express");
 const router = express.Router();
-
 import Activity from "../models/Activity";
 import Character from "../models/Character";
-
 const moment = require("moment");
 require("moment-timezone");
 moment.tz.setDefault("Asia/Seoul");
@@ -48,7 +42,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     const activityCount = lastActivity[0]["activity"].length;
 
     // 만약, 캐릭터의 activity가 비어있다면 activityIndex를 1로 설정해줌
-    if (activityCount == 0) {
+    if ( activityCount == 0 ) {
       activityIndex = 1;
     } else {
         const edittedActivity = await Activity.find({
@@ -63,7 +57,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
 
     var activityImage = "";
     var activityImageName = "";
-    if (req.file) {
+    if ( req.file ) {
       activityImage = req.file.location;
       activityImageName = req.file.key;
     }
@@ -105,7 +99,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     );
 
     // 활동 기록 수를 확인하여 캐릭터 레벨업
-    if (countAfterUpdate == 11) {
+    if ( countAfterUpdate == 11 ) {
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
         {
@@ -119,7 +113,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
         message:
           "게시물 등록 성공 && 캐릭터 레벨 업!!! 끼얏호오오~~ 레벨업이다!!",
       });
-    } else if (countAfterUpdate == 31) {
+    } else if ( countAfterUpdate == 31 ) {
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
         {
@@ -184,7 +178,7 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     var activityImage = objectActivity[0]["activityImage"];
     var activityImageName = objectActivity[0]["activityImageName"];
 
-    if (req.file) {
+    if ( req.file ) {
       // 새로 이미지를 업데이트 하는경우, 기존 이미지의 이름을 찾아 imageKey에 저장한다
       const imageKey = objectActivity[0]["activityImageName"];
 
@@ -333,7 +327,7 @@ router.post("/delete", auth, async (req, res) => {
       }
     );
 
-    if (deletedActivity["activityImageName"] != "") {
+    if ( deletedActivity["activityImageName"] != "" ) {
       // 삭제한 이미지의 위치를 imageKey에 저장한다
       const imageKey = deletedActivity["activityImageName"];
       // 서버에서 해당 이미지를 삭제한다.
@@ -353,7 +347,7 @@ router.post("/delete", auth, async (req, res) => {
     console.log("[삭제된 데이터] \n", deletedActivity);
 
     // 활동 기록 수를 확인하여 캐릭터 레벨을 돌려준다.
-    if (activityCount == 10) {
+    if ( activityCount == 10 ) {
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
         {
@@ -366,7 +360,7 @@ router.post("/delete", auth, async (req, res) => {
         success: true,
         message: "게시물 삭제 성공 && 캐릭터 레벨 다운... 에휴 쯧쯧...",
       });
-    } else if (activityCount == 30) {
+    } else if ( activityCount == 30 ) {
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
         {

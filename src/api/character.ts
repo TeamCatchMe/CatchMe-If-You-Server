@@ -2,7 +2,6 @@ import { Router, Request, Response } from "express";
 import auth from "../middleware/auth";
 import Character from "../models/Character";
 const router = Router();
-
 const logger = require("../modules/logger");
 const moment = require("moment");
 
@@ -29,8 +28,8 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
     var characterActivitiesCount = character["activityCount"];
     var catchRate = 0;
 
-    if (!character) {
-      console.log(logger.FAIL_CHARACTER, "[캐릭터 데이터 없음]", "[", logTime, "]")
+    if ( !character ) {
+      console.log(logger.FAIL_CHARACTER, "[ 캐릭터 데이터 없음 ]", "[", logTime, "]")
       res.status(400).json({
         status: 400,
         success: false,
@@ -39,8 +38,8 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
       });
     }
 
-    if (character["activityCount"] == 0) {
-      console.log(logger.OK_CHARACTER, "[당월 게시글 데이터 없음]", "[", logTime, "]")
+    if ( character["activityCount"] == 0 ) {
+      console.log(logger.OK_CHARACTER, "[ 당월 게시글 데이터 없음 ]", "[", logTime, "]")
       return res.status(200).json({
         status: 200,
         success: true,
@@ -103,7 +102,7 @@ router.get("/:characterIndex", auth ,async (req: Request, res: Response) => {
   .find({user_id : req.body.user.id, characterIndex : characterIndex }).countDocuments();
 
   if ( checkIndex == 0 ) {
-    console.log(logger.FAIL_CHARACTER_EDIT, "[존재하지 않는 캐릭터 인덱스 입력]","[", logTime, "]")
+    console.log(logger.FAIL_CHARACTER_EDIT, "[ 존재하지 않는 캐릭터 인덱스 입력 ]","[", logTime, "]")
     return res.status(400).json({
       status: 400,
       success: false,

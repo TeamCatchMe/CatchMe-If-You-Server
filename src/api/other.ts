@@ -23,7 +23,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
     .select({  _id: 0, activity : 0 })
     .limit(30);
 
-    if (!characters) {
+    if ( !characters ) {
       console.log(logger.FAIL_OTHER_DETAIL, "[캐릭터 데이터 없음]", "[", logTime, "]")
       return res.status(400).json({
         status: 400,
@@ -72,7 +72,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
     var characterActivitiesCount = character["activityCount"];
     var catchRate = 0;
 
-    if (!character) {
+    if ( !character ) {
       console.log(logger.FAIL_OTHER_DETAIL, "[캐릭터 데이터 없음]", "[", logTime, "]")
       return res.status(400).json({
         status: 400,
@@ -82,7 +82,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
       });
     }
 
-    if (character["activityCount"] == 0) {
+    if ( character["activityCount"] == 0 ) {
       console.log(logger.OK_OTHER_DETAIL, "[당월 게시글 데이터 없음]", "[", logTime, "]")
 
       return res.status(200).json({
