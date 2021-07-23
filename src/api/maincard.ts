@@ -4,7 +4,6 @@ import Character from "../models/Character";
 import Userdata from "../models/Userdata";
 const logger = require("../modules/logger");
 const moment = require("moment");
-
 const router = Router();
 
 /**
@@ -22,7 +21,7 @@ router.get("/", auth, async (req: Request, res: Response) => {
       .sort({ recentActivityTime : -1 })
       .select({  _id: 0, activity : 0 });
 
-    if (!characters) {
+    if ( !characters ) {
       console.log(logger.FAIL_MAINCARD, "[캐릭터 데이터 없음]", "[", logTime, "]")
       return res.status(400).json({
         status: 400,
@@ -68,7 +67,7 @@ router.get("/most", auth ,async (req: Request, res: Response) => {
     .sort({activityCount : -1})
     .select({ _id: 0, activity : 0 });;
 
-    if (characters.length == 0) {
+    if ( characters.length == 0 ) {
       console.log(logger.FAIL_MAINCARD_MOST, "[캐릭터 데이터 없음]", "[", logTime, "]")
       return res.status(400).json({
         "status" : 400,
@@ -115,7 +114,7 @@ router.get("/recent", auth, async (req: Request, res: Response) => {
     .sort({ "characterBirth": -1 })
     .select({ _id: 0, activity : 0 });
 
-    if (!characters) {
+    if ( !characters ) {
       console.log(logger.FAIL_MAINCARD_RECENT, "[캐릭터 데이터 없음]", "[", logTime, "]")
       return res.status(400).json({
         status: 400,
@@ -204,5 +203,4 @@ router.post("/create", auth, async (req, res) => {
 });
 
 console.log("maincard API 불러오기 성공");
-
 module.exports = router;

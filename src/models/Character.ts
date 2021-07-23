@@ -9,14 +9,12 @@ const CharacterSchema = new mongoose.Schema(
     },
     user_id: {
       type: String,
-      // required: true,
     },
     user_nickname : {
       type : String,
     },
     characterName: {
       type: String,
-      // required: true,
     },
     characterIndex: {
       type: Number,
@@ -29,7 +27,6 @@ const CharacterSchema = new mongoose.Schema(
     },
     characterPrivacy: {
       type: Boolean,
-      // required: true,
     },
     characterBirth: {
       type: String,

@@ -2,9 +2,7 @@ import express = require("express");
 const app = express();
 import connectDB from "./loaders/db";
 
-// Connect Database
 connectDB();
-
 app.use(express.json());
 
 // Define Routes

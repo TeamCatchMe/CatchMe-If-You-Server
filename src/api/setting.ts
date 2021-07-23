@@ -1,15 +1,12 @@
 import express from "express";
 import auth from "../middleware/auth";
 import bcrypt from "bcryptjs";
-
 const AWS = require("aws-sdk");
 let s3 = new AWS.S3();
 AWS.config.loadFromPath(__dirname + "/../../awsconfig.json");
-
 const router = express.Router();
 const logger = require("../modules/logger");
 const moment = require("moment");
-
 import UserData from "../models/Userdata";
 import Character from "../models/Character";
 import Activity from "../models/Activity";
@@ -31,7 +28,7 @@ router.post("/nickname", auth, async (req, res) => {
       nickname: req.body.nickname,
     }).count();
 
-    if (nicknameCheck == 1) {
+    if ( nicknameCheck == 1 ) {
       console.log(
         logger.OK_SETTING_NICKNAME,
         "[현재와 같은 닉네임] -",
@@ -99,7 +96,7 @@ router.post("/passwordcheck", auth, async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     // 비밀번호 일치하지 않음
-    if (!isMatch) {
+    if ( !isMatch ) {
       console.log(
         logger.FAIL_SETTING_PASSWORD,
         "[비밀번호 불일치]",
@@ -155,7 +152,7 @@ router.post("/password", auth, async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     // password 일치하는 경우
-    if (isMatch) {
+    if ( isMatch ) {
       console.log(
         logger.OK_SETTING__CHANGE_PASSWORD,
         "[현재와 같은 비밀번호]",
