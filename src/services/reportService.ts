@@ -1,6 +1,7 @@
 import Activity from "../models/Activity";
 import Character from "../models/Character";
 
+// 월 전체 게시글 가져오기
 const getActivitiesOfMonth = async (user_id, activityYear, activityMonth) => {
   const activitiesOfMonth = await Activity.find({
     user_id,
@@ -22,6 +23,7 @@ const getActivitiesOfMonth = async (user_id, activityYear, activityMonth) => {
   return activitiesOfMonth;
 };
 
+// 일별 베스트 캐릭터
 const getDailyBestCharacter = async (user_id, activityYear, activityMonth) => {
   var characterIndexArr = [];
 
@@ -66,6 +68,7 @@ const getDailyBestCharacter = async (user_id, activityYear, activityMonth) => {
   return characterIndexArr;
 };
 
+// 월 베스트 캐릭터
 const getMonthlyBestCharacter = async (
   user_id,
   activityYear,
@@ -104,6 +107,7 @@ const getMonthlyBestCharacter = async (
   return modeM;
 };
 
+// 월 베스트 캐릭터 정보
 const getMonthlyBestCharacterInfo = async (user_id, monthlyCharacterIndex) => {
   const characterInfo = await Character.findOne(
     { user_id, characterIndex: Number(monthlyCharacterIndex) },
@@ -116,6 +120,7 @@ const getMonthlyBestCharacterInfo = async (user_id, monthlyCharacterIndex) => {
   return characterInfo;
 };
 
+// 캐릭터마다의 레벨
 const getCharactersLevel = async (user_id) => {
   var characterInfoArr = [];
 

@@ -9,6 +9,7 @@ module.exports = {
   NO_CONTENT: "데이터가 없습니다.",
   REPEATED_VALUE: "중복된 데이터입니다.",
   UNAUTHORIZED: "권한이 없습니다",
+  SERVER_ERROR: "서버 내부 오류",
 
   /**
    * @토큰_메세지
@@ -35,11 +36,18 @@ module.exports = {
   /**
    * @캐릭터_메세지
    */
+  CHARACTER_OK: "캐릭터 상세정보 조회 성공",
+  OK_BUT_NO_ACTIVITY: "캐릭터 조회 성공, 게시글이 존재 하지 않습니다.",
+  NOT_FOUND_CHARACTER: "캐릭터가 존재하지 않습니다.",
+  CHARACTER_CREATE_OK: "캐릭터 생성 성공",
+  CHARACTER_CREATE_FAIL: "캐릭터 생성 실패",
+  CHARACTER_EDIT_OK: "캐릭터 수정 성공",
+  CHARACTER_EDIT_FAIL: "캐릭터 수정 실패",
 
   /**
    * @액티비티_메세지
    */
-
+  NOT_FOUND_ACTIVITY: "캐릭터가 존재하지 않습니다.",
   /**
    * @리포트_메세지
    */
@@ -49,6 +57,9 @@ module.exports = {
   /**
    * @메인카드_메세지
    */
+  MAIN_CARD_OK: "최근 활동순 캐릭터 목록 가져오기 성공",
+  MAIN_CARD_MOST_OK: "최다 활동순 캐릭터 목록 가져오기 성공",
+  MAIN_CARD_CREATED_OK: "최근 생성순 캐릭터 목록 가져오기 성공",
 
   /**
    * @구경하기_메세지

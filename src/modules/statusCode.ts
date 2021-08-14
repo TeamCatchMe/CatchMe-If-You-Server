@@ -1,6 +1,7 @@
 module.exports = {
   OK: 200,
   CREATED: 201,
+  OK_NOT_FOUND_ACTIVITY: 222,
   EMPTY: 444,
   FAILED: 400,
   UNAUTHORIZED: 401,
