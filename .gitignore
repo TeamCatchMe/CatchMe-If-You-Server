@@ -23,3 +23,5 @@ yarn.lock
 
 .env
 awsconfig.json
+
+uploadS3
