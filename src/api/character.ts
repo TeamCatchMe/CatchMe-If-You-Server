@@ -1,3 +1,4 @@
+import { ConfigurationServicePlaceholders } from "aws-sdk/lib/config_service_placeholders";
 import { Router, Request, Response } from "express";
 import auth from "../middleware/auth";
 import Character from "../models/Character";
@@ -65,8 +66,8 @@ router.get("/:characterIndex", auth, async (req: Request, res: Response) => {
     }
 
     // 전체 캐릭터의 전체 게시글을 가져옵니다.
-    const allActivities = await characterService.getAllActivities(user_id);
-
+    const allActivities = await characterService.getAllActivities;
+    console.log(allActivities);
     // 전체 캐릭터가 쓴 게시글의 총 개수를 구합니다.
     for (var i = 0; i < allActivities.length; i++) {
       allActivitiesCount += allActivities[i]["activityCount"];
@@ -100,7 +101,7 @@ router.get("/:characterIndex", auth, async (req: Request, res: Response) => {
 });
 
 /**
- *  @route Post maincard/
+ *  @route Post character/
  *  @desc Create new character
  *  @access Public
  */
@@ -172,6 +173,11 @@ router.post("/edit", auth, async (req, res) => {
     console.log(logger.FAIL_CHARACTER_EDIT, "[", logTime, "]");
     res.status(sc.SERVER_ERROR).send({ message: rm.SERVER_ERROR });
   }
+});
+
+router.get("/abc", async (req, res) => {
+  console.log("testing");
+  await characterService.getAllActivities;
 });
 
 console.log("character API 불러오기 성공");

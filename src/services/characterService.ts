@@ -19,15 +19,15 @@ const getCharacter = async (user_id, characterIndex) => {
 };
 
 // 전체 활동 조회
-const getAllActivities = async (user_id) => {
-  const allActivities = await Character.find({
-    user_id,
-  }).sort({ activityYear: -1, activityMonth: -1 });
+const getAllActivities = async () => {
+  const allActivities = await Character.find().populate("activity");
 
-  if (!allActivities) {
-    return null;
-  }
   return allActivities;
+
+  // if (!allActivities) {
+  //   return null;
+  // }
+  // return allActivities;
 };
 
 // 마지막 캐릭터 조회
