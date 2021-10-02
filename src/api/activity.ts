@@ -34,7 +34,11 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   try {
     console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]");
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
-    const lastActivity = await Character.find(
+    // const lastActivity = await Character.find(
+    //   { user_id: req.body.user.id, characterIndex: characterIndex },
+    //   { _id: false, activity: true }
+    // );
+    const lastActivity = await Activity.find(
       { user_id: req.body.user.id, characterIndex: characterIndex },
       { _id: false, activity: true }
     );
@@ -397,5 +401,109 @@ router.post("/delete", auth, async (req, res) => {
     });
   }
 });
+
+// 여기는 activity 새로 추가하는거 테스트 하는 코드
+/**
+ *  @route Post activity/newnew
+ *  @desc create new activity
+ *  @access Public
+ */
+router.post(
+  "/newnew",
+  upload.single("activityImage"),
+  auth,
+  async (req, res) => {
+    const time = moment();
+    var activityUpdateTime = time.format("YYYYMMDDHHmmss");
+    var logTime = time.format("HH:mm:ss");
+
+    const {
+      activityContent,
+      activityYear,
+      activityMonth,
+      activityDay,
+      characterIndex,
+    } = req.body;
+    var activityIndex = 0;
+
+    try {
+      console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]");
+      // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
+      const lastActivity = await Activity.find({
+        user_id: req.body.user.id,
+        characterIndex: characterIndex,
+      });
+
+      const activityCount = lastActivity.length;
+
+      // 만약, Activity가 비어있다면 activityIndex를 1로 설정해줌
+      if (activityCount == 0) {
+        activityIndex = 1;
+      } else {
+        activityIndex = activityCount + 1;
+      }
+
+      console.log(activityIndex);
+
+      var activityImage = "";
+      var activityImageName = "";
+      if (req.file) {
+        activityImage = req.file.location;
+        activityImageName = req.file.key;
+      }
+
+      const activityAdded = new Activity({
+        user_id: req.body.user.id,
+        activityIndex: activityIndex,
+        activityContent: activityContent,
+        activityImage: activityImage,
+        activityYear: activityYear,
+        activityMonth: activityMonth,
+        activityDay: activityDay,
+        recentActivityTime: activityUpdateTime,
+        characterIndex: characterIndex,
+        activityImageName: activityImageName,
+      });
+
+      const countAfterUpdate = activityCount + 1;
+      await Character.findOneAndUpdate(
+        { user_id: req.body.user.id, characterIndex: characterIndex },
+        {
+          recentActivityTime: activityUpdateTime,
+          activityCount: countAfterUpdate,
+        }
+      );
+
+      console.log("[추가된 데이터] \n", activityAdded);
+
+      await activityAdded.save();
+
+      // const edittedActivity = await Activity.find({
+      //   user_id: req.body.user.id,
+      //   characterIndex: characterIndex,
+      // }).sort({ activityYear: -1, activityMonth: -1, activityDay: -1 });
+
+      // await Character.findOneAndUpdate(
+      //   { user_id: req.body.user.id, characterIndex: characterIndex },
+      //   { activity: edittedActivity }
+      // );
+
+      console.log(logger.OK_ACTIVITY_NEW, "[", logTime, "]");
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        message: "게시글 생성 통신 성공",
+      });
+    } catch (err) {
+      console.log(logger.FAIL_ACTIVITY_NEW, "[", logTime, "]");
+      console.error(err.message);
+      res.status(500).json({
+        status: 500,
+        success: false,
+        message: "서버 내부 오류",
+      });
+    }
+  }
+);
 
 module.exports = router;

@@ -44,6 +44,10 @@ const CharacterSchema = new mongoose.Schema(
       ref: "Activity",
       // required: true,
     },
+    activityId: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Activity",
+    },
   },
   {
     versionKey: false,
