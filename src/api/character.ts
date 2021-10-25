@@ -6,6 +6,7 @@ import Userdata from "../models/Userdata";
 const router = Router();
 const logger = require("../modules/logger");
 const moment = require("moment");
+
 const characterService = require("../services/characterService");
 const sc = require("../modules/statusCode");
 const rm = require("../modules/responseMessage");
@@ -66,7 +67,10 @@ router.get("/:characterIndex", auth, async (req: Request, res: Response) => {
     }
 
     // 전체 캐릭터의 전체 게시글을 가져옵니다.
-    const allActivities = await characterService.getAllActivities;
+    const allActivities = await characterService.getAllActivities(
+      user_id,
+      characterIndex
+    );
     console.log("여기 나오냐?", allActivities);
 
     // 전체 캐릭터가 쓴 게시글의 총 개수를 구합니다.

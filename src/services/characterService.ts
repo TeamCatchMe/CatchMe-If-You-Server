@@ -19,9 +19,18 @@ const getCharacter = async (user_id, characterIndex) => {
 };
 
 // 전체 활동 조회
-const getAllActivities = async () => {
-  const allActivities = await Character.find().populate("activity");
-
+const getAllActivities = async (user_id, characterIndex) => {
+  const allActivities = await Character.find({
+    user_id,
+    characterIndex: Number(characterIndex),
+  })
+    .populate("activityId")
+    .exec((err, data) => {
+      console.log("Hello : ", data);
+      console.log("allActivities : ", allActivities);
+      return data;
+    });
+  // console.log("allActivities : ", allActivities);
   return allActivities;
 
   // if (!allActivities) {

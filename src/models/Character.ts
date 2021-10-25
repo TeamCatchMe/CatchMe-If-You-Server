@@ -42,12 +42,8 @@ const CharacterSchema = new mongoose.Schema(
     activity: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Activity",
-      // required: true,
     },
-    activityId: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: "Activity",
-    },
+    activityId: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Activity" }],
   },
   {
     versionKey: false,

@@ -14,5 +14,5 @@ export interface ICharacter {
   activityCount: number;
   countPercentage: number;
   activity: IActivity[];
-  activityID: mongoose.Types.ObjectId;
+  activityId: [mongoose.Types.ObjectId];
 }
