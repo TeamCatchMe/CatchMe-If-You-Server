@@ -61,7 +61,6 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
       activityImage = req.file.location;
       activityImageName = req.file.key;
     }
-
     const activityAdded = new Activity({
       user_id: req.body.user.id,
       activityIndex: activityIndex,

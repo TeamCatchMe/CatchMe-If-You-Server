@@ -5,28 +5,32 @@ process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 const envFound = dotenv.config();
 if (envFound.error) {
-    // This error should crash whole process
+  // This error should crash whole process
 
-    throw new Error("⚠️  Couldn't find .env file  ⚠️");
+  throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
 export default {
-    /**
-     * Your favorite port
-     */
-    port: parseInt(process.env.PORT, 10),
+  /**
+   * Your favorite port
+   */
+  port: parseInt(process.env.PORT, 10),
 
-    /**
-     * That long string from mlab
-     */
-    mongoURI: process.env.MONGODB_URI,
+  /**
+   * That long string from mlab
+   */
+  mongoURI: process.env.MONGODB_URI,
 
-    /**
-     * Your secret sauce
-     */
-    jwtSecret: process.env.JWT_SECRET,
-    jwtAlgorithm: process.env.JWT_ALGO,
+  /**
+   * Your secret sauce
+   */
+  jwtSecret: process.env.JWT_SECRET,
+  jwtAlgorithm: process.env.JWT_ALGO,
 
-    githubClientId: process.env.GITHUB_CLIENT_ID,
-    githubSecret: process.env.GITHUB_SECRET,
+  githubClientId: process.env.GITHUB_CLIENT_ID,
+  githubSecret: process.env.GITHUB_SECRET,
+
+  KAKAO_CLIENT_ID: process.env.KAKAO_CLIENT_ID,
+  KAKAO_CLIENT_SECRET: process.env.KAKAO_CLIENT_SECRET,
+  KAKAO_REDIRECT_URI: process.env.KAKAO_REDIRECT_URI,
 };
