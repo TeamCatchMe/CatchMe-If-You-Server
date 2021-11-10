@@ -18,6 +18,16 @@ const characterService = require("../services/characterService");
 const sc = require("../modules/statusCode");
 const rm = require("../modules/responseMessage");
 
+/** hoho
+ *====================================================
+ *
+ *
+ *                     activity
+ *
+ *
+ *====================================================
+ */
+
 // 여기는 activity 새로 추가하는거 테스트 하는 코드
 /**
  *  @route Post activity/newnew
@@ -396,6 +406,16 @@ router.post("/delete", auth, async (req, res) => {
     });
   }
 });
+
+/**
+ *====================================================
+ *
+ *
+ *                     character
+ *
+ *
+ *====================================================
+ */
 
 /**
  *  @route GET character/:characterIndex

@@ -180,10 +180,5 @@ router.post("/edit", auth, async (req, res) => {
   }
 });
 
-router.get("/abc", async (req, res) => {
-  console.log("testing");
-  await characterService.getAllActivities;
-});
-
 console.log("character API 불러오기 성공");
 module.exports = router;
