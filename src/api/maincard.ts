@@ -80,8 +80,9 @@ router.get("/most", auth, async (req: Request, res: Response) => {
         data: null,
       });
     }
-
     console.log(logger.OK_MAINCARD, "[", logTime, "]");
+    console.log("maincard/most : ", characters);
+
     return res.status(sc.OK).json({
       message: rm.MAIN_CARD_MOST_OK,
       data: characters,

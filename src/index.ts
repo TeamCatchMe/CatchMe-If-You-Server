@@ -14,6 +14,7 @@ app.use("/report", require("./api/report"));
 app.use("/character", require("./api/character"));
 app.use("/other", require("./api/other"));
 app.use("/setting", require("./api/setting"));
+app.use("/test", require("./api/dbtest"));
 
 // error handler
 app.use(function (err, req, res, next) {

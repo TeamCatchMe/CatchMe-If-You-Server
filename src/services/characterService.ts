@@ -19,15 +19,24 @@ const getCharacter = async (user_id, characterIndex) => {
 };
 
 // 전체 활동 조회
-const getAllActivities = async (user_id) => {
+const getAllActivities = async (user_id, characterIndex) => {
   const allActivities = await Character.find({
     user_id,
-  }).sort({ activityYear: -1, activityMonth: -1 });
-
-  if (!allActivities) {
-    return null;
-  }
+    characterIndex: Number(characterIndex),
+  })
+    .populate("activityId")
+    .exec((err, data) => {
+      console.log("Hello : ", data);
+      console.log("allActivities : ", allActivities);
+      return data;
+    });
+  // console.log("allActivities : ", allActivities);
   return allActivities;
+
+  // if (!allActivities) {
+  //   return null;
+  // }
+  // return allActivities;
 };
 
 // 마지막 캐릭터 조회

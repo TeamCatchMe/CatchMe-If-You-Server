@@ -34,7 +34,11 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   try {
     console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]");
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
-    const lastActivity = await Character.find(
+    // const lastActivity = await Character.find(
+    //   { user_id: req.body.user.id, characterIndex: characterIndex },
+    //   { _id: false, activity: true }
+    // );
+    const lastActivity = await Activity.find(
       { user_id: req.body.user.id, characterIndex: characterIndex },
       { _id: false, activity: true }
     );
@@ -42,10 +46,10 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     const activityCount = lastActivity[0]["activity"].length;
 
     // 만약, 캐릭터의 activity가 비어있다면 activityIndex를 1로 설정해줌
-    if ( activityCount == 0 ) {
+    if (activityCount == 0) {
       activityIndex = 1;
     } else {
-        const edittedActivity = await Activity.find({
+      const edittedActivity = await Activity.find({
         user_id: req.body.user.id,
         characterIndex: characterIndex,
       })
@@ -57,7 +61,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
 
     var activityImage = "";
     var activityImageName = "";
-    if ( req.file ) {
+    if (req.file) {
       activityImage = req.file.location;
       activityImageName = req.file.key;
     }
@@ -99,7 +103,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     );
 
     // 활동 기록 수를 확인하여 캐릭터 레벨업
-    if ( countAfterUpdate == 11 ) {
+    if (countAfterUpdate == 11) {
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
         {
@@ -113,7 +117,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
         message:
           "게시물 등록 성공 && 캐릭터 레벨 업!!! 끼얏호오오~~ 레벨업이다!!",
       });
-    } else if ( countAfterUpdate == 31 ) {
+    } else if (countAfterUpdate == 31) {
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
         {
@@ -178,7 +182,7 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
     var activityImage = objectActivity[0]["activityImage"];
     var activityImageName = objectActivity[0]["activityImageName"];
 
-    if ( req.file ) {
+    if (req.file) {
       // 새로 이미지를 업데이트 하는경우, 기존 이미지의 이름을 찾아 imageKey에 저장한다
       const imageKey = objectActivity[0]["activityImageName"];
 
@@ -266,12 +270,12 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
 router.post("/delete", auth, async (req, res) => {
   const time = moment();
   var logTime = time.format("HH:mm:ss");
-  var activityUpdateTime = "0"
+  var activityUpdateTime = "0";
   const { characterIndex, activityIndex } = req.body;
 
   try {
     console.log(logger.TRY_ACTIVITY_DELETE, "[", logTime, "]");
- 
+
     // 수정할 값들을 바탕으로 데이터를 삭제한다.
     const deletedActivity = await Activity.findOneAndDelete({
       user_id: req.body.user.id,
@@ -279,7 +283,7 @@ router.post("/delete", auth, async (req, res) => {
       activityIndex: activityIndex,
     });
 
-    console.log(deletedActivity)
+    console.log(deletedActivity);
 
     // Character 컬렉션에 추가하기 위해 새로 activity를 find 해준다.
     var activityForPush = await Activity.find({
@@ -287,22 +291,28 @@ router.post("/delete", auth, async (req, res) => {
       characterIndex: characterIndex,
     });
 
-    if ( activityForPush.length == 0 ) {
-      const forTime = await Character.findOne({user_id : req.body.user.id, characterIndex : characterIndex });
-      activityUpdateTime = forTime['characterBirth'];
+    if (activityForPush.length == 0) {
+      const forTime = await Character.findOne({
+        user_id: req.body.user.id,
+        characterIndex: characterIndex,
+      });
+      activityUpdateTime = forTime["characterBirth"];
       activityForPush = [];
 
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
-        { activity: activityForPush, recentActivityTime: activityUpdateTime, activityCount : 0 }
+        {
+          activity: activityForPush,
+          recentActivityTime: activityUpdateTime,
+          activityCount: 0,
+        }
       );
-
     } else {
       const activityForTime = await Activity.find({
         user_id: req.body.user.id,
         characterIndex: characterIndex,
       }).sort({ recentActivityTime: -1 });
-  
+
       activityUpdateTime = activityForTime[0]["recentActivityTime"];
     }
 
@@ -327,7 +337,7 @@ router.post("/delete", auth, async (req, res) => {
       }
     );
 
-    if ( deletedActivity["activityImageName"] != "" ) {
+    if (deletedActivity["activityImageName"] != "") {
       // 삭제한 이미지의 위치를 imageKey에 저장한다
       const imageKey = deletedActivity["activityImageName"];
       // 서버에서 해당 이미지를 삭제한다.
@@ -347,7 +357,7 @@ router.post("/delete", auth, async (req, res) => {
     console.log("[삭제된 데이터] \n", deletedActivity);
 
     // 활동 기록 수를 확인하여 캐릭터 레벨을 돌려준다.
-    if ( activityCount == 10 ) {
+    if (activityCount == 10) {
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
         {
@@ -360,7 +370,7 @@ router.post("/delete", auth, async (req, res) => {
         success: true,
         message: "게시물 삭제 성공 && 캐릭터 레벨 다운... 에휴 쯧쯧...",
       });
-    } else if ( activityCount == 30 ) {
+    } else if (activityCount == 30) {
       await Character.findOneAndUpdate(
         { user_id: req.body.user.id, characterIndex: characterIndex },
         {
