@@ -5,18 +5,15 @@ const CharacterSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: "Character",
     },
     user_id: {
       type: String,
-      // required: true,
     },
-    user_nickname : {
-      type : String,
+    user_nickname: {
+      type: String,
     },
     characterName: {
       type: String,
-      // required: true,
     },
     characterIndex: {
       type: Number,
@@ -29,12 +26,11 @@ const CharacterSchema = new mongoose.Schema(
     },
     characterPrivacy: {
       type: Boolean,
-      // required: true,
     },
     characterBirth: {
       type: String,
     },
-    recentActivityTime : {
+    recentActivityTime: {
       type: String,
     },
     activityCount: {
@@ -43,33 +39,11 @@ const CharacterSchema = new mongoose.Schema(
     countPercentage: {
       type: Number,
     },
-    activity: [
-      {
-        activityIndex: {
-          type: Number,
-          required: true,
-        },
-        activityContent: {
-          type: String,
-          required: true,
-        },
-        activityImage: {
-          type: String,
-        },
-        activityYear: {
-          type: String,
-          required: true,
-        },
-        activityMonth: {
-          type: String,
-          required: true,
-        },
-        activityDay: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+    activity: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Activity",
+    },
+    activityId: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Activity" }],
   },
   {
     versionKey: false,

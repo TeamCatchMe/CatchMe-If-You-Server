@@ -6,7 +6,6 @@ import { check, validationResult } from "express-validator";
 const logger = require("../modules/logger");
 const moment = require("moment");
 const router = express.Router();
-
 import UserData from "../models/Userdata";
 
 /**
@@ -35,7 +34,7 @@ router.post(
 
       let user = await UserData.findOne({ email });
       // 없는 유저
-      if (!user) {
+      if ( !user ) {
         console.log("[/login] 로그인 실패 - 존재하지 않는 이메일");
         res.status(200).json({
           status: 200,
@@ -47,7 +46,7 @@ router.post(
       const isMatch = await bcrypt.compare(password, user.password);
 
       // 비밀번호 일치하지 않음
-      if (!isMatch) {
+      if ( !isMatch ) {
         console.log(logger.FAIL_LOGIN, "[", logTime, "]");
         res.status(200).json({
           status: 200,
@@ -117,7 +116,7 @@ router.post(
     console.log(logger.TRY_SIGNUP, "[", logTime, "]");
 
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if ( !errors.isEmpty() ) {
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -163,7 +162,7 @@ router.post(
   [check("email", "Please include a valid email").isEmail()],
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if ( !errors.isEmpty() ) {
       return res.status(400).json({ errors: errors.array() });
     }
 

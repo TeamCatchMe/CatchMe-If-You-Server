@@ -13,15 +13,9 @@ export default (req, res, next) => {
   // Verify token
   try {
     const decoded = jwt.verify(token, config.jwtSecret);
-    var hello = "true";
     req.body.user = decoded.user;
-    // req.body.isAuth = "true";
-    console.log("authtest에서!!2222222 ", req.body);
-    // res.locals.user = decoded.user;
-    // res.locals.authenticated = !req.user.anonymous;
     next();
   } catch (err) {
-    // req.body.isAuth = "false";
     res.status(401).json({ msg: "Token is not valid" });
   }
 };

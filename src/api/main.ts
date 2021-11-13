@@ -1,6 +1,5 @@
 import express from "express";
 import auth from "../middleware/auth";
-
 const router = express.Router();
 const logger = require("../modules/logger");
 const moment = require("moment");

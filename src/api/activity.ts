@@ -1,19 +1,13 @@
-// import express from "express";
 import auth from "../middleware/auth";
 import upload from "../utils/s3";
-
 const logger = require("../modules/logger");
-
 const AWS = require("aws-sdk");
 let s3 = new AWS.S3();
 AWS.config.loadFromPath(__dirname + "/../../awsconfig.json");
-
 const express = require("express");
 const router = express.Router();
-
 import Activity from "../models/Activity";
 import Character from "../models/Character";
-
 const moment = require("moment");
 require("moment-timezone");
 moment.tz.setDefault("Asia/Seoul");
@@ -40,7 +34,11 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
   try {
     console.log(logger.TRY_ACTIVITY_NEW, "[", logTime, "]");
     // 캐릭터 인덱스에 해당하는 캐릭터 불러옴 -> array
-    const lastActivity = await Character.find(
+    // const lastActivity = await Character.find(
+    //   { user_id: req.body.user.id, characterIndex: characterIndex },
+    //   { _id: false, activity: true }
+    // );
+    const lastActivity = await Activity.find(
       { user_id: req.body.user.id, characterIndex: characterIndex },
       { _id: false, activity: true }
     );
@@ -51,7 +49,7 @@ router.post("/new", upload.single("activityImage"), auth, async (req, res) => {
     if (activityCount == 0) {
       activityIndex = 1;
     } else {
-        const edittedActivity = await Activity.find({
+      const edittedActivity = await Activity.find({
         user_id: req.body.user.id,
         characterIndex: characterIndex,
       })
@@ -272,7 +270,7 @@ router.post("/edit", upload.single("activityImage"), auth, async (req, res) => {
 router.post("/delete", auth, async (req, res) => {
   const time = moment();
   var logTime = time.format("HH:mm:ss");
-
+  var activityUpdateTime = "0";
   const { characterIndex, activityIndex } = req.body;
 
   try {
@@ -285,18 +283,38 @@ router.post("/delete", auth, async (req, res) => {
       activityIndex: activityIndex,
     });
 
+    console.log(deletedActivity);
+
     // Character 컬렉션에 추가하기 위해 새로 activity를 find 해준다.
-    const activityForPush = await Activity.find({
+    var activityForPush = await Activity.find({
       user_id: req.body.user.id,
       characterIndex: characterIndex,
     });
 
-    const activityForTime = await Activity.find({
-      user_id: req.body.user.id,
-      characterIndex: characterIndex,
-    }).sort({ recentActivityTime: -1 });
+    if (activityForPush.length == 0) {
+      const forTime = await Character.findOne({
+        user_id: req.body.user.id,
+        characterIndex: characterIndex,
+      });
+      activityUpdateTime = forTime["characterBirth"];
+      activityForPush = [];
 
-    const activityUpdateTime = activityForTime[0]["recentActivityTime"];
+      await Character.findOneAndUpdate(
+        { user_id: req.body.user.id, characterIndex: characterIndex },
+        {
+          activity: activityForPush,
+          recentActivityTime: activityUpdateTime,
+          activityCount: 0,
+        }
+      );
+    } else {
+      const activityForTime = await Activity.find({
+        user_id: req.body.user.id,
+        characterIndex: characterIndex,
+      }).sort({ recentActivityTime: -1 });
+
+      activityUpdateTime = activityForTime[0]["recentActivityTime"];
+    }
 
     // Character에 수정된 activity 데이터들로 바꿔준다.
     await Character.findOneAndUpdate(
